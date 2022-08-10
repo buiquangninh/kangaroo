@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+ -->
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget id="loffs_widget" class="Lof\FlashSales\Block\Widget\FlashSales">
+        <label>Flash Sales Events</label>
+        <description>shows flash sales events</description>
+        <parameters>
+            <parameter name="event_type" xsi:type="select" sort_order="5" required="true" visible="true">
+                <label translate="true">Event Type</label>
+                <options>
+                    <option name="mixed" value="mixed" selected="true">
+                        <label translate="true">Mixed</label>
+                    </option>
+                    <option name="active" value="active" selected="true">
+                        <label translate="true">Active</label>
+                    </option>
+                    <option name="comingsoon" value="comingsoon" selected="true">
+                        <label translate="true">Coming Soon</label>
+                    </option>
+                    <option name="endingsoon" value="endingsoon" selected="true">
+                        <label translate="true">Ending Soon</label>
+                    </option>
+                    <option name="ended" value="ended" selected="true">
+                        <label translate="true">Ended</label>
+                    </option>
+                    <option name="upcoming" value="upcoming" selected="true">
+                        <label translate="true">Up Coming</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="title" xsi:type="text" visible="true" sort_order="10">
+                <label>Title</label>
+            </parameter>
+            <parameter name="show_pager" xsi:type="select" visible="true" sort_order="20" source_model="Magento\Config\Model\Config\Source\Yesno">
+                <label translate="true">Display Page Control</label>
+            </parameter>
+            <parameter name="events_per_page" xsi:type="text" required="true" sort_order="30" visible="true">
+                <label translate="true">Number of Events per Page</label>
+                <depends>
+                    <parameter name="show_pager" value="1"/>
+                </depends>
+                <value>5</value>
+            </parameter>
+            <parameter name="events_count" xsi:type="text" required="true" sort_order="40" visible="true">
+                <label translate="true">Number of Events to Display</label>
+                <value>10</value>
+            </parameter>
+            <parameter name="template" xsi:type="select" required="true" visible="true">
+                <label translate="true">Template</label>
+                <options>
+                    <option name="default" value="Lof_FlashSales::widget/grid.phtml" selected="true">
+                        <label translate="true">Events Grid Template</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="column" xsi:type="select" visible="true" sort_order="50" source_model="Lof\FlashSales\Model\Adminhtml\Widget\Source\Column">
+                <label translate="true">Number of Columns</label>
+            </parameter>
+            <parameter name="orderby" xsi:type="select" visible="true" sort_order="60" source_model="Lof\FlashSales\Model\Adminhtml\Widget\Source\OrderBy">
+                <label translate="true">Order By</label>
+            </parameter>
+            <parameter name="sortorder" xsi:type="select" visible="true" sort_order="70" source_model="Lof\FlashSales\Model\Adminhtml\Widget\Source\SortOrder">
+                <label translate="true">Sort Order</label>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>

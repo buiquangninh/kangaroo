@@ -1,0 +1,49 @@
+/*
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+
+@font-face {
+    font-family: 'loffs';
+    src:  url('fonts/loffs.eot?zgrvt5');
+    src:  url('fonts/loffs.eot?zgrvt5#iefix') format('embedded-opentype'),
+    url('fonts/loffs.ttf?zgrvt5') format('truetype'),
+    url('fonts/loffs.woff?zgrvt5') format('woff'),
+    url('fonts/loffs.svg?zgrvt5#loffs') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="loffs-icon-"], [class*=" loffs-icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'loffs' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.loffs-icon-clock:before {
+    content: "\e732";
+}

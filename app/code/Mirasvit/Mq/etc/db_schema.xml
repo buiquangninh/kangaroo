@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="mst_message_queue" resource="default" engine="innodb" comment="mst_message_queue">
+    <column xsi:type="int" name="message_id" padding="10" unsigned="true" nullable="false" identity="true" comment="message_id"/>
+    <column xsi:type="varchar" name="queue_name" nullable="false" length="255" comment="queue_name"/>
+    <column xsi:type="text" name="body" nullable="false" comment="body"/>
+    <column xsi:type="varchar" name="status" nullable="false" length="255" comment="status"/>
+    <column xsi:type="int" name="retries" padding="10" unsigned="true" nullable="false" identity="false" default="0" comment="retries"/>
+    <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="created_at"/>
+    <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="updated_at"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="message_id"/>
+    </constraint>
+    <index referenceId="MST_MESSAGE_QUEUE_QUEUE_NAME" indexType="btree">
+      <column name="queue_name"/>
+    </index>
+    <index referenceId="MST_MESSAGE_QUEUE_STATUS" indexType="btree">
+      <column name="status"/>
+    </index>
+  </table>
+</schema>

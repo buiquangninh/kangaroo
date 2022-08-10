@@ -1,0 +1,300 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<li class="checkout-delivery-address">
+    <div class="delivery-address-head">
+        <div class="step-title delivery-address-title" data-bind="i18n: 'Delivery address'"></div>
+        <!-- ko if: isCustomerLoggedIn -->
+        <div class="checkout-delivery-address-action desktop-device" style="display: none">
+            <button type="button"
+                    class="action action-show-popup"
+                    click="showFormPopUp"
+                    >
+                <span translate="'New Address'"/>
+            </button>
+            <div id="opc-new-shipping-address"
+                 visible="isFormPopUpVisible()"
+                 render="shippingFormTemplate"/>
+            <button type="button"
+                    class="setup-address action"
+                    click="openAddressPage"
+                    >
+                <span translate="'Set up address'"/>
+            </button>
+        </div>
+        <!-- /ko -->
+    </div>
+    <div class="delivery-address-list not-delivery-address" data-bind="afterRender: setShowAddNewBtn, css: {'guest-address': !isCustomerLoggedIn()}">
+        <!-- ko if: isCustomerLoggedIn -->
+        <div class="field addresses">
+            <div class="control">
+                <div class="shipping-address-items">
+                    <p class="delivery-address-desc"
+                       data-bind="html: customerAddress"></p>
+                </div>
+                <button class="action edit desktop-device" data-bind="i18n: 'Change'" click="toggleAddressAction"></button>
+                <button class="action edit mobile-device" data-bind="i18n: 'Change'" click="showPopupAddressAction"></button>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot: isCustomerLoggedIn -->
+        <p class="delivery-address-desc"
+           data-bind="html: customerAddress"></p>
+        <!-- /ko -->
+
+        <!-- ko if: isCustomerLoggedIn -->
+        <div style="display: none" class="checkout-shipping-search">
+            <div class="search-form">
+                <input type="text" placeholder="Search" id="search-address-input" class="search-address-input" data-bind="event: {keyup: onEnter}"/>
+                <button type="button"
+                        class="search-address-button"
+                        click="searchAddressData">
+                </button>
+            </div>
+            <div class="search-form-result">
+                <p class="result-total">
+                    <span data-bind="i18n: 'Find'"></span>
+                    <strong class="result-total-num"></strong>
+                    <span data-bind="i18n: 'result'"></span>
+                    <strong class="result-total-query"></strong>
+                </p>
+                <div class="result-list">
+                    <!-- ko foreach: { data: getRegion('address-list')()[0].elems, as: 'element' } -->
+                    <div class="result-item address-entry" data-bind="css: {'selected-item' : isSelected(), 'selected' : isSelected() , 'not-selected-item':!isSelected(), 'new-address': !address().customerAddressId}, attr: {id: 'get-specific-id-' + address().customerAddressId}, click: selectAddress.bind($data, $element)">
+                        <strong>
+                            <!-- ko text: address().prefix --><!-- /ko -->
+                            <!-- ko text: address().firstname --><!-- /ko -->
+                            <!-- ko text: address().middlename --><!-- /ko -->
+                            <!-- ko text: address().lastname --><!-- /ko -->
+                            <!-- ko if: address().isDefaultShipping() -->
+                            <span class="default-text mobile-device" data-bind="i18n: '[Default]'"></span>
+                            <!-- /ko -->
+                        </strong>
+                        <strong>
+                            <!-- ko if: address().telephone -->
+                                <span data-bind="text: address().telephone"></span>
+                            <!-- /ko -->
+                        </strong>
+                        <span>
+                            <!-- ko text: address().postcode --><!-- /ko -->
+                            <!-- ko text: address().suffix --><!-- /ko -->
+                            <!-- ko text: _.values(address().street).join(', ') --><!-- /ko -->
+                            <!-- ko if: address().customAttributes.ward-->
+                            <!-- ko text: address().customAttributes.ward.value --><!-- /ko -->,
+                            <!-- /ko -->
+                            <!-- ko if: address().customAttributes.district-->
+                            <!-- ko text: address().customAttributes.district.value --><!-- /ko --><br>
+                            <!-- /ko -->
+                            , <!-- ko text: address().city --><!-- /ko -->
+                            , <span data-bind="text: address().region"></span>
+                            <!-- ko text: getCountryName(address().countryId) --><!-- /ko -->
+                        </span>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <div class="actions-toolbar desktop-device">
+                <button class="action primary complete" data-bind="i18n: 'Complete', click: toggleAddressActionClose"></button>
+                <button class="action back" data-bind="i18n: 'Back', click: toggleAddressActionClose"></button>
+            </div>
+            <div class="delivery-address-popup-footer">
+                <button type="button"
+                        class="action action-show-popup mobile-device"
+                        click="showFormPopUp"
+                        >
+                    <span translate="'New Address'"/>
+                </button>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: showAddNewAddress && !isCustomerLoggedIn() -->
+        <button class="btn-add-address" type="button" data-trigger="delivery-address-trigger"
+                data-bind="i18n: 'Add address'"></button>
+        <div data-bind="mageInit: {
+        'Magento_Ui/js/modal/modal':{
+            'type': 'popup',
+            'title': $t('Delivery address'),
+            'trigger': '[data-trigger=delivery-address-trigger]',
+            'modalClass': 'modal-add-address',
+            'responsive': true,
+            'buttons': [{
+                text: $t('Apply'),
+                class: 'action primary',
+                click: function () {
+                    if ($data.validateShippingInformation(true)) {
+                        this.closeModal();
+                    }
+                }
+            },
+            {
+                text: $t('Back'),
+                class: 'action secondary',
+                click: function () {
+                    this.closeModal();
+                }
+            }
+            ]
+        }}">
+            <div id="shipping" class="checkout-shipping-address">
+                <!-- ko ifnot: isCustomerLoggedIn -->
+                <div class="authentication-wrapper login-btn-container">
+                    <button
+                        type="button"
+                        class="action action-auth-toggle"
+                        data-bind="click: toggleLoginForm">
+                        <span data-bind="i18n: 'Sign In'"></span>
+                    </button>
+                </div>
+                <!-- /ko -->
+                <div id="checkout-step-shipping"
+                     class="step-content"
+                     data-role="content" css="'address-selected': isCustomerLoggedIn">
+
+                    <each if="!quoteIsVirtual" args="getRegion('customer-email')" render=""/>
+
+                    <each args="getRegion('address-list-additional-addresses')" render=""/>
+
+                    <each args="getRegion('before-form')" render=""/>
+
+                    <!-- Inline address form -->
+                    <render if="isFormInline" args="shippingFormTemplate"/>
+                    <each args="getRegion('after-form')" render=""/>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+</li>
+
+<li class="checkout-cart-summary">
+    <each args="getRegion('cart-items')" render=""/>
+    <!-- ko if: getISActive() -->
+    <div class="installment-payment-table">
+        <table>
+            <tr>
+                <td class="col-head" data-bind="i18n: 'Bank'"></td>
+                <td>
+                    <img data-bind="attr: {'src': imagePath()}, src: imagePath()" />
+                    <span data-bind="html: getBankName()"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-head" data-bind="i18n: 'Number of months in installments'"></td>
+                <td>
+                    <span data-bind="html: getTerms()"></span>&nbsp;<span data-bind="i18n: 'Months'"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-head" data-bind="i18n: 'Product price'"></td>
+                <td>
+                    <span data-bind="html: getAmounts()"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-head" data-bind="i18n: 'Installment price'"></td>
+                <td>
+                    <span data-bind="html: getUserFeeIs()"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-head" data-bind="i18n: 'Installment payment first month'"></td>
+                <td>
+                    <span data-bind="html: getFirstAmount()"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-head" data-bind="i18n: 'Installment payment per month'"></td>
+                <td>
+                    <span data-bind="html: getNextAmount()"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-head" data-bind="i18n: 'Total installment amount'"></td>
+                <td>
+                    <span data-bind="html: getAmountIs()"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- /ko -->
+    <div class="company-invoice-container mobile-device">
+        <div class="company-invoice-wrapper">
+            <div class="step-title"><!-- ko i18n: 'Issue company invoice'--><!-- /ko --></div>
+            <!-- ko if: saveCompanyVat() -->
+            <button class="btn-company-invoice selected" data-bind="click: unSaveCompanyVat" type="button">
+            </button>
+            <!-- /ko -->
+            <!-- ko ifnot: saveCompanyVat() -->
+            <button class="btn-company-invoice" data-trigger="company-invoice-popup" type="button">
+            </button>
+            <!-- /ko -->
+        </div>
+        <!-- ko if: saveCompanyVat() -->
+        <p class="company-information-wrapper">
+            <strong class="company-name" data-bind="html: companyExtraInfo._elems[1].value"></strong>
+            <strong class="company-tax-code" data-bind="html: companyExtraInfo._elems[3].value"></strong>
+            <span>
+                <span class="company-email" data-bind="html: companyExtraInfo._elems[2].value"></span>
+                <span class="company-address" data-bind="html: companyExtraInfo._elems[4].value"></span>
+            </span>
+        </p>
+        <!-- /ko -->
+    </div>
+    <div class="checkout-shipping-method">
+        <div class="field">
+            <label class="label" data-bind="i18n: 'Order Note'"></label>
+            <textarea data-bind="attr: {placeholder: $t('Leave a message for Kangaroo')}, value: cartCustomerMessage"></textarea>
+        </div>
+        <div class="shipping-method-block">
+            <!-- ko if: rates().length -->
+            <div class="shipping-method-title" data-bind="i18n: 'Form of transportation'"></div>
+            <!-- /ko -->
+            <div class="shipping-method-detail-block">
+                <!-- ko if: rates().length -->
+                <!-- ko if: isSelected -->
+                <div class="shipping-method-detail">
+                    <div class="shipping-method-info">
+                        <span class="name" data-bind="html: getShippingMethod()"></span>
+                        <span class="description" data-bind="html: getShippingCarrier()">
+                    </span>
+                    </div>
+                    <div class="shipping-method-inner">
+                        <span class="price-wrapper">
+                            <!-- ko if:  isDiscounted() -->
+                            <span class="price"><span class="price old-price" data-bind="text: getShippingOriginalPrice()"></span></span>
+                            <!-- /ko -->
+                            <span class="price" data-bind="html: getShippingPrice()"></span>
+                        </span>
+                        <button class="btn-change-shipping-method" data-bind="i18n: 'Change'"
+                                data-trigger="shipping-method"></button>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko ifnot: isSelected -->
+                <div class="shipping-method-inner">
+                    <button class="btn-change-shipping-method btn-select-shipping-method" data-bind="i18n: 'Please select shipping method'" data-trigger="shipping-method"></button>
+                </div>
+                <!-- /ko -->
+                <!-- /ko -->
+                <!-- ko ifnot: rates().length -->
+                <div class="shipping-method-inner">
+                    <button class="btn-change-shipping-method btn-edit-address" data-bind="i18n: 'Please provide shipping information'" data-trigger="delivery-address-trigger"></button>
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+    </div>
+    <div class="checkout-cart-subtotal">
+        <div class="checkout-cart-subtotal-title">
+            <span class="title" data-bind="i18n: 'Order Total'"></span>
+            <span class="product-qty"><!-- ko text: getTotalItems().toLocaleLowerCase() --><!-- /ko --></span>
+        </div>
+        <div class="checkout-cart-subtotal-price">
+            <span class="price" data-bind="html: getSubtotal()"></span>
+            <span class="vat-note" data-bind="i18n: '(VAT included if any)'"></span>
+        </div>
+    </div>
+</li>

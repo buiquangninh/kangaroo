@@ -1,0 +1,239 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="landofcoder" translate="label" sortOrder="400">
+            <label>Landofcoder Extensions</label>
+        </tab>
+        <section id="lofflashsales" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+            <label>Flash Sales</label>
+            <tab>landofcoder</tab>
+            <resource>Lof_FlashSales::config_lof_flashsales</resource>
+            <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+                <label>General</label>
+                <field id="enabled" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="select" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <backend_model>Lof\FlashSales\Model\Adminhtml\System\Config\Backend\Cache</backend_model>
+                </field>
+                <field id="sell_over_quantity_limit" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="select" canRestore="1">
+                    <label>Sell Over Quantity Limit</label>
+                    <comment>Continue sell flash sale product when reach quantity limit but without flash sale price.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="private_sale_permissions" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+                <label>Private Sale Permissions</label>
+                <field id="grant_event_view" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow Browsing Event</label>
+                    <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\Grant\Landing</source_model>
+                </field>
+                <field id="grant_event_view_groups" translate="label" type="multiselect" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Customer Groups</label>
+                    <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\Customer\Group</source_model>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="grant_event_view">2</field>
+                    </depends>
+                </field>
+                <field id="display_product_mode" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Display Product Mode</label>
+                    <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\DisplayProductMode</source_model>
+                    <depends>
+                        <field id="grant_event_view" separator="|">0|2</field>
+                    </depends>
+                </field>
+                <field id="restricted_landing_page" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Landing Page</label>
+                    <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\Page</source_model>
+                    <depends>
+                        <field id="grant_event_view" separator="|">0|2</field>
+                    </depends>
+                </field>
+                <field id="grant_event_product_price" translate="label" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Display Product Prices</label>
+                    <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\Grant</source_model>
+                </field>
+                <field id="grant_event_product_price_groups" translate="label" type="multiselect" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Customer Groups</label>
+                    <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\Customer\Group</source_model>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="grant_event_product_price">2</field>
+                    </depends>
+                </field>
+                <field id="grant_checkout_items" translate="label" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow Adding to Cart</label>
+                    <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\Grant</source_model>
+                </field>
+                <field id="grant_checkout_items_groups" translate="label" type="multiselect" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Customer Groups</label>
+                    <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\Customer\Group</source_model>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="grant_checkout_items">2</field>
+                    </depends>
+                </field>
+                <field id="display_cart_mode" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Display Add to Cart Mode</label>
+                    <depends>
+                        <field id="grant_checkout_items" separator="|">0|2</field>
+                    </depends>
+                    <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\DisplayAddToCartMode</source_model>
+                </field>
+                <field id="cart_button_title" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cart Button Title</label>
+                    <depends>
+                        <field id="grant_checkout_items" separator="|">0|2</field>
+                        <field id="display_cart_mode">0</field>
+                    </depends>
+                </field>
+                <field id="message_hidden_add_to_cart" translate="label" type="textarea" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Text Message When Button Add to Cart Is Hidden</label>
+                    <depends>
+                        <field id="grant_checkout_items" separator="|">0|2</field>
+                        <field id="display_cart_mode">0</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="display_settings" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                <label>Display Settings</label>
+                <group id="category_display_mode" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                    <label>Category Display</label>
+                    <field id="default_thumbnail" translate="label" type="image" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Default Thumbnail</label>
+                        <backend_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\Image</backend_model>
+                        <base_url type="media" scope_info="1">lofflashsales/display_settings</base_url>
+                        <comment><![CDATA[Applies when the event does not upload thumbnail images <br/> [Allowed file types: jpg, jpeg, gif, png, svg]]]></comment>
+                    </field>
+                    <field id="default_banner" translate="label" type="image" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Default Banner</label>
+                        <backend_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\Image</backend_model>
+                        <base_url type="media" scope_info="1">lofflashsales/display_settings</base_url>
+                        <comment><![CDATA[Applies when the event does not upload thumbnail images <br/> [Allowed file types: jpg, jpeg, gif, png, svg]]]></comment>
+                    </field>
+                    <field id="event_column" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" type="select" canRestore="1">
+                        <label>Event Column Number Is Displayed</label>
+                        <comment>Should choose the 2.3 event column option to optimize the display for the website</comment>
+                        <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\EventColumn</source_model>
+                    </field>
+                    <field id="category_header_style" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" type="radios">
+                        <label>Category Event Header Style</label>
+                        <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\CategoryHeaderStyle</source_model>
+                    </field>
+                </group>
+                <group id="event_display_mode" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                    <label>Event Display</label>
+                    <field id="event_style" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" type="radios">
+                        <label>Event Style</label>
+                        <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\EventStyle</source_model>
+                    </field>
+                </group>
+                <group id="product_display_mode" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="50" translate="label">
+                    <label>Product Display</label>
+                    <field id="product_header_style" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" type="radios">
+                        <label>Product Countdown Position</label>
+                        <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\ProductHeaderStyle</source_model>
+                    </field>
+                </group>
+                <group id="countdown_timer_mode" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="80" translate="label">
+                    <label>Countdown Timer</label>
+                    <field id="product_timer" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="select" canRestore="1">
+                        <label>Product Timer</label>
+                        <comment/>
+                        <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\CountDownMode</source_model>
+                    </field>
+                    <field id="event_list_timer" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="select" canRestore="1">
+                        <label>Event List Timer</label>
+                        <comment/>
+                        <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\CountDownMode</source_model>
+                    </field>
+                    <field id="event_category_timer" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="select" canRestore="1">
+                        <label>Event Category Timer</label>
+                        <comment/>
+                        <source_model>Lof\FlashSales\Model\Adminhtml\System\Config\Source\CountDownMode</source_model>
+                    </field>
+                    <field id="coming_soon_event" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" type="text" canRestore="1">
+                        <label>Coming Soon Events (days)</label>
+                        <comment>A number of days before the event starts to display this event as "Coming Soon".</comment>
+                    </field>
+                    <field id="ending_soon_event" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" type="text" canRestore="1">
+                        <label>Ending Soon Events (days)</label>
+                        <comment>A number of days before the event ends to display this event as "Ending Soon".</comment>
+                    </field>
+                </group>
+                <group id="discount_amount_display" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="80" translate="label">
+                    <label>Discount Amount Display</label>
+                    <field id="enable_discount_amount" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" type="select" canRestore="1">
+                        <label>Enabled</label>
+                        <comment>Show discount amount for product</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="percent" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" type="text" canRestore="1">
+                        <label>Percent</label>
+                        <comment>Discount amount display for percent.</comment>
+                        <depends>
+                            <field id="enable_discount_amount">1</field>
+                        </depends>
+                    </field>
+                    <field id="fixed" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" type="text" canRestore="1">
+                        <label>Fixed</label>
+                        <comment>Discount amount display for fixed.</comment>
+                        <depends>
+                            <field id="enable_discount_amount">1</field>
+                        </depends>
+                    </field>
+                </group>
+            </group>
+            <group id="advanced" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="50" translate="label">
+                <label>Advanced</label>
+                <field id="product_item_selector" canRestore="1" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Listing Item Selector</label>
+                    <comment>CSS selector for product items in Category or Listing page. We will find this CSS class to detect product items.</comment>
+                </field>
+                <field id="product_item_actions_selector" canRestore="1" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Listing Item Actions Selector</label>
+                    <comment>CSS selector for product item actions in Category or Listing pages. We will find this CSS class to detect product buttons then change the Add to Cart button.</comment>
+                </field>
+                <field id="product_info_main_selector" canRestore="1" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Detail Main Selector</label>
+                    <comment>CSS selector for product detail main in Product Detail pages. We will find this CSS class to add some elements. Ex: Countdown,...</comment>
+                </field>
+                <field id="product_info_price_selector" canRestore="1" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Detail Price Wrapper Selector</label>
+                    <comment>CSS selector for product detail price in Product Detail pages. We will find this CSS class to add countdown boxes.</comment>
+                </field>
+                <field id="page_main_selector" canRestore="1" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Page Main Selector</label>
+                    <comment>CSS selector for page main pages. We will find this CSS class to add Top countdown box before the product.</comment>
+                </field>
+                <field id="grouped_selector" canRestore="1" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Grouped Product Price Box Selector</label>
+                    <comment>CSS selector for child product in Grouped Product Detail pages. We will find this CSS class to add some elements. Ex: Countdown,...</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
+
+

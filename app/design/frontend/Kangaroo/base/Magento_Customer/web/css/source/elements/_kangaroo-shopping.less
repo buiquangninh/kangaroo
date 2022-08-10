@@ -1,0 +1,212 @@
+& when (@media-common = true) {
+    .affiliate-account-general {
+        .block-general-statistical {
+            .lib-vendor-prefix-display(flex);
+
+            .statistical-title {
+                font-size: 12px;
+                line-height: 20px;
+                font-weight: 500;
+                margin-bottom: 5px;
+            }
+
+            .statistical-item {
+                border-radius: 8px;
+                padding: 17px 16px;
+
+                &.this-month {
+                    background: transparent linear-gradient(66deg, #5EB845 0%, #158C43 100%) 0 0;
+                    color: #fff;
+
+                    .label {
+                        color: #fff;
+                    }
+
+                    .statistical-title {
+                        &:before {
+                            content: "\e941";
+                            font-family: 'kangaroo-icon';
+                            color: #FCF520;
+                            font-size: 11px;
+                            display: inline-block;
+                            padding-right: 8px;
+                        }
+                    }
+                }
+
+                &.today {
+                    border: 1px solid #E2E8ED;
+                    background: #fff;
+
+                    .statistical-title {
+                        color: #34373D;
+
+                        &:before {
+                            background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='10.5' height='11.667' viewBox='0 0 10.5 11.667'%3E%3Cpath id='Icon_material-today' data-name='Icon material-today' d='M13.833,2.667H13.25V1.5H12.083V2.667H7.417V1.5H6.25V2.667H5.667A1.161,1.161,0,0,0,4.506,3.833L4.5,12a1.166,1.166,0,0,0,1.167,1.167h8.167A1.17,1.17,0,0,0,15,12V3.833A1.17,1.17,0,0,0,13.833,2.667Zm0,9.333H5.667V5.583h8.167Zm-7-5.25H9.75V9.667H6.833Z' transform='translate(-4.5 -1.5)' fill='%2344ba46'/%3E%3C/svg%3E%0A");
+                            content: '';
+                            width: 11px;
+                            height: 12px;
+                            background-repeat: no-repeat;
+                            background-size: contain;
+                            background-position: center;
+                            display: inline-block;
+                            margin-right: 8px;
+                        }
+                    }
+                }
+
+                .block-flex {
+                    .lib-vendor-prefix-display(flex);
+
+                    .block-sales, .block-pending {
+                        width: calc(~'50% - 10px');
+
+                        > .label {
+                            font-size: 12px;
+                            line-height: 20px;
+                        }
+
+                        > .value {
+                            font-size: 18px;
+                            line-height: 20px;
+                            font-weight: 500;
+                            word-break: break-word;
+                        }
+                    }
+
+                    .block-sales {
+                        margin-right: auto;
+                    }
+
+                    .block-commission {
+                        .lib-vendor-prefix-display(flex);
+                        justify-content: space-between;
+                        -webkit-justify-content: space-between;
+                        .lib-vendor-prefix-flex-wrap(wrap-reverse);
+
+                        .label {
+                            font-size: 10px;
+                            line-height: 14px;
+                            max-width: 47px;
+                            margin-bottom: 5px;
+                        }
+
+                        .value {
+                            font-size: 12px;
+                            line-height: 13px;
+                            font-weight: 500;
+                            margin-bottom: 0;
+                            padding-right: 10px;
+                            word-break: break-word;
+                        }
+                    }
+                }
+            }
+        }
+
+        .credit-balance-chart {
+            .select-month-number {
+                border: 1px solid #E0E6EC;
+                border-radius: 2px;
+                font-size: 13px;
+                line-height: 24px;
+                color: #383E4F;
+                background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='14.121' height='7.811' viewBox='0 0 14.121 7.811'%3E%3Cpath id='Path_626' data-name='Path 626' d='M1092.379,637.329l6,6,6-6' transform='translate(-1091.318 -636.268)' fill='none' stroke='%23383E4F' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5'/%3E%3C/svg%3E%0A");
+            }
+
+            .box-head {
+                .lib-vendor-prefix-display(flex);
+                justify-content: space-between;
+                -webkit-justify-content: space-between;
+                .lib-vendor-box-align(center);
+                margin-bottom: 15px;
+
+                h2 {
+                    color: #383E4F;
+                    font-weight: 500;
+                    .lib-vendor-prefix-display(flex);
+                    margin-bottom: 0;
+
+                    &:before {
+                        content: '';
+                        background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='24.02' height='23.032' viewBox='0 0 24.02 23.032'%3E%3Cg id='Group_2835' data-name='Group 2835' transform='translate(74.266 24.895)'%3E%3Cg id='Group_2834' data-name='Group 2834' transform='translate(-74.282 -24.879)'%3E%3Cg id='Group_2833' data-name='Group 2833' transform='translate(0 0)'%3E%3Cg id='Group_2831' data-name='Group 2831'%3E%3Cpath id='Path_1118' data-name='Path 1118' d='M8.17.011A8.144,8.144,0,1,1,.011,8.17,8.111,8.111,0,0,1,8.17.011Z' transform='translate(0 11.5) rotate(-45)' fill='%2360b7ff'/%3E%3Cpath id='Path_1119' data-name='Path 1119' d='M6.577.011a6.518,6.518,0,0,1,6.538,6.538,6.586,6.586,0,0,1-6.566,6.566A6.518,6.518,0,0,1,.011,6.577,6.586,6.586,0,0,1,6.577.011Z' transform='translate(2.251 11.5) rotate(-45)' fill='%238ac9fe'/%3E%3Cpath id='Path_1105' data-name='Path 1105' d='M16.232,65.52l-8.181,0v0a8.181,8.181,0,0,1,8.181-8.181v8.181Z' transform='translate(-4.626 -53.987)' fill='%23fd4755' fill-rule='evenodd'/%3E%3Cpath id='Path_1106' data-name='Path 1106' d='M53.3,102.591l-6.588,0v0A6.589,6.589,0,0,1,53.3,96v6.589Z' transform='translate(-41.742 -91.078)' fill='%23fe646f' fill-rule='evenodd'/%3E%3Cpath id='Path_1107' data-name='Path 1107' d='M8.051,256.023l8.18,0-4.146,7.053A8.177,8.177,0,0,1,8.051,256.023Z' transform='translate(-4.626 -244.534)' fill='%23ffd064' fill-rule='evenodd'/%3E%3Cpath id='Path_1108' data-name='Path 1108' d='M46.717,256.023l6.588,0-3.339,5.68a6.585,6.585,0,0,1-3.249-5.678Z' transform='translate(-41.743 -244.531)' fill='%23ffe177' fill-rule='evenodd'/%3E%3C/g%3E%3Cg id='Group_2832' data-name='Group 2832' transform='translate(12.394 10.923)'%3E%3Cpath id='Path_1109' data-name='Path 1109' d='M229.566,337.051h1.465a.229.229,0,0,1,.228.228v4.387a.229.229,0,0,1-.228.228h-1.465a.229.229,0,0,1-.228-.228v-4.387A.229.229,0,0,1,229.566,337.051Z' transform='translate(-229.338 -333.168)' fill='%23fe646f' fill-rule='evenodd'/%3E%3Cpath id='Path_1110' data-name='Path 1110' d='M252.663,337.051h.732a.229.229,0,0,1,.228.228v4.387a.229.229,0,0,1-.228.228h-.732Z' transform='translate(-251.702 -333.168)' fill='%23fd4755' fill-rule='evenodd'/%3E%3Cpath id='Path_1111' data-name='Path 1111' d='M305.587,305.62h1.465a.229.229,0,0,1,.228.228v5.682a.228.228,0,0,1-.228.228h-1.465a.228.228,0,0,1-.228-.228v-5.682A.228.228,0,0,1,305.587,305.62Z' transform='translate(-302.228 -303.031)' fill='%23ffe177' fill-rule='evenodd'/%3E%3Cpath id='Path_1112' data-name='Path 1112' d='M328.683,305.62h.732a.229.229,0,0,1,.228.228v5.682a.228.228,0,0,1-.228.228h-.732Z' transform='translate(-324.592 -303.031)' fill='%23ffd064' fill-rule='evenodd'/%3E%3Cpath id='Path_1113' data-name='Path 1113' d='M381.607,274.189h1.465a.229.229,0,0,1,.228.228v6.976a.229.229,0,0,1-.228.228h-1.465a.228.228,0,0,1-.228-.228v-6.976A.228.228,0,0,1,381.607,274.189Z' transform='translate(-375.118 -272.895)' fill='%23ccf49f' fill-rule='evenodd'/%3E%3Cpath id='Path_1114' data-name='Path 1114' d='M404.7,274.189h.732a.229.229,0,0,1,.228.228v6.976a.229.229,0,0,1-.228.228H404.7Z' transform='translate(-397.482 -272.895)' fill='%23b3e59f' fill-rule='evenodd'/%3E%3Cpath id='Path_1115' data-name='Path 1115' d='M457.626,242.758h1.465a.228.228,0,0,1,.228.228v8.27a.228.228,0,0,1-.228.228h-1.465a.228.228,0,0,1-.228-.228v-8.27A.229.229,0,0,1,457.626,242.758Z' transform='translate(-448.007 -242.758)' fill='%238ac9fe' fill-rule='evenodd'/%3E%3Cpath id='Path_1116' data-name='Path 1116' d='M480.723,242.758h.732a.228.228,0,0,1,.228.228v8.27a.228.228,0,0,1-.228.228h-.732Z' transform='translate(-470.371 -242.758)' fill='%2360b7ff' fill-rule='evenodd'/%3E%3C/g%3E%3C/g%3E%3Cpath id='Path_1117' data-name='Path 1117' d='M20.336,65.634H19.083V57.6h1.254Zm.327-8.694H18.755a.328.328,0,0,0-.327.328v8.694a.328.328,0,0,0,.327.328h1.908a.328.328,0,0,0,.327-.328V57.269A.328.328,0,0,0,20.664,56.94Zm-3.437,8.694H15.974V58.886h1.253Zm-2.455-3.172a7.765,7.765,0,0,0,.547-.85V58.558a.328.328,0,0,1,.327-.328h.643c.007-.141.011-.28.011-.418q0-.309-.024-.613l-.524.253a.327.327,0,0,1-.417-.117l-.6-.929-4.505,1.872a.324.324,0,0,1-.125.025.329.329,0,0,1-.125-.632l4.757-1.977a.327.327,0,0,1,.4.125l.591.916.463-.224A7.819,7.819,0,0,0,8.83,50v7.814a.329.329,0,0,1-.045.166L4.837,64.715a7.734,7.734,0,0,0,3.665.92c.2,0,.4-.009.6-.024V61.137a.328.328,0,0,1,.327-.328h1.908a.328.328,0,0,1,.327.328v3.828q.279-.124.547-.27V59.848a.328.328,0,0,1,.327-.328h1.908a.328.328,0,0,1,.327.328v2.614Zm-.654,3.172H12.864V60.176h1.254Zm-3.109,0H9.755V61.466h1.253Zm-10.3-7.49,7.218,0-3.657,6.24A7.829,7.829,0,0,1,.712,58.144ZM8.175,50v7.486l-7.464,0A7.82,7.82,0,0,1,8.175,50Zm9.379,8.232h-.61c.007-.14.011-.28.011-.418a8.459,8.459,0,0,0-.05-.916l2.523-1.218-.078.162a.327.327,0,1,0,.589.285l.485-1.008a.329.329,0,0,0-.212-.46l-1.079-.283a.328.328,0,0,0-.166.635l.217.057L16.8,56.216A8.455,8.455,0,1,0,8.5,66.291c.256,0,.517-.013.776-.037a.325.325,0,0,0,.149.037h1.908a.328.328,0,0,0,.327-.328v-.286q.278-.112.547-.244v.53a.328.328,0,0,0,.327.328h1.908a.328.328,0,0,0,.327-.328V63.5a8.411,8.411,0,0,0,.547-.672v3.138a.328.328,0,0,0,.327.328h1.908a.328.328,0,0,0,.327-.328v-7.4a.328.328,0,0,0-.327-.328Z' transform='translate(3.045 -46.312)' fill-rule='evenodd'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+                        width: 24px;
+                        height: 24px;
+                        background-size: contain;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        display: inline-block;
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .affiliate-account-general {
+        .block-general-statistical {
+            .statistical-item {
+                width: 50%;
+                max-width: 320px;
+
+                &:first-child {
+                    margin-right: 16px;
+                }
+            }
+        }
+
+        .credit-balance-chart {
+            .box-head h2 {
+                font-size: 18px;
+                line-height: 30px;
+            }
+
+            .select-month-number {
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .affiliate-account-general {
+        .page-title-wrapper:not(.mobile-device) {
+            display: none;
+        }
+
+        .affiliate-account-general-block {
+            border: 1px solid #E0E6EC;
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 18px 14px;
+        }
+
+        .kangaroo-shopping-title {
+            font-size: 16px;
+            line-height: 20px;
+            font-weight: 500;
+            color: #383E4F;
+            border-bottom: 1px solid #E0E6EC;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+
+        .block-general-statistical {
+            .lib-vendor-prefix-flex-direction(column);
+
+            .statistical-item {
+                &:first-child {
+                    margin-bottom: 16px;
+                }
+            }
+        }
+
+        .credit-balance-chart .box-head h2 {
+            font-size: 14px;
+            line-height: 30px;
+        }
+    }
+}

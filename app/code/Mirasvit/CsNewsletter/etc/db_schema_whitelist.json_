@@ -1,0 +1,14 @@
+{
+    "mst_customersegment_newsletter": {
+        "column": {
+            "cs_queue_id": true,
+            "segment_id": true,
+            "queue_id": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_0FD76E2A677C761E3229D4DE55836E5E": true,
+            "MST_CSTRSEGMENT_NLTTR_QUEUE_ID_NLTTR_QUEUE_QUEUE_ID": true
+        }
+    }
+}

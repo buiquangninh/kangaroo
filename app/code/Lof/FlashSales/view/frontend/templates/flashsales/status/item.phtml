@@ -1,0 +1,71 @@
+<?php
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+
+/**
+ * item
+ *
+ * @var \Lof\FlashSales\Helper\Data $helper
+ */
+// phpcs:disable Magento2.Templates.ThisInTemplate
+// phpcs:disable Generic.WhiteSpace.ScopeIndent
+// phpcs:disable Generic.Files.LineLength.TooLong
+$helper = $this->helper(\Lof\FlashSales\Helper\Data::class);
+$_flashSale = $block->getFlashSalesItem();
+$format = $helper->jsConfigTimerMode($helper->getEventListTimerMode());
+?>
+
+<?php if ($_flashSale->getIsAssignCategory()): ?>
+    <div class="loffs-event" data-id="<?= $block->escapeHtmlAttr($_flashSale->getFlashSalesId()) ?>">
+        <a class="loffs-event__link <?= $_flashSale->getStatus() == 'comingsoon' ? 'not-active' : null ?> "
+           href="<?= $block->escapeUrl($block->getCategoryUrl($_flashSale->getCategoryId())) ?>">
+        <span
+            class="loffs-event__thumbnail <?= $_flashSale->getIsPrivateSale() == 1 ? 'has-private-sale' : null ?>">
+            <img src="<?= $block->getThumbnail($_flashSale) != null ?
+                $block->escapeUrl($block->getThumbnail($_flashSale)) :
+                $block->escapeUrl($block->getDefaultThumbnail($block)) ?>"
+                 alt="<?= $block->escapeHtmlAttr($_flashSale->getEventName()) ?>">
+        </span>
+            <div
+                class="loffs-event__caption loffs-event__caption--<?= $block->escapeHtmlAttr($helper->getEventStyle()) ?>">
+                <h4 class="loffs-event__title"><?= $block->escapeHtml($_flashSale->getEventName()) ?></h4>
+                <?php if ($format): ?>
+                    <div class="loffs-event__datetime"
+                         data-id="<?= $block->escapeHtmlAttr($_flashSale->getFlashSalesId()) ?>">
+                        <i class="loffs-icon-clock"></i>
+                        <span><?= $block->escapeHtml($block->getStatusText($_flashSale)) ?></span>
+                        <span class="loffs-event__clock js-loffs-countdown"
+                              data-format="<?= $block->escapeHtmlAttr($format) ?>"
+                              data-countdown="<?= $block->escapeHtmlAttr($_flashSale->getToDate()) ?>"></span>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </a>
+    </div>
+<?php endif; ?>
+
+<script type="text/javascript">
+    require([
+        "jquery",
+        "loffsCounterTimer"
+    ], function ($, loffsCounterTimer) {
+        loffsCounterTimer.initCountDown('<?= $block->escapeJs($block->getConfigStoreTimezone()) ?>')
+    });
+</script>

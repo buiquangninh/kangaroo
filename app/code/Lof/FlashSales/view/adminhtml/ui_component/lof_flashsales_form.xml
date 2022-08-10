@@ -1,0 +1,1354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+ -->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">lof_flashsales_form.flashsales_form_data_source</item>
+        </item>
+        <item name="label" translate="true" xsi:type="string">Flash Sale</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button class="Lof\FlashSales\Block\Adminhtml\FlashSales\Edit\BackButton" name="back"/>
+            <button class="Lof\FlashSales\Block\Adminhtml\FlashSales\Edit\ReIndexButton" name="reindex"/>
+            <button class="Lof\FlashSales\Block\Adminhtml\FlashSales\Edit\FlushCacheButton" name="flushcache"/>
+            <button class="Lof\FlashSales\Block\Adminhtml\FlashSales\Edit\DeleteButton" name="delete"/>
+            <button class="Lof\FlashSales\Block\Adminhtml\FlashSales\Edit\SaveButton" name="save"/>
+            <button class="Lof\FlashSales\Block\Adminhtml\FlashSales\Edit\SaveAndContinueButton" name="save_and_continue"/>
+        </buttons>
+        <namespace>lof_flashsales_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>lof_flashsales_form.flashsales_form_data_source</dep>
+        </deps>
+        <layout>
+            <navContainerName>left</navContainerName>
+            <type>tabs</type>
+        </layout>
+    </settings>
+    <dataSource name="flashsales_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="*/*/save"/>
+        </settings>
+        <aclResource>Lof_FlashSales::flashsales_view</aclResource>
+        <dataProvider class="Lof\FlashSales\Model\FlashSales\DataProvider" name="flashsales_form_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>flashsales_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+
+    <fieldset name="general">
+        <settings>
+            <label translate="true">General Information</label>
+        </settings>
+
+        <field name="flashsales_id" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">flashsales</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+            </settings>
+        </field>
+
+        <field name="status" formElement="input" sortOrder="1">
+            <settings>
+                <elementTmpl>Lof_FlashSales/form/element/status</elementTmpl>
+                <label translate="true">Status</label>
+            </settings>
+        </field>
+
+        <field name="is_active" formElement="checkbox" sortOrder="10">
+            <settings>
+                <label translate="true">Enable Event</label>
+                <tooltip>
+                    <description translate="true">Enable/Disable Flash Sales Campaign</description>
+                </tooltip>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field formElement="input" name="event_name" sortOrder="20">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">flashsales</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Event Name</label>
+                <dataScope>event_name</dataScope>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+
+        <field name="storeviews" formElement="multiselect" class="Magento\Store\Ui\Component\Form\Field\StoreView" sortOrder="40">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">flashsales</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>int</dataType>
+                <tooltip>
+                    <link>https://docs.magento.com/m2/ce/user_guide/configuration/scope.html</link>
+                    <description>What is this?</description>
+                </tooltip>
+                <label translate="true">Store Views</label>
+                <dataScope>store_id</dataScope>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Lof\FlashSales\Ui\Component\Listing\Column\StoreViewOptions"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+
+        <modal name="create_category_modal">
+            <settings>
+                <options>
+                    <option name="title" xsi:type="string" translate="true">New Category</option>
+                </options>
+                <imports>
+                    <link name="state">!index=create_category:responseStatus</link>
+                </imports>
+            </settings>
+            <insertForm name="create_category" component="Magento_Ui/js/form/components/insert-form">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="__disableTmpl" xsi:type="array">
+                            <item name="toolbarContainer" xsi:type="boolean">false</item>
+                        </item>
+                        <item name="updateUrl" xsi:type="string">mui/index/render</item>
+                        <item name="componentType" xsi:type="string">container</item>
+                    </item>
+                </argument>
+                <settings>
+                    <formSubmitType>ajax</formSubmitType>
+                    <autoRender>false</autoRender>
+                    <renderUrl path="mui/index/render_handle">
+                        <param name="handle">catalog_category_create</param>
+                        <param name="buttons">1</param>
+                    </renderUrl>
+                    <loading>true</loading>
+                    <toolbarContainer>${ $.parentName }</toolbarContainer>
+                    <externalProvider>${ $.ns }.new_category_form.new_category_form_data_source</externalProvider>
+                    <ns>new_category_form</ns>
+                </settings>
+            </insertForm>
+        </modal>
+
+        <container name="date_group" component="Magento_Ui/js/form/components/group" sortOrder="60">
+            <argument name="data" xsi:type="array">
+                <item name="type" xsi:type="string">group</item>
+                <item name="config" xsi:type="array">
+                    <item name="additionalClasses" xsi:type="string">admin__control-grouped-date</item>
+                    <item name="breakLine" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <field name="from_date" sortOrder="230" formElement="date">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataType" xsi:type="string">string</item>
+                        <item name="source" xsi:type="string">flashsales</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                        <item name="options" xsi:type="array">
+                            <item name="dateFormat" xsi:type="string">yyyy-MM-dd</item>
+                            <item name="timeFormat" xsi:type="string">HH:mm</item>
+                            <item name="showsTime" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </argument>
+                <settings>
+                    <additionalClasses>
+                        <class name="admin__field-date">true</class>
+                    </additionalClasses>
+                    <dataType>string</dataType>
+                    <label translate="true">Schedule Event From</label>
+                    <scopeLabel>[STORE VIEW]</scopeLabel>
+                    <dataScope>from_date</dataScope>
+                </settings>
+            </field>
+
+            <field name="to_date" sortOrder="240" formElement="date">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataType" xsi:type="string">string</item>
+                        <item name="source" xsi:type="string">flashsales</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                        <item name="options" xsi:type="array">
+                            <item name="dateFormat" xsi:type="string">yyyy-MM-dd</item>
+                            <item name="timeFormat" xsi:type="string">HH:mm</item>
+                            <item name="showsTime" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </argument>
+                <settings>
+                    <scopeLabel/>
+                    <additionalClasses>
+                        <class name="admin__field-date">true</class>
+                    </additionalClasses>
+                    <dataType>string</dataType>
+                    <label translate="true">To</label>
+                    <dataScope>to_date</dataScope>
+                </settings>
+            </field>
+        </container>
+
+        <field formElement="input" name="sort_order" sortOrder="230">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">flashsales</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Priority</label>
+                <dataScope>sort_order</dataScope>
+                <notice>Used to specify the order, lower numbers correspond with
+                    earlier shown when events have the same products,
+                    and their dates are overlapping</notice>
+                <validation>
+                    <rule name="validate-digits" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+
+        <fieldset name="product_conditons">
+            <settings>
+                <additionalClasses>
+                    <class name="fieldset-tab-child">true</class>
+                </additionalClasses>
+                <collapsible>false</collapsible>
+                <opened>false</opened>
+                <label translate="true">Product Conditions</label>
+            </settings>
+            <htmlContent name="html_content">
+                <block class="Lof\FlashSales\Block\Adminhtml\FlashSales\Edit\Tab\AppliedProducts"
+                       name="lof_flashSales_applied_productss"/>
+            </htmlContent>
+
+            <field name="is_assign_category" formElement="checkbox" sortOrder="10">
+                <settings>
+                    <label translate="true">Assign to Category?</label>
+                    <tooltip>
+                        <description translate="true">Assign to Category?</description>
+                    </tooltip>
+                    <switcherConfig>
+                        <rules>
+                            <rule name="0">
+                                <value>1</value>
+                                <actions>
+                                    <action name="0">
+                                        <target>lof_flashsales_form.areas.general.general.product_conditons.assign_category</target>
+                                        <callback>visible</callback>
+                                        <params>
+                                            <param name="0" xsi:type="boolean">true</param>
+                                        </params>
+                                    </action>
+                                    <action name="1">
+                                        <target>lof_flashsales_form.areas.general.general.product_conditons.assign_category.category_id</target>
+                                        <callback>visible</callback>
+                                        <params>
+                                            <param name="0" xsi:type="boolean">true</param>
+                                        </params>
+                                    </action>
+                                </actions>
+                            </rule>
+                            <rule name="1">
+                                <value>0</value>
+                                <actions>
+                                    <action name="0">
+                                        <target>lof_flashsales_form.areas.general.general.product_conditons.assign_category.category_id</target>
+                                        <callback>visible</callback>
+                                        <params>
+                                            <param name="0" xsi:type="boolean">false</param>
+                                        </params>
+                                    </action>
+                                    <action name="1">
+                                        <target>lof_flashsales_form.areas.general.general.product_conditons.assign_category</target>
+                                        <callback>visible</callback>
+                                        <params>
+                                            <param name="0" xsi:type="boolean">false</param>
+                                        </params>
+                                    </action>
+                                </actions>
+                            </rule>
+                        </rules>
+                        <enabled>true</enabled>
+                    </switcherConfig>
+                </settings>
+                <formElements>
+                    <checkbox>
+                        <settings>
+                            <prefer>toggle</prefer>
+                            <valueMap>
+                                <map name="false" xsi:type="string">0</map>
+                                <map name="true" xsi:type="string">1</map>
+                            </valueMap>
+                        </settings>
+                    </checkbox>
+                </formElements>
+            </field>
+
+            <container name="assign_category" component="Magento_Ui/js/form/components/group" sortOrder="50">
+                <argument name="data" xsi:type="array">
+                    <item name="type" xsi:type="string">group</item>
+                    <item name="config" xsi:type="array">
+                        <item name="additionalClasses" xsi:type="string">admin__control-grouped</item>
+                        <item name="breakLine" xsi:type="boolean">false</item>
+                    </item>
+                </argument>
+                <field name="category_id" component="Magento_Catalog/js/components/new-category" sortOrder="20" formElement="select">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="filterOptions" xsi:type="boolean">true</item>
+                            <item name="source" xsi:type="string">flashsales</item>
+                            <item name="multiple" xsi:type="boolean">false</item>
+                            <item name="chipsEnabled" xsi:type="boolean">true</item>
+                            <item name="showCheckbox" xsi:type="boolean">true</item>
+                            <item name="disableLabel" xsi:type="boolean">true</item>
+                            <item name="levelsVisibility" xsi:type="number">1</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <validation>
+                            <rule name="required-entry" xsi:type="boolean">true</rule>
+                        </validation>
+                        <required>true</required>
+                        <dataType>int</dataType>
+                        <elementTmpl>ui/grid/filters/elements/ui-select</elementTmpl>
+                        <label translate="true">Select a Category</label>
+                        <dataScope>category_id</dataScope>
+                        <componentType>field</componentType>
+                        <listens>
+                            <link name="index=create_category:responseData">setParsed</link>
+                            <link name="newOption">toggleOptionSelected</link>
+                        </listens>
+                        <notice>Assign above products to a category. You also can create a new category.</notice>
+                    </settings>
+                    <formElements>
+                        <select>
+                            <settings>
+                                <options
+                                    class="Lof\FlashSales\Ui\Component\Form\Categories\Options"/>
+                            </settings>
+                        </select>
+                    </formElements>
+                </field>
+
+                <container name="create_category_button" component="Magento_Ui/js/form/components/button">
+                    <argument name="data" xsi:type="array">
+                        <item name="type" xsi:type="string">group</item>
+                        <item name="config" xsi:type="array">
+                            <item name="title" xsi:type="string">New Category</item>
+                            <item name="additionalClasses" xsi:type="string">admin__field-small</item>
+                            <item name="template" xsi:type="string">ui/form/components/button/container</item>
+                            <item name="dataScope" xsi:type="boolean">false</item>
+                            <item name="additionalForGroup" xsi:type="boolean">true</item>
+                            <item name="provider" xsi:type="boolean">false</item>
+                            <item name="source" xsi:type="string">flashsales</item>
+                            <item name="displayArea" xsi:type="string">insideGroup</item>
+                            <item name="buttonClasses" xsi:type="string">lof-add-new-category-button</item>
+                            <item name="actions" xsi:type="array">
+                                <item name="0" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">
+                                        lof_flashsales_form.areas.general.general.create_category_modal
+                                    </item>
+                                    <item name="actionName" xsi:type="string">toggleModal</item>
+                                </item>
+                                <item name="1" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">
+                                        lof_flashsales_form.areas.general.general.create_category_modal.create_category
+                                    </item>
+                                    <item name="actionName" xsi:type="string">render</item>
+                                </item>
+                                <item name="2" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">
+                                        lof_flashsales_form.areas.general.general.create_category_modal.create_category
+                                    </item>
+                                    <item name="actionName" xsi:type="string">resetForm</item>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                </container>
+            </container>
+        </fieldset>
+    </fieldset>
+
+    <fieldset name="private_sale_permissions">
+        <settings>
+            <label translate="true">Private Sale</label>
+        </settings>
+
+        <field name="is_private_sale" formElement="checkbox" sortOrder="5">
+            <settings>
+                <label translate="true">Is Private Sale?</label>
+                <tooltip>
+                    <description translate="true">Enable/Disable Private Sale Campaign</description>
+                </tooltip>
+                <dataScope>is_private_sale</dataScope>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.is_default_private_config</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_view</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="1">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_product_price</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="2">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_checkout_items</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="3">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_view_groups</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="4">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.restricted_landing_page</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="5">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_product_price_groups</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="6">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_checkout_items_groups</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="7">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.display_product_mode</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="8">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.display_cart_mode</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="9">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.cart_button_title</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="10">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.message_hidden_add_to_cart</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="11">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.is_default_private_config</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="is_default_private_config" formElement="select" sortOrder="10">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="fit" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Use Default Config Settings</label>
+                <dataScope>is_default_private_config</dataScope>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_view</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="1">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_product_price</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="2">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_checkout_items</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="3">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_view_groups</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="4">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.restricted_landing_page</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="5">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_product_price_groups</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="6">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_checkout_items_groups</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="7">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.display_product_mode</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="8">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.display_cart_mode</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="9">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.cart_button_title</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="10">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.message_hidden_add_to_cart</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_view</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                                <action name="1">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_product_price</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                                <action name="2">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_checkout_items</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="grant_event_view" formElement="select" sortOrder="20">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="fit" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <settings>
+                <dataScope>grant_event_view</dataScope>
+                <label translate="true">Allow Browsing Event</label>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_view_groups</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="1">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.restricted_landing_page</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="2">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.display_product_mode</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>2</value>
+                            <actions>
+                                <action name="0">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_view_groups</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                                <action name="1">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.restricted_landing_page</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                                <action name="2">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.display_product_mode</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="2">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_view_groups</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="1">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.restricted_landing_page</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                                <action name="2">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.display_product_mode</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Lof\FlashSales\Model\Adminhtml\System\Config\Source\Grant\Landing"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="grant_event_view_groups" formElement="multiselect" sortOrder="30">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">flashsales</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>number</dataType>
+                <label translate="true">Customer Groups</label>
+                <dataScope>grant_event_view_groups</dataScope>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Lof\FlashSales\Ui\Component\Form\CustomerGroupsOptionsProvider"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+
+        <field name="display_product_mode" formElement="select" sortOrder="35">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="fit" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <settings>
+                <dataScope>display_product_mode</dataScope>
+                <label translate="true">Display Product Mode</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Lof\FlashSales\Model\Adminhtml\System\Config\Source\DisplayProductMode"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="restricted_landing_page" formElement="select" sortOrder="40">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="fit" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <settings>
+                <dataScope>restricted_landing_page</dataScope>
+                <label translate="true">Landing Page</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Lof\FlashSales\Model\Adminhtml\System\Config\Source\Page"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="grant_event_product_price" formElement="select" sortOrder="50">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="fit" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <settings>
+                <dataScope>grant_event_product_price</dataScope>
+                <label translate="true">Display Product Prices</label>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_product_price_groups</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>2</value>
+                            <actions>
+                                <action name="0">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_product_price_groups</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="2">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_event_product_price_groups</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Lof\FlashSales\Model\Adminhtml\System\Config\Source\Grant"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="grant_event_product_price_groups" formElement="multiselect" sortOrder="60">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">flashsales</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>number</dataType>
+                <label translate="true">Customer Groups</label>
+                <dataScope>grant_event_product_price_groups</dataScope>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Lof\FlashSales\Ui\Component\Form\CustomerGroupsOptionsProvider"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+
+        <field name="grant_checkout_items" formElement="select" sortOrder="70">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="fit" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <settings>
+                <dataScope>grant_checkout_items</dataScope>
+                <label translate="true">Allow Adding to Cart</label>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_checkout_items_groups</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="1">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.display_cart_mode</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="2">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.cart_button_title</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="3">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.message_hidden_add_to_cart</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>2</value>
+                            <actions>
+                                <action name="0">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_checkout_items_groups</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                                <action name="1">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.display_cart_mode</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="2">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.grant_checkout_items_groups</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="1">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.display_cart_mode</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Lof\FlashSales\Model\Adminhtml\System\Config\Source\Grant"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="display_cart_mode" formElement="select" sortOrder="86">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="fit" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <settings>
+                <dataScope>display_cart_mode</dataScope>
+                <label translate="true">Display Add to Cart Mode</label>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.cart_button_title</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                                <action name="1">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.message_hidden_add_to_cart</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.cart_button_title</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                                <action name="1">
+                                    <target>lof_flashsales_form.areas.private_sale_permissions.private_sale_permissions.message_hidden_add_to_cart</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Lof\FlashSales\Model\Adminhtml\System\Config\Source\DisplayAddToCartMode"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="grant_checkout_items_groups" formElement="multiselect" sortOrder="80">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">flashsales</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>number</dataType>
+                <label translate="true">Customer Groups</label>
+                <dataScope>grant_checkout_items_groups</dataScope>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Lof\FlashSales\Ui\Component\Form\CustomerGroupsOptionsProvider"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+
+        <field formElement="input" name="cart_button_title" sortOrder="90">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">flashsales</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Cart Button Title</label>
+                <dataScope>cart_button_title</dataScope>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+
+        <field formElement="textarea" name="message_hidden_add_to_cart" sortOrder="100">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">flashsales</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Text Message When Button Add to Cart Is Hidden</label>
+                <dataScope>message_hidden_add_to_cart</dataScope>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+    </fieldset>
+
+    <fieldset name="content">
+        <settings>
+            <label translate="true">Content</label>
+        </settings>
+        <field name="thumbnail_image" sortOrder="40" formElement="imageUploader">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">flashsales</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/uploader/image</elementTmpl>
+                <dataType>string</dataType>
+                <label translate="true">Event Thumbnail Image</label>
+                <visible>true</visible>
+                <required>false</required>
+            </settings>
+            <formElements>
+                <imageUploader>
+                    <settings>
+                        <required>false</required>
+                        <uploaderConfig>
+                            <param xsi:type="url" name="url" path="lof_flashsales/flashsales_image/upload"/>
+                        </uploaderConfig>
+                        <previewTmpl>Magento_Catalog/image-preview</previewTmpl>
+                        <openDialogTitle>Media Gallery</openDialogTitle>
+                        <initialMediaGalleryOpenSubpath>lof_flashsales/flashsales</initialMediaGalleryOpenSubpath>
+                        <allowedExtensions>jpg jpeg gif png</allowedExtensions>
+                        <maxFileSize>4194304</maxFileSize>
+                    </settings>
+                </imageUploader>
+            </formElements>
+        </field>
+
+        <field name="header_banner_image" sortOrder="70" formElement="imageUploader">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">flashsales</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/uploader/image</elementTmpl>
+                <dataType>string</dataType>
+                <label translate="true">Header Banner Image</label>
+                <visible>true</visible>
+                <required>false</required>
+            </settings>
+            <formElements>
+                <imageUploader>
+                    <settings>
+                        <required>false</required>
+                        <uploaderConfig>
+                            <param xsi:type="url" name="url" path="lof_flashsales/flashsales_image/upload"/>
+                        </uploaderConfig>
+                        <previewTmpl>Magento_Catalog/image-preview</previewTmpl>
+                        <openDialogTitle>Media Gallery</openDialogTitle>
+                        <initialMediaGalleryOpenSubpath>lof_flashsales/flashsales</initialMediaGalleryOpenSubpath>
+                        <allowedExtensions>jpg jpeg gif png</allowedExtensions>
+                        <maxFileSize>4194304</maxFileSize>
+                    </settings>
+                </imageUploader>
+            </formElements>
+        </field>
+
+        <field name="description" template="ui/form/field" sortOrder="90" formElement="wysiwyg">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="wysiwygConfigData" xsi:type="array">
+                        <item name="height" xsi:type="string">200px</item>
+                        <item name="add_variables" xsi:type="boolean">false</item>
+                        <item name="add_widgets" xsi:type="boolean">false</item>
+                        <item name="add_images" xsi:type="boolean">false</item>
+                        <item name="add_directives" xsi:type="boolean">false</item>
+                    </item>
+                    <item name="source" xsi:type="string">flashsales</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Description</label>
+                <dataScope>description</dataScope>
+            </settings>
+            <formElements>
+                <wysiwyg>
+                    <settings>
+                        <rows>8</rows>
+                        <wysiwyg>true</wysiwyg>
+                    </settings>
+                </wysiwyg>
+            </formElements>
+        </field>
+    </fieldset>
+
+    <fieldset name="applied_products" class="Lof\FlashSales\Ui\Component\Form\HideFieldset">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="opened" xsi:type="boolean">false</item>
+            </item>
+        </argument>
+        <settings>
+            <listens>
+                <link name="opened">onVisibilityChange</link>
+            </listens>
+            <collapsible>false</collapsible>
+            <label translate="true">Applied Products</label>
+            <componentType>fieldset</componentType>
+            <additionalClasses>
+                <class name="lof_appliedproducts_form">true</class>
+            </additionalClasses>
+        </settings>
+
+        <field name="note" formElement="input" sortOrder="10">
+            <settings>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <label translate="true">Note:</label><imports>
+                <link name="value">${ $.provider }:data.general.noteAppliedProduct</link>
+            </imports>
+            </settings>
+        </field>
+
+        <insertListing name="lof_appliedproducts_listing" component="Magento_Ui/js/form/components/insert-listing">
+            <settings>
+                <dataLinks>
+                    <exports>false</exports>
+                    <imports>true</imports>
+                </dataLinks>
+                <externalProvider>lof_appliedproducts_listing.lof_appliedproducts_listing_data_source</externalProvider>
+                <selectionsProvider>lof_appliedproducts_listing.lof_appliedproducts_listing.lof_appliedproducts_columns.ids</selectionsProvider>
+                <autoRender>true</autoRender>
+                <dataScope>lof_appliedproducts_listing</dataScope>
+                <ns>lof_appliedproducts_listing</ns>
+                <exports>
+                    <link name="flashsales_id">${ $.externalProvider }:params.flashsales_id</link>
+                </exports>
+                <imports>
+                    <link name="flashsales_id">${ $.provider }:data.general.flashsales_id</link>
+                    <link name="onAction">ns = ${ $.ns }, index = actions:action</link>
+                    <link name="onMassAction">ns = ${ $.ns }, index = listing_massaction:massaction</link>
+                </imports>
+            </settings>
+        </insertListing>
+
+        <modal name="lof_multiple_applied_products_update_modal">
+            <settings>
+                <options>
+                    <option name="title" xsi:type="string" translate="true">Edit Discount Amount</option>
+                </options>
+            </settings>
+            <insertForm name="update_lof_multiple_appliedproducts_form_loader" component="Lof_FlashSales/js/form/components/multiple-appliedproducts-insert-form">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="appliedProductsListingProvider" xsi:type="string">ns = lof_appliedproducts_listing, index = lof_appliedproducts_listing</item>
+                        <item name="appliedProductsModalProvider" xsi:type="string">${ $.parentName }</item>
+                    </item>
+                </argument>
+                <settings>
+                    <formSubmitType>ajax</formSubmitType>
+                    <renderUrl path="lof_flashsales/mui/render_handle">
+                        <param name="handle">lof_flashsales_multiple_appliedproducts_edit</param>
+                        <param name="buttons">1</param>
+                    </renderUrl>
+                    <loading>false</loading>
+                    <toolbarContainer>${ $.parentName }</toolbarContainer>
+                    <externalProvider>${ $.ns }.lof_multiple_appliedproducts_form_data_source</externalProvider>
+                    <ns>lof_multiple_appliedproducts_form</ns>
+                </settings>
+            </insertForm>
+        </modal>
+
+        <modal name="lof_applied_products_update_modal">
+            <settings>
+                <options>
+                    <option name="title" xsi:type="string" translate="true">Edit Discount Amount</option>
+                </options>
+            </settings>
+            <insertForm name="update_lof_appliedproducts_form_loader" component="Lof_FlashSales/js/form/components/insert-form">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="appliedProductsListingProvider" xsi:type="string">ns = lof_appliedproducts_listing, index = lof_appliedproducts_listing</item>
+                        <item name="appliedProductsModalProvider" xsi:type="string">${ $.parentName }</item>
+                    </item>
+                </argument>
+                <settings>
+                    <formSubmitType>ajax</formSubmitType>
+                    <renderUrl path="mui/index/render_handle">
+                        <param name="handle">lof_flashsales_appliedproducts_edit</param>
+                        <param name="buttons">1</param>
+                    </renderUrl>
+                    <loading>false</loading>
+                    <toolbarContainer>${ $.parentName }</toolbarContainer>
+                    <externalProvider>${ $.ns }.lof_appliedproducts_form_data_source</externalProvider>
+                    <ns>lof_appliedproducts_form</ns>
+                </settings>
+            </insertForm>
+        </modal>
+
+    </fieldset>
+
+</form>

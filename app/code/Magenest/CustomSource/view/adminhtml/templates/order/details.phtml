@@ -1,0 +1,15 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var \Magento\Sales\Block\Adminhtml\Order\View\Info $block
+ */
+$order = $block->getOrder();
+?>
+<tr>
+    <th><?= $block->escapeHtml(__('Area Code')) ?></th>
+    <td><?= $block->escapeHtml($order->getAreaCode() ?: __('N/A')) ?></td>
+</tr>

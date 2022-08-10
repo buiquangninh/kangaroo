@@ -1,0 +1,4 @@
+0000000000000000000000000000000000000000 a66fc20c76e47c7ca1dbd38573e998de5fe63d9c ninhbq <ninhbq@magenest.com> 1642468420 +0700	branch: Created from HEAD
+a66fc20c76e47c7ca1dbd38573e998de5fe63d9c aed922e0ff99c239b5ba6414f9df15700b7d504d ninhbq <ninhbq@magenest.com> 1642469602 +0700	commit: M2CKGR-133: add header payment
+aed922e0ff99c239b5ba6414f9df15700b7d504d 9f7001e82308eaf6c967c160e837590ac6ed7b81 ninhbq <ninhbq@magenest.com> 1642478021 +0700	commit: M2CKGR-124: Update font-weight
+9f7001e82308eaf6c967c160e837590ac6ed7b81 658cadc1f7153eec9c6594710dab09088fda5268 ninhbq <ninhbq@magenest.com> 1642555439 +0700	commit (merge): M2CKGR-133: Fix conflict

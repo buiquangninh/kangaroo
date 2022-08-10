@@ -1,0 +1,187 @@
+<?php
+
+?>
+<?php
+/** @var Magenest\Affiliate\Block\Account\Collaborator $block */
+
+$affiliateHelper = $block->getAffiliateHelper();
+$count = $block->getCountReferredAccount();
+$getReferredAccounts = $block->getReferredAccount();
+?>
+
+<div class="box-account box-info box-affiliate affiliate-refer-type">
+    <form action="<?= $block->getSendMailUrl() ?>" method="post" id="form-validate"
+          class="form form-edit-account form-affiliate form-affiliate-refer-send-mail">
+        <fieldset class="fieldset create-refer">
+            <div class="box-head">
+                <h2><?= __('Create Refer Url') ?></h2>
+            </div>
+            <div class="box-content">
+                <div class="field url">
+                    <div class="control">
+                        <input
+                            type="url"
+                            placeholder="<?= __("Please click the 'Create Link Now' button to generate a referral link") ?>"
+                            pattern="https?://.+" name="refer_url" id="refer-url"/>
+                        <button type="button" class="action create primary"
+                                title="<?= /* @escapeNotVerified */
+                                __('Create Link') ?>">
+                            <span><?= /* @escapeNotVerified */
+                                __('Create Link') ?></span>
+                        </button>
+                        <span class="copy" style="display: none"><?= __('Copy') ?></span>
+                        <button type="button" class="clear" style="display: none"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="affiliate-refer-desc">
+               <div><?= /* @escapeNotVerified */ __('Share the new account referral link, you get:'); ?></div>
+               <div> <?= /* @escapeNotVerified */  __('- 2% of the sales account\'s revenue registered through your referral link'); ?></div>
+            </div>
+        </fieldset>
+        <fieldset class="fieldset account-refer-list">
+            <div class="box-head">
+                <div class="box-head-left">
+                    <h2><?= __('The account you referred') ?></h2>
+                    <span class="count-referred-account"><?= $count . " " . __('Account') ?></span>
+                </div>
+                <div class="filter-date desktop-device">
+                    <label class="label">
+                        <input type="text" id="daterange" name="daterange" value="" style="width: 200px"/>
+                    </label>
+                    <script>
+                        require([
+                            'jquery',
+                            'moment',
+                            'mage/translate',
+                            'daterangepicker',
+                        ], function($, moment, $t){
+                            const fromDateParam = '<?= $block->getRequest()->getParam('from_date') ?>';
+                            const toDateParam = '<?= $block->getRequest()->getParam('to_date') ?>';
+                            const formatDate = 'YYYY-MM-DD';
+
+                            let start = moment().subtract(30, 'days');
+                            let end = moment();
+
+                            if (moment(fromDateParam, formatDate, true).isValid()) {
+                                start = fromDateParam;
+                            }
+
+                            if (moment(toDateParam, formatDate, true).isValid()) {
+                                end = toDateParam;
+                            }
+
+                            $('#daterange').daterangepicker({
+                                showDropdowns: true,
+                                timePicker: false,
+                                opens: 'left',
+                                startDate: start,
+                                endDate: end,
+                                applyButtonClasses: 'btn-primary',
+                                locale: {
+                                    format: formatDate,
+                                    applyLabel: $t('Apply'),
+                                    cancelLabel: $t('Cancel')
+                                }
+                            });
+
+                            $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+                                const fromDate = picker.startDate.format(formatDate);
+                                const toDate = picker.endDate.format(formatDate);
+                                $(this).val(fromDate + ' - ' + toDate);
+                                let param = `?from_date=${fromDate}&to_date=${toDate}`;
+                                const limitParam = '<?= $block->getRequest()->getParam('limit') ?>';
+
+                                if (!!limitParam) {
+                                    param += `&limit=${limitParam}`
+                                }
+
+                                window.location.href = '<?= $this->getUrl('*/*/*') ?>' + param
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="box-content">
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="username"><?= __('Username') ?></th>
+                        <th class="email-or-phone"><?= __('Email') . "/" . __('Phone Number') ?></th>
+                        <th class="order-time"><?= __('Time Order') ?></th>
+                        <th class="price"><?= __('Subtotal') ?></th>
+                        <th class="commission"><?= __('Commissions') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach($getReferredAccounts as $getReferredAccount): ?>
+                        <tr>
+                            <td class="id mobile-device"><?= "#". $getReferredAccount['account_id'] ?></td>
+                            <td data-th="<?= __('Username') ?>" class="username"><?= $getReferredAccount['firstname'] . " " . $getReferredAccount['lastname'] ?></td>
+                            <td data-th="<?= __('Email') . "/" . __('Phone Number') ?>" class="email-or-phone">
+                                <span><?= $getReferredAccount['email'] ?></span>
+                                <span><?= $getReferredAccount['telephone'] ?></span>
+                            </td>
+                            <td data-th="<?= __('Time Order') ?>" class="order-time"><?= $getReferredAccount['created_at'] ?? '-' ?></td>
+                            <td data-th="<?= __('Subtotal') ?>" class="total price"><?= $block->getPriceCurrency($getReferredAccount['subtotal'] ?? '-')?></td>
+                            <?php
+                                $commissionClass = $block->getPriceCurrency($getReferredAccount['amount']) > 0 ? 'increase' : 'decrease'
+                            ?>
+                            <td data-th="<?= __('Commissions') ?>" class="commission price <?= $commissionClass ?>">
+                                <?= $block->getPriceCurrency($getReferredAccount['amount'] ?? '-') ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <?php if ($this->getChildHtml('pager')): ?>
+                    <?= $block->getChildBlock('pager')->setData('toolbar_number_title', 'Collaborator')->toHtml() ?>
+                <?php endif; ?>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<script>
+    require([
+        "jquery",
+        "mage/mage"
+    ], function ($) {
+        var createUrlButton = $('.action.create'),
+            btnCopyUrl  = $('.field.url .copy'),
+            referUrl        = $('#refer-url'),
+            form            = $('.affiliate-refer-type #form-validate'),
+            param           = '<?= /* @noEscape */ $block->getSharingParam() ?>',
+            btnClear        = $('.clear');
+
+        createUrlButton.click(function () {
+            if (referUrl.val() && form[0].checkValidity()) {
+                referUrl.val(referUrl.val() + param).attr('readonly', 'true');
+                btnCopyUrl.show();
+                btnCopyUrl.parent().addClass('input-read-only');
+                $(this).hide();
+                btnClear.show();
+            } else {
+                form[0].reportValidity()
+            }
+        });
+
+        btnClear.on('click', function () {
+            referUrl.val('').removeAttr('readonly');
+            btnCopyUrl.hide();
+            btnCopyUrl.parent().removeClass('input-read-only');
+            createUrlButton.show();
+            $(this).hide();
+        });
+
+        var labelCopy = $('.form-affiliate .copy');
+
+        labelCopy.on('click', function () {
+            var inputCopy = $(this).siblings('input');
+
+            inputCopy.select();
+            document.execCommand("copy");
+            $(this).addClass("copied");
+        });
+    });
+</script>

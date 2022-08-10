@@ -1,0 +1,48 @@
+<?php
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+
+/**
+ * Ending Soon
+ *
+ * @var \Lof\FlashSales\Block\FlashSales\Status\EndingSoon $block
+ */
+// phpcs:disable Magento2.Templates.ThisInTemplate
+// phpcs:disable Generic.WhiteSpace.ScopeIndent
+$helper = $block->getHelperData();
+$flashSalesEndingCollection = $block->getFlashSalesEndingCollection();
+?>
+
+<?php if ($block->canDisplay()): ?>
+    <div class="loffs-status-title">
+        <h3><?= $block->escapeHtml(__('Ending Soon')) ?></h3>
+    </div>
+    <div class="loffs-row">
+        <?php foreach ($flashSalesEndingCollection as $_flashSale): ?>
+            <?php if ($block->getCategory($_flashSale->getCategoryId())): ?>
+                <div class="loffs-col-md-<?= (int)$block->getEventColumn() ?>">
+                    <?= $this->getLayout()->createBlock(\Lof\FlashSales\Block\FlashSales\Status\EndingSoon::class)
+                        ->setFlashSalesItem($_flashSale)
+                        ->setTemplate("Lof_FlashSales::flashsales/status/item.phtml")->toHtml(); ?>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>

@@ -1,0 +1,133 @@
+<?php
+
+
+/** @var Magenest\Affiliate\Block\Account\MembershipClass $block */
+
+$getMembershipTotalSales = $block->getMembershipTotalSales();
+$totalSales = 0;
+$countTotalOrders = 0;
+
+foreach($getMembershipTotalSales as $data){
+    $totalSales += $data->getSubTotal();
+    $countTotalOrders++;
+}
+
+$getMembershipRank = $block->getCurrentMembershipRank($totalSales, $countTotalOrders);
+$getUpgradeMembershipRank = $block->getConditionUpdateMembershipRank($totalSales,$countTotalOrders);
+$getTotalSalesOrderToUpgrade = $block->getConditionTotalSalesOrderAmount(key($getUpgradeMembershipRank));
+
+$totalSalesInt = $totalSales;
+$totalSales = $block->getFormatPrice($totalSales);
+$customer = $block->getCustomer();
+
+?>
+<div class="membership-class">
+    <h2 class="page-title-membership mobile-device">
+        <?= __('Contributor class') ?>
+    </h2>
+    <div class="block-current-rank">
+        <div class="current-rank-head">
+            <div class="current-rank">
+                <span class="current-rank-label"><?= __('Membership class') ?></span>
+                <span class="current-rank-value"><?= key($getMembershipRank) ?? __('Not Rank'); ?></span>
+            </div>
+            <a href="#" class="membership-class-promotion-link gold"><span><?= __('Membership offers') ?></span></a>
+        </div>
+        <span class="total-label"><?= __('Your total sales') ?></span>
+        <!--@Todo: Get data full template-->
+        <span class="price total-price">
+            <?= $totalSales ?>
+        </span>
+        <div class="membership-info">
+            <span class="name">
+                <?= $customer->getFirstname() . " " . $customer->getLastname()  ?>
+            </span>
+            <img class="membership-qr" src="" alt="" />
+        </div>
+    </div>
+    <div class="block-up-rank">
+        <div class="box-head">
+            <h2><?= __('To increase rank') ?> <?= key($getUpgradeMembershipRank); ?></h2>
+        </div>
+        <div class="box-content">
+            <div class="box-content-item box-sales">
+                <div class="box-content-head">
+
+                    <h3 class="box-content-title">
+                        <?= __('Sales') ?>
+                    </h3>
+                    <?php if(array_values($getUpgradeMembershipRank)[0] - $totalSalesInt > 0): ?>
+                        <span class="status not-reached">
+                            <?= __('Not reached') ?>
+                        </span>
+                    <?php else: ?>
+                        <span class="status eligible">
+                            <?= __('Eligible') ?>
+                        </span>
+                    <?php endif; ?>
+                </div>
+                <p class="current-value">
+                    <span class="current-value-number price">
+                        <?= $totalSales ?>
+                    </span>
+                    /
+                    <span class="achieve-value-number"><?= $block->getFormatPrice(array_values($getUpgradeMembershipRank)[0]) ?></span>
+                </p>
+                <?php if(array_values($getUpgradeMembershipRank)[0] - $totalSalesInt > 0): ?>
+                    <p class="box-content-desc">
+                        <?= __('Selling an additional') ?>
+                        <span class="price"><?= $block->getFormatPrice(array_values($getUpgradeMembershipRank)[0] - $totalSalesInt) ?></span>
+                        <?= __('to upgrade to') ?>
+                        <?= key($getUpgradeMembershipRank); ?>
+                    </p>
+                <?php endif; ?>
+            </div>
+            <div class="box-content-item box-orders">
+                <div class="box-content-head">
+                    <h3 class="box-content-title">
+                        <?= __('Orders') ?>
+                    </h3>
+                    <?php if($countTotalOrders < $getTotalSalesOrderToUpgrade): ?>
+                        <span class="status not-reached">
+                        <?= __('Not reached') ?>
+                    </span>
+                    <?php else: ?>
+                        <span class="status eligible">
+                        <?= __('Eligible') ?>
+                    </span>
+                    <?php endif; ?>
+                </div>
+                <p class="current-value">
+                    <span class="current-value-number price">
+                        <?= $countTotalOrders ?>
+                    </span>
+                    /
+                    <span class="achieve-value-number"><?= $getTotalSalesOrderToUpgrade ?></span>
+                </p>
+                <p class="box-content-desc">
+                    <?= __('Selling an additional') ?>
+                    <?php if($countTotalOrders < $getTotalSalesOrderToUpgrade): ?>
+                        <span><?= $getTotalSalesOrderToUpgrade - $countTotalOrders ?></span>
+                    <?php endif; ?>
+                    <?= __('order') ?>
+                    <?= __('to upgrade to') ?>
+                </p>
+            </div>
+        </div>
+        <p class="block-up-rank-desc">
+            <span><?= __('Sell goods and accumulate enough orders to promote members.') ?></span>
+            <span><?= __('The higher the rank, the more attractive the offer') ?></span>
+        </p>
+    </div>
+    <div class="block-membership-promotion">
+        <div class="box-head">
+            <h2><?= __('Class exclusive offers') ?></h2>
+        </div>
+        <div class="box-content">
+            <?php echo $this->getLayout()
+                ->createBlock('Magento\Cms\Block\Block')
+                ->setBlockId('membership-promotion')
+                ->toHtml();?>
+        </div>
+    </div>
+</div>

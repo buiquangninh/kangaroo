@@ -1,0 +1,12 @@
+<?php
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<a class="voucher-link looking-blog-link mobile-device" href="<?= $escaper->escapeUrl($block->getUrl('voucher/wallet/history')); ?>"><?= __('Looking for more information'); ?></a>
+<div class="voucher-link-list">
+    <a class="voucher-link" href="<?= $escaper->escapeUrl($block->getUrl('voucher/hunt')); ?>"><?= __('More Voucher'); ?></a> |
+    <a class="voucher-link" href="<?= $escaper->escapeUrl($block->getUrl('voucher/wallet/history')); ?>"><?= __('View History Voucher'); ?></a> <span class="desktop-device">|</span>
+    <a class="voucher-link looking-blog-link desktop-device" href="<?= $escaper->escapeUrl($block->getUrl('voucher/wallet/history')); ?>"><?= __('Looking for more information'); ?></a>
+</div>

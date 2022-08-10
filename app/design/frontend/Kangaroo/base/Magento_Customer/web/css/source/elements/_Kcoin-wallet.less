@@ -1,0 +1,843 @@
+& when (@media-common = true) {
+    .affiliate-account-index {
+        .box-account {
+            margin-bottom: 20px;
+        }
+
+        .box-head {
+            .lib-vendor-prefix-display(flex);
+            justify-content: space-between;
+            -webkit-justify-content: space-between;
+            margin-bottom: 13px;
+            .lib-vendor-prefix-flex-wrap(wrap);
+
+            h2 {
+                font-weight: 500;
+                color: #383E4F;
+                margin-bottom: 0;
+                .lib-vendor-prefix-display(flex);
+
+                &:before {
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    content: '';
+                    display: inline-block;
+                    margin-right: 10px;
+                }
+            }
+
+            .box-filter {
+                .lib-vendor-prefix-display(flex);
+
+                .label {
+                    position: relative;
+
+                    &:before {
+                        content: "\e941";
+                        font-family: 'kangaroo-icon';
+                        position: absolute;
+                        color: #8F9AA5;
+                        top: calc(~'50% - 1px');
+                        transform: translate(-50%, -50%);
+                    }
+                }
+
+                #daterange {
+                    border: 1px solid #E0E6EC;
+                    line-height: 20px;
+                    color: #34373D;
+                    padding-left: 30px;
+                    padding-top: 3px;
+                    height: 27px;
+                }
+
+                .filter-option {
+                    border: 1px solid #E0E6EC;
+                    color: #34373D;
+                    line-height: 16px;
+                    padding: 6px 14px 4px;
+                    height: 27px;
+                    background-color: #fff;
+                    font-weight: 400;
+
+                    &.active {
+                        background-color: #44BA46;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+
+        .box-affiliate-summary {
+            .box-head h2 {
+                &:before {
+                    background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Cg id='Group_2518' data-name='Group 2518' transform='translate(-1.5 -1.5)'%3E%3Cg id='Layer_2' data-name='Layer 2' transform='translate(1.5 1.5)'%3E%3Cpath id='Path_767' data-name='Path 767' d='M2,10H17.395a1.16,1.16,0,0,1,1.156,1.164v9.263a1.16,1.16,0,0,1-1.156,1.164H3.156A1.16,1.16,0,0,1,2,20.427V10Z' transform='translate(-1.638 -3.953)' fill='%23ffcc29'/%3E%3Cpath id='Path_768' data-name='Path 768' d='M23.244,14v5.8H18.9a2.9,2.9,0,0,1,0-5.8Z' transform='translate(-5.607 -5.026)' fill='%23f58634'/%3E%3Cpath id='Path_769' data-name='Path 769' d='M16.724,16.9a2.9,2.9,0,0,1,2.9-2.9H18.9a2.9,2.9,0,0,0,0,5.8h.724a2.894,2.894,0,0,1-2.9-2.9Z' transform='translate(-5.576 -5.026)' fill='%23ea6c18'/%3E%3Cpath id='Path_770' data-name='Path 770' d='M3.079,7H17.1V9.173H3.079A1.087,1.087,0,0,1,3.079,7Z' transform='translate(-1.638 -3.043)' fill='%23f58634'/%3E%3Cpath id='Path_771' data-name='Path 771' d='M3.323,8.474a.6.6,0,0,1-.6-.6V7.092A1.088,1.088,0,0,0,3.083,9.2H17.107V8.474Z' transform='translate(-1.642 -3.069)' fill='%23ea6c18'/%3E%3Cpath id='Path_772' data-name='Path 772' d='M2,10h.72v9.962a.9.9,0,0,0,.9.9H18.551l-.72.724H3.14A1.144,1.144,0,0,1,2,20.443Z' transform='translate(-1.638 -3.953)' fill='%23f4ae00'/%3E%3Cpath id='Path_773' data-name='Path 773' d='M7.8,2h7.7a.809.809,0,0,1,.8.814V7.8H7V2.814A.809.809,0,0,1,7.8,2Z' transform='translate(-3.016 -1.638)' fill='%23007965'/%3E%3Cpath id='Path_774' data-name='Path 774' d='M8.432,7.071h-.4a.318.318,0,0,1-.316-.32V2H7.677A.681.681,0,0,0,7,2.685V7.8h9.307V7.071Z' transform='translate(-3.016 -1.638)' fill='%23016854'/%3E%3Cpath id='Path_775' data-name='Path 775' d='M14.071,4H10.449A1.449,1.449,0,0,1,9,5.449v2.9h6.52v-2.9A1.449,1.449,0,0,1,14.071,4Z' transform='translate(-3.619 -2.189)' fill='%2300af91'/%3E%3Cpath id='Path_776' data-name='Path 776' d='M9,9h6.52v.724H9Z' transform='translate(-3.619 -3.601)' fill='%2300997c'/%3E%3Cg id='Group_2517' data-name='Group 2517'%3E%3Cpath id='Path_777' data-name='Path 777' d='M19.14,10.14h-.36V8.7a1.44,1.44,0,0,0-1.44-1.44V5.46a.36.36,0,0,0-.36-.36h-1.8V2.669A1.171,1.171,0,0,0,14.011,1.5H6.269A1.171,1.171,0,0,0,5.1,2.669V7.26H2.94a.72.72,0,1,1,0-1.44H4.02a.36.36,0,1,0,0-.72H2.94A1.44,1.44,0,0,0,1.5,6.54V18.06A1.44,1.44,0,0,0,2.94,19.5h14.4a1.44,1.44,0,0,0,1.44-1.44V16.62h.36a.36.36,0,0,0,.36-.36V10.5A.36.36,0,0,0,19.14,10.14ZM16.62,5.82V7.26H15.18V5.82ZM5.82,2.669a.449.449,0,0,1,.449-.449h7.743a.449.449,0,0,1,.449.449V7.26h-.72V4.74a.36.36,0,0,0-.36-.36A1.08,1.08,0,0,1,12.3,3.3a.36.36,0,0,0-.36-.36H8.34a.36.36,0,0,0-.36.36A1.08,1.08,0,0,1,6.9,4.38a.36.36,0,0,0-.36.36V7.26H5.82Zm7.2,4.591H7.26v-2.2a1.806,1.806,0,0,0,1.4-1.4h2.952a1.806,1.806,0,0,0,1.4,1.4Zm5.04,10.8a.72.72,0,0,1-.72.72H2.94a.72.72,0,0,1-.72-.72V7.78a1.424,1.424,0,0,0,.72.2h14.4a.72.72,0,0,1,.72.72v1.44H14.82a3.24,3.24,0,1,0,0,6.48h3.24Zm.72-2.16H14.82a2.52,2.52,0,1,1,0-5.04h3.96Z' transform='translate(-1.5 -1.5)' fill='%23231f20'/%3E%3Cpath id='Path_778' data-name='Path 778' d='M7.76,22.5h-2.9a.362.362,0,0,0,0,.724h2.9a.362.362,0,1,0,0-.724Z' transform='translate(-2.327 -7.398)' fill='%23231f20'/%3E%3Cpath id='Path_779' data-name='Path 779' d='M19.587,16.5a1.087,1.087,0,1,0,1.087,1.087A1.087,1.087,0,0,0,19.587,16.5Zm0,1.449a.362.362,0,1,1,.362-.362A.362.362,0,0,1,19.587,17.949Z' transform='translate(-6.27 -5.709)' fill='%23231f20'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+                }
+            }
+        }
+
+        .form-affiliate-withdraw {
+            .box-head h2 {
+                &:before {
+                    background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Cg id='Group_2533' data-name='Group 2533' transform='translate(-4 -4)'%3E%3Cg id='payout' transform='translate(4 4)'%3E%3Cpath id='Path_840' data-name='Path 840' d='M26.839,23.429v5.719A2.25,2.25,0,0,1,24.592,31.4H19.777a2.246,2.246,0,0,1-2-1.217,2.242,2.242,0,0,0,1.034.251h4.815a2.25,2.25,0,0,0,2.247-2.253V22.464a1.362,1.362,0,0,0-.048-.364,1.367,1.367,0,0,1,1.011,1.329Z' transform='translate(-13.345 -16.69)' fill='%23ffd3a6'/%3E%3Cpath id='Path_841' data-name='Path 841' d='M25.368,22.394v5.719a2.253,2.253,0,0,1-2.253,2.253H18.287a2.253,2.253,0,0,1-1.036-.251A2.253,2.253,0,0,1,17,29.079V25.86h6.759V23.285A1.287,1.287,0,0,1,24.985,22a1.149,1.149,0,0,1,.322.032A1.358,1.358,0,0,1,25.368,22.394Z' transform='translate(-12.826 -16.58)' fill='%23ffeed9'/%3E%3Crect id='Rectangle_1673' data-name='Rectangle 1673' width='8' height='3' rx='0.7' transform='translate(4.988 14.332)' fill='%23a9a2e4'/%3E%3Cpath id='Path_842' data-name='Path 842' d='M25.92,51v1.127a.966.966,0,0,1-.966.966H19V51.966A.966.966,0,0,1,19.966,51Z' transform='translate(-14.183 -36.54)' fill='%23bbb8f4'/%3E%3Cpath id='Path_843' data-name='Path 843' d='M19.012,18.472v1.287H11.287A1.287,1.287,0,0,1,10,18.472V13h2.533a1.287,1.287,0,0,1-1.246.966v3.219a1.287,1.287,0,0,1,1.287,1.287Z' transform='translate(-8.069 -10.266)' fill='%2350b267'/%3E%3Cpath id='Path_844' data-name='Path 844' d='M25.563,13.966v3.219a1.286,1.286,0,0,0-1.285,1.287V17.258A1.341,1.341,0,0,0,22.932,15.9a1.286,1.286,0,0,0-1.224,1.287v1.287H15.285A1.286,1.286,0,0,0,14,17.184V13.966A1.285,1.285,0,0,0,15.243,13H24.32a1.285,1.285,0,0,0,1.243.966Z' transform='translate(-10.781 -10.25)' fill='%236ac682'/%3E%3Cpath id='Path_845' data-name='Path 845' d='M48.575,13v5.472a1.287,1.287,0,0,1-.946,1.239,1.2,1.2,0,0,1-.341.048H46V18.472a1.287,1.287,0,0,1,1.287-1.287V13.966A1.287,1.287,0,0,1,46.042,13Z' transform='translate(-32.506 -10.266)' fill='%2350b267'/%3E%3Cpath id='Path_846' data-name='Path 846' d='M45.437,6.287V8.862A1.287,1.287,0,0,1,44.15,10.15h-.322V7.575H39A2.575,2.575,0,0,0,41.575,5H44.15A1.287,1.287,0,0,1,45.437,6.287Z' transform='translate(-27.759 -4.678)' fill='%23a9a2e4'/%3E%3Cpath id='Path_847' data-name='Path 847' d='M18.518,5a2.575,2.575,0,0,1-2.575,2.575H6.609V10.15H6.287A1.287,1.287,0,0,1,5,8.862V6.287A1.287,1.287,0,0,1,6.287,5Z' transform='translate(-4.678 -4.678)' fill='%23bbb8f4'/%3E%3Cellipse id='Ellipse_282' data-name='Ellipse 282' cx='1.219' cy='1.625' rx='1.219' ry='1.625' transform='translate(7.781 2.863)' fill='%23a3e8b0'/%3E%3Cg id='Group_2532' data-name='Group 2532' transform='translate(0)'%3E%3Cg id='Group_2534' data-name='Group 2534'%3E%3Cpath id='Path_848' data-name='Path 848' d='M27.322,36.862A.322.322,0,0,1,27,36.54,3.54,3.54,0,0,1,30.54,33a.322.322,0,0,1,0,.644,2.9,2.9,0,0,0-2.9,2.9A.322.322,0,0,1,27.322,36.862Z' transform='translate(-19.61 -24.087)'/%3E%3Cpath id='Path_849' data-name='Path 849' d='M27.322,36.862A.322.322,0,0,1,27,36.54,3.54,3.54,0,0,1,30.54,33a.322.322,0,0,1,0,.644,2.9,2.9,0,0,0-2.9,2.9A.322.322,0,0,1,27.322,36.862Z' transform='translate(-19.61 -24.087)'/%3E%3Cpath id='Path_850' data-name='Path 850' d='M27.322,36.862A.322.322,0,0,1,27,36.54,3.54,3.54,0,0,1,30.54,33a.322.322,0,0,1,0,.644,2.9,2.9,0,0,0-2.9,2.9A.322.322,0,0,1,27.322,36.862Z' transform='translate(-19.61 -24.087)'/%3E%3Cpath id='Path_851' data-name='Path 851' d='M23.385,38.726H18.569A2.493,2.493,0,0,1,16,36.315V33.3a.312.312,0,0,1,.321-.3h1.926a.3.3,0,1,1,0,.6H16.642v2.712a1.87,1.87,0,0,0,1.926,1.808h4.816a1.87,1.87,0,0,0,1.926-1.808.322.322,0,0,1,.642,0A2.493,2.493,0,0,1,23.385,38.726Z' transform='translate(-12.138 -24.087)'/%3E%3Cpath id='Path_852' data-name='Path 852' d='M32.437,27.434a.322.322,0,0,1-.322-.322V22.68a1.078,1.078,0,0,0-.322-.776.911.911,0,0,0-.676-.264.966.966,0,0,0-.933.966v2.575a.322.322,0,0,1-.322.322h-3.54a.322.322,0,1,1,0-.644H29.54V22.606A1.609,1.609,0,0,1,31.073,21a1.548,1.548,0,0,1,1.152.441,1.716,1.716,0,0,1,.534,1.242v4.432a.322.322,0,0,1-.322.322Z' transform='translate(-18.931 -16.006)'/%3E%3Cpath id='Path_853' data-name='Path 853' d='M25.4,53.862H21.219a.322.322,0,0,1,0-.644H25.4a.644.644,0,0,0,.644-.644V51.287a.644.644,0,0,0-.644-.644H19.287a.644.644,0,0,0-.644.644v1.287a.644.644,0,0,0,.644.644h.644a.322.322,0,0,1,0,.644h-.644A1.287,1.287,0,0,1,18,52.575V51.287A1.287,1.287,0,0,1,19.287,50H25.4a1.287,1.287,0,0,1,1.287,1.287v1.287A1.287,1.287,0,0,1,25.4,53.862Z' transform='translate(-13.506 -35.862)'/%3E%3Cpath id='Path_854' data-name='Path 854' d='M13.506,18.954h-2.9A1.563,1.563,0,0,1,9,17.442V12.3a.313.313,0,0,1,.322-.3h2.533a.331.331,0,0,1,.262.113.288.288,0,0,1,.06.265,1.571,1.571,0,0,1-1.246,1.1v.635a.322.322,0,0,1-.644,0v-.907a.313.313,0,0,1,.322-.3.994.994,0,0,0,.721-.3H9.644v4.838a.938.938,0,0,0,.966.907h2.9a.3.3,0,1,1,0,.6Z' transform='translate(-7.391 -9.425)'/%3E%3Cpath id='Path_856' data-name='Path 856' d='M23.6,18.115a.322.322,0,0,1-.321-.322V16.58a1.079,1.079,0,0,0-.321-.776.908.908,0,0,0-.675-.264.965.965,0,0,0-.932.966v1.287a.322.322,0,0,1-.321.322H14.606a.322.322,0,0,1-.321-.322.965.965,0,0,0-.964-.966A.322.322,0,0,1,13,16.506V15.54a.321.321,0,1,1,.642,0v.676A1.608,1.608,0,0,1,14.9,17.471h5.814v-.966A1.608,1.608,0,0,1,22.238,14.9a1.543,1.543,0,0,1,1.15.441,1.73,1.73,0,0,1,.533,1.168,1.6,1.6,0,0,1,.642-.29V13.577a1.607,1.607,0,0,1-1.15-.933H14.792a1.607,1.607,0,0,1-1.15.933v.676a.321.321,0,1,1-.642,0v-.966a.322.322,0,0,1,.321-.322.964.964,0,0,0,.932-.724A.321.321,0,0,1,14.574,12h9.068a.321.321,0,0,1,.321.241.964.964,0,0,0,.922.724.322.322,0,0,1,.321.322v3.219a.322.322,0,0,1-.321.322.965.965,0,0,0-.964.966.322.322,0,0,1-.321.322Z' transform='translate(-10.103 -9.425)'/%3E%3Cpath id='Path_857' data-name='Path 857' d='M46.609,19.4H45.322A.322.322,0,0,1,45,19.081V17.793a1.609,1.609,0,0,1,1.288-1.577V13.577A1.609,1.609,0,0,1,45.051,12.4a.322.322,0,0,1,.322-.4H47.9a.322.322,0,0,1,.322.322v5.472a1.609,1.609,0,0,1-1.184,1.548A1.4,1.4,0,0,1,46.609,19.4Zm-.966-.644h.966a.927.927,0,0,0,.251-.035.966.966,0,0,0,.715-.93v-5.15H45.888a.966.966,0,0,0,.721.322.322.322,0,0,1,.322.322v3.219a.322.322,0,0,1-.322.322.966.966,0,0,0-.966.966v4.132H45V18.456l.644.406' transform='translate(-31.828 -9.425)'/%3E%3Cpath id='Path_858' data-name='Path 858' d='M53.644,12.644h-.322a.322.322,0,1,1,0-.644h.322a.322.322,0,1,1,0,.644Z' transform='translate(-37.253 -9.425)'/%3E%3Cpath id='Path_859' data-name='Path 859' d='M20.393,9.793h-.321a.322.322,0,0,1-.321-.322V7.219H6.25V9.472a.322.322,0,0,1-.321.322H5.607A1.608,1.608,0,0,1,4,8.184V5.609A1.608,1.608,0,0,1,5.607,4H8.179a.322.322,0,0,1,0,.644H5.607a.965.965,0,0,0-.964.966V8.184a.965.965,0,0,0,.964.966V6.9a.322.322,0,0,1,.321-.322H20.071a.322.322,0,0,1,.321.322V9.15a.965.965,0,0,0,.964-.966V5.609a.965.965,0,0,0-.964-.966H9.464a.322.322,0,0,1,0-.644H20.393A1.608,1.608,0,0,1,22,5.609V8.184A1.608,1.608,0,0,1,20.393,9.793Z' transform='translate(-4 -4)'/%3E%3Cpath id='Path_860' data-name='Path 860' d='M8.644,12.644H8.322a.322.322,0,0,1,0-.644h.322a.322.322,0,1,1,0,.644Z' transform='translate(-6.713 -9.425)'/%3E%3Cpath id='Path_861' data-name='Path 861' d='M27.61,16.025A1.846,1.846,0,0,1,26,14.012,1.846,1.846,0,0,1,27.61,12,1.591,1.591,0,0,1,29,13a.269.269,0,1,1-.488.225,1.052,1.052,0,0,0-.9-.687c-.593,0-1.073.663-1.073,1.476s.48,1.476,1.073,1.476,1.025-.6,1.073-1.358a.269.269,0,0,1,.537.032A1.811,1.811,0,0,1,27.61,16.025Z' transform='translate(-18.772 -9.425)'/%3E%3Cpath id='Path_862' data-name='Path 862' d='M3.609,0h2.75V.641H3.516Z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+                }
+            }
+
+            .withdraw-description {
+                color: #34373D;
+                margin-bottom: 17px;
+            }
+
+            .bank-info {
+                &-item {
+                    margin-bottom: 10px;
+
+                    .label {
+                        font-size: 12px;
+                        line-height: 20px;
+                        color: #34373D;
+                        min-width: 100px;
+                        padding-right: 7px;
+                        display: inline-block;
+                    }
+
+                    .value {
+                        color: #383E4F;
+                        font-size: 13px;
+                        line-height: 20px;
+                        font-weight: 500;
+                    }
+                }
+            }
+
+            .form-withdraw {
+                margin-top: 20px;
+
+                .label {
+                    color: #34373D;
+                    font-size: 12px;
+                    line-height: 20px;
+                    font-weight: 500;
+                    padding-bottom: 4px;
+                    display: block;
+                }
+
+                .control {
+                    input {
+                        border: 1px solid #44BA46;
+                        border-radius: 4px;
+                        background-color: #ECFFEF;
+                        height: 38px;
+                    }
+                }
+            }
+
+            .actions-toolbar {
+                .action.save {
+                    height: 40px;
+                    padding: 2px 24px 0;
+                    font-size: 14px;
+                    line-height: 16px;
+                    letter-spacing: 0.56px;
+                    text-transform: uppercase;
+                }
+            }
+
+            .fieldset {
+                &.info {
+                    .lib-vendor-prefix-display(flex);
+
+                    .title {
+                        font-size: 12px;
+                        white-space: nowrap;
+                        font-weight: 500;
+                    }
+
+                    .payment-method {
+                        ul {
+                            li {
+                                font-size: 12px;
+                                line-height: 20px;
+                                font-weight: normal;
+                                color: #697180;
+                                margin-bottom: 0;
+
+                                &:not(:first-child) {
+                                    &:before {
+                                        content: '-';
+                                        padding-right: 3px;
+                                    }
+                                }
+
+                                .price {
+                                    font-weight: 300;
+                                    font-size: 12px;
+                                    color: #7e828b;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .info-account-summary {
+            .lib-vendor-prefix-display(flex);
+            justify-content: space-between;
+
+            .info-account-item {
+                border: 1px solid #E0E6EC;
+                float: unset;
+                text-align: center;
+
+                .title {
+                    line-height: 20px;
+                    font-weight: normal;
+                    color: #383E4F;
+                }
+
+                .value {
+                    line-height: 20px;
+                    font-weight: 500;
+                    color: #383E4F;
+                }
+
+                &.active {
+                    background: linear-gradient(65deg, #5EB845 0%, #158C43 100%);
+                    background: -moz-linear-gradient(65deg, #5EB845 0%, #158C43 100%);
+                    background: -o-linear-gradient(65deg, #5EB845 0%, #158C43 100%);
+                    background: -ms-linear-gradient(65deg, #5EB845 0%, #158C43 100%);
+                    border-color: @primary-color;
+
+                    .title, .value {
+                        color: #fff;
+                    }
+                }
+            }
+        }
+
+        .box-affiliate-transaction {
+
+            .box-head {
+                margin-bottom: 11px;
+
+                h2 {
+                    margin-top: 10px;
+
+                    &:before {
+                        background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='18' viewBox='0 0 20 18'%3E%3Cg id='Group_2536' data-name='Group 2536' transform='translate(-0.001 -3)'%3E%3Cpath id='Path_863' data-name='Path 863' d='M23.882,18.761l.869,1.089a5.36,5.36,0,0,1-10.662.1h.861l-.869-1.089a5.36,5.36,0,0,1,10.662-.1Z' transform='translate(-9.415 -7.356)' fill='%23d0ffd1'/%3E%3Cpath id='Path_864' data-name='Path 864' d='M30.417,20.3h.957a5.345,5.345,0,0,0-3.059-4.065c.906,2.37,1.086,4.97-.88,6.722A7.611,7.611,0,0,1,22.2,25.346a6.459,6.459,0,0,0,3.246.861,5.741,5.741,0,0,0,5.937-4.825Z' transform='translate(-15.582 -8.851)' fill='%2344ba46'/%3E%3Cpath id='Path_865' data-name='Path 865' d='M22.391,12.614l-.954,1.269v0L19.9,15.926l-1.579-2.1-.908-1.213h.9a5.742,5.742,0,0,0-5.562-5.3,5.746,5.746,0,0,0-5.571,5.413L5.6,10.626,4.07,12.667A8.956,8.956,0,0,1,12.753,4a8.953,8.953,0,0,1,8.68,8.614Z' transform='translate(-2.721 -0.669)' fill='%23d0ffd1'/%3E%3Cpath id='Path_866' data-name='Path 866' d='M23.542,15.951a8.478,8.478,0,0,1-.385,2.541L21.685,16.5l-.892-1.213h.883a5.687,5.687,0,0,0-5.467-5.3A5.693,5.693,0,0,0,10.733,15.4L9.26,13.41A7.413,7.413,0,0,1,16.209,8C20.258,8,23.542,11.561,23.542,15.951Z' transform='translate(-6.192 -3.344)' fill='%2387ff89'/%3E%3Cpath id='Path_867' data-name='Path 867' d='M17.788,29.3l1.533-2.041a8.956,8.956,0,0,1-8.683,8.667,8.953,8.953,0,0,1-8.68-8.614H1l.954-1.269v0L3.487,24l1.579,2.1.908,1.213h-.9a5.742,5.742,0,0,0,5.562,5.3A5.746,5.746,0,0,0,16.209,27.2Z' transform='translate(-0.668 -15.258)' fill='%2387ff89'/%3E%3Cpath id='Path_868' data-name='Path 868' d='M19.321,27.26a8.956,8.956,0,0,1-8.683,8.667,8.953,8.953,0,0,1-8.68-8.614H1l.954-1.269v0L3.487,24l.081.109a8.344,8.344,0,0,0-.392,2.541A7.72,7.72,0,0,0,10.638,34.6a7.521,7.521,0,0,0,7.07-5.41l.081.109Z' transform='translate(-0.668 -15.258)' fill='%2344ba46'/%3E%3Ccircle id='Ellipse_283' data-name='Ellipse 283' cx='1' cy='1' r='1' transform='translate(8.877 11)' fill='%23d0ffd1'/%3E%3Cg id='Group_2535' data-name='Group 2535' transform='translate(0.001 3)'%3E%3Cpath id='Path_869' data-name='Path 869' d='M.971,11.307l-.9,1.12a.31.31,0,0,0-.038.329.313.313,0,0,0,.282.176H.989a9.064,9.064,0,0,0,18.041-.238l.9-1.12a.31.31,0,0,0,.038-.329.313.313,0,0,0-.282-.176h-.676a9.064,9.064,0,0,0-18.041.238ZM10,20.379A8.433,8.433,0,0,1,1.587,12.6a.312.312,0,0,0-.312-.289H.963l1.85-2.3,1.85,2.3H4.41a.313.313,0,0,0-.233.1.309.309,0,0,0-.078.241,5.943,5.943,0,0,0,11.7.6l1.146,1.422a.314.314,0,0,0,.488,0l.841-1.044A8.437,8.437,0,0,1,10,20.379ZM6.024,8.49l.441.438a.314.314,0,0,0,.442,0,.308.308,0,0,0,0-.439l-.441-.438A5.309,5.309,0,0,1,9.688,6.738v.606a.313.313,0,0,0,.625,0V6.738a5.313,5.313,0,0,1,3.216,1.32l-.434.431a.308.308,0,0,0,0,.439.314.314,0,0,0,.442,0l.435-.432a5.232,5.232,0,0,1,1.26,2.573h-.543a.313.313,0,0,0-.282.176.308.308,0,0,0,.038.329l.829,1.029a5.224,5.224,0,0,1-1.3,2.908l-.441-.438a.314.314,0,0,0-.442,0,.308.308,0,0,0,0,.439l.441.438a5.308,5.308,0,0,1-3.222,1.312v-.606a.313.313,0,0,0-.625,0v.607a5.314,5.314,0,0,1-3.216-1.319l.434-.431a.308.308,0,0,0,0-.439.314.314,0,0,0-.442,0l-.435.432a5.232,5.232,0,0,1-1.26-2.573h.543a.313.313,0,0,0,.282-.176.308.308,0,0,0-.038-.329L4.728,11.4a5.228,5.228,0,0,1,1.3-2.908ZM10,3.621a8.433,8.433,0,0,1,8.413,7.78.312.312,0,0,0,.312.289h.313l-1.85,2.3-1.85-2.3h.253a.313.313,0,0,0,.233-.1.309.309,0,0,0,.078-.241,5.943,5.943,0,0,0-11.7-.6L3.057,9.323a.325.325,0,0,0-.488,0l-.841,1.044A8.437,8.437,0,0,1,10,3.621Z' transform='translate(-0.001 -3)'/%3E%3Cpath id='Path_870' data-name='Path 870' d='M29.994,26.307a.985.985,0,0,0,.426-.1l1,1a.331.331,0,0,0,.468-.468l-1-1a.982.982,0,0,0,.1-.426.993.993,0,0,0-.663-.933V22.331a.331.331,0,1,0-.663,0V24.38a.991.991,0,0,0,.331,1.927Zm0-1.325a.331.331,0,1,1-.331.331A.332.332,0,0,1,29.994,24.982Z' transform='translate(-20.027 -16.255)'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+                        width: 20px;
+                        height: 18px;
+                    }
+                }
+
+                .box-filter {
+                    margin-top: 10px;
+                }
+            }
+
+            tbody td {
+                &.amount-plus {
+                    color: @primary-color !important;
+                }
+
+                .price {
+                    font-weight: 300;
+                }
+            }
+
+            .toolbar.bottom {
+                .toolbar-amount, .limiter {
+                    font-size: 12px;
+                }
+            }
+        }
+
+        .credit-balance-chart {
+            padding-top: 10px;
+
+            .select-month-number {
+                background-color: #fff;
+                border: 1px solid #E0E6EC;
+                border-radius: 2px;
+                height: 34px;
+                font-size: 13px;
+                line-height: 25px;
+            }
+        }
+
+        #affiliate-transactions-history {
+            td, th {
+                &.icon {
+
+                }
+            }
+
+            td {
+                &.transaction {
+                    span {
+                        display: block;
+                    }
+
+                    .title {
+                        font-size: 12px;
+                        line-height: 20px;
+                        font-weight: 500;
+                        color: #34373D;
+                        margin-bottom: 0;
+                    }
+
+                    .date {
+                        font-size: 12px;
+                        line-height: 20px;
+                        font-weight: 400;
+                        color: #34373D;
+                    }
+                }
+
+                &.amount {
+                    .price {
+                        line-height: 20px;
+                        font-weight: 500;
+                    }
+
+                    &.amount-reduce {
+                        .price {
+                            color: #CC3B3B;
+                        }
+                    }
+                }
+
+                &.status {
+                    color: @primary__color;
+                }
+            }
+
+            thead tr {
+                background-color: #F5F7F8;
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    .affiliate-account-index {
+        .info-account-summary {
+            .info-account-item {
+                width: calc(~'25% - 7px');
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__l) {
+    @media (min-width: 768px) {
+        .affiliate-account-index {
+            .info-account-summary {
+                .lib-vendor-prefix-flex-wrap(wrap);
+
+                .info-account-item {
+                    width: calc(~'50% - 7px');
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    body.account.affiliate-account-index {
+        .column.main {
+            .block {
+                table {
+                    &:not(.cart):not(.totals) > thead {
+                        > tr > th {
+                            border-top: 1px solid #E0E6EC;
+                        }
+                    }
+
+                    &:not(.cart):not(.totals) > tbody,
+                    &:not(.cart):not(.totals) > thead {
+                        > tr {
+                            > th, > td {
+                                padding: 15px 10px 14px;
+                                font-size: 12px;
+                                line-height: 20px;
+
+                                &.no-transaction {
+                                    text-align: center;
+                                }
+
+                                &.id {
+                                    width: 8%;
+                                }
+
+                                &.title {
+                                    width: 20%;
+                                }
+
+                                &.amount {
+                                    width: 12%;
+                                }
+
+                                &.transactions {
+                                    width: 25%;
+                                }
+
+                                &.status {
+                                    width: 12%;
+                                }
+
+                                &.created_at {
+                                    width: 20%;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .box-head {
+            .lib-vendor-box-align(center);
+
+            h2 {
+                font-size: 18px;
+                line-height: 23px;
+            }
+
+            .box-filter {
+                .filter-option {
+                    margin-right: 7px;
+                    border-radius: 6px;
+                    font-size: 12px;
+                }
+
+                #daterange {
+                    font-weight: normal;
+                    border-radius: 6px;
+                    font-size: 12px;
+                }
+
+                .label {
+                    &:before {
+                        left: 16px;
+                    }
+                }
+            }
+        }
+
+        .box-affiliate-summary {
+            .box-head h2 {
+                &:before {
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+        }
+
+        .form-affiliate-withdraw {
+            .box-head h2 {
+                &:before {
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+
+            .actions-toolbar {
+                margin: 16px 0 0 !important;
+
+                .action.save {
+                    width: auto;
+                }
+            }
+
+            .fieldset {
+                &.request {
+                    margin-bottom: 40px;
+                }
+
+                &.info {
+                    .title {
+                        margin: 3px 0 0;
+                    }
+
+                    .payment-method {
+                        ul {
+                            padding-left: 12px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .info-account-summary {
+            .info-account-item {
+                padding: 20px 10px 18px;
+                border-radius: 8px;
+
+                .title {
+                    font-size: 12px;
+                    padding-bottom: 5px;
+                }
+
+                .value {
+                    font-size: 24px;
+                }
+            }
+        }
+
+        .box-affiliate-transaction {
+            .box-head {
+                h2 {
+                    &:before {
+                        width: 20px;
+                        height: 18px;
+                    }
+                }
+            }
+
+            .transaction-history {
+                .pager {
+                    display: none;
+                }
+            }
+        }
+
+        #affiliate-transactions-history {
+            td, th {
+                &.transaction {
+                    width: 30%;
+                }
+
+                &.amount {
+                    width: 19%;
+                }
+
+                &.tax {
+                    width: 17%;
+                }
+
+                &.status {
+                    width: 15%;
+                }
+
+                &.work {
+                    width: 20%;
+                }
+            }
+
+            td {
+                &.amount {
+                    .price {
+                        font-size: 14px;
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    &:nth-child(even) {
+                        background-color: #F5F7F8;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    body.account.affiliate-account-index {
+        .page-title-wrapper:not(.mobile-device) {
+            display: none;
+        }
+
+        .page.messages {
+            padding: 0;
+        }
+
+        .navigation-kcoin-wallet {
+            .icon {
+                background-color: @primary-color;
+
+                &:before {
+                 color: #fff;
+                }
+            }
+        }
+
+        .page-title-wallet {
+            font-size: 16px;
+            line-height: 20px;
+            font-weight: 500;
+            color: #383E4F;
+            border-bottom: 1px solid #E0E6EC;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+
+        .box-head {
+            .lib-vendor-prefix-flex-direction(column);
+
+            h2 {
+                font-size: 14px;
+                line-height: 21px;
+            }
+
+            .box-filter {
+                .lib-vendor-prefix-flex-wrap(wrap);
+
+                .label {
+                    &:before {
+                        left: calc(~'50% - 80px');
+                    }
+                }
+
+                #daterange {
+                    width: 100% !important;
+                    text-align: center;
+                    font-weight: 500;
+                    border-radius: 8px;
+                    font-size: 10px;
+                }
+
+                .filter-date {
+                    width: 100%;
+                    margin-top: 8px;
+
+                    .label {
+                        &:before {
+                            font-size: 12px;
+                        }
+                    }
+                }
+
+                .filter-option {
+                    width: calc(~'100% / 3 - 3px');
+                    border-radius: 8px;
+                    font-size: 10px;
+
+                    &:nth-child(2) {
+                        margin: 0 4px;
+                    }
+                }
+            }
+        }
+
+        .box-affiliate-summary {
+            border: 1px solid #E0E6EC;
+            padding: 18px 13px;
+            border-radius: 4px;
+            background-color: #fff;
+
+            .box-head h2 {
+                &:before {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+
+        .box-affiliate-transaction {
+            border: 1px solid #E0E6EC;
+            padding: 18px 13px;
+            border-radius: 4px;
+            background-color: #fff;
+
+            .box-head {
+                .box-filter {
+                    margin-top: 12px;
+                }
+
+                h2 {
+                    &:before {
+                        width: 18px;
+                        height: 16px;
+                    }
+                }
+            }
+
+            tbody {
+                display: block;
+            }
+
+            .transaction-history {
+                .pager {
+                    .pages {
+                        display: none;
+                    }
+
+                    .toolbar-amount {
+                        text-align: left;
+                        margin-bottom: 0;
+                    }
+                }
+            }
+
+            > .pager {
+                .toolbar-amount {
+                    display: none;
+                }
+
+                .pages {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        .column.main {
+            .block {
+                table {
+                    &:not(.cart):not(.totals) > tbody {
+                        > tr > td {
+                            &:last-child {
+                                padding: 0;
+                            }
+
+                            &:not(:last-child) {
+                                padding: 0;
+                            }
+
+                            &.id {
+                                justify-content: space-between;
+                                -webkit-justify-content: space-between;
+                                font-weight: normal;
+                                border-bottom: 0;
+                                margin-bottom: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .info-account-summary {
+            .lib-vendor-prefix-flex-direction(column);
+
+            .info-account-item {
+                .lib-vendor-prefix-display(flex);
+                justify-content: space-between;
+                -webkit-justify-content: space-between;
+                padding: 14px 10px 12px;
+                border-radius: 3px;
+
+                &:not(:last-child) {
+                    margin-bottom: 12px;
+                }
+
+                .title {
+                    font-size: 12px;
+                }
+
+                .value {
+                    font-size: 14px;
+                }
+
+            }
+        }
+
+        .form-affiliate-withdraw {
+            border: 1px solid #E0E6EC;
+            padding: 18px 13px;
+            border-radius: 4px;
+            background-color: #fff;
+
+            .form-withdraw .control input {
+                font-size: 13px;
+                padding-top: 3px;
+            }
+
+            .box-head h2 {
+                &:before {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+
+            .actions-toolbar {
+                margin: 13px 0 0 !important;
+
+                .action.save {
+                    width: 100%;
+                }
+            }
+
+            .fieldset {
+                &.request {
+                    margin-bottom: 20px;
+                }
+
+                &.info {
+                    .lib-vendor-prefix-flex-direction(column);
+
+                    .title {
+                        margin: 0 0 10px;
+                    }
+
+                    .payment-method {
+                        ul {
+                            padding-left: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        .credit-balance-chart {
+            display: none;
+        }
+
+        #affiliate-transactions-history {
+            tr {
+                display: block;
+                border-bottom: 1px solid #E2E8ED;
+                padding: 14px 0 12px;
+
+                &:after {
+                    content: '';
+                    clear: both;
+                    display: table;
+                }
+            }
+            td {
+                font-size: 12px;
+
+                &.icon {
+                    float: left;
+                    width: 22px;
+                    padding-top: 3px;
+                }
+
+                &.transaction {
+                    .lib-vendor-prefix-flex-direction(column);
+                    float: left;
+                    text-align: left;
+                }
+
+                &.amount {
+                    float: right;
+
+                    .price {
+                        font-size: 12px;
+                    }
+                }
+
+                &.tax {
+                    display: none;
+                }
+
+                &.status {
+                    clear: left;
+                    float: right;
+                    padding-top: 6px;
+                }
+
+                &.work {
+                    float: left;
+                    padding-top: 6px;
+                    padding-left: 22px;
+                }
+            }
+        }
+    }
+}

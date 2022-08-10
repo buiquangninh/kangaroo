@@ -1,0 +1,54 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php /** @var $block \Magento\Checkout\Block\Onepage\Success */ ?>
+<?php
+$helper = $this->helper('Magenest\CustomCheckout\Helper\ConfigHelper');
+if ($block->getOrderId()) {
+    $qrCode = $helper->getQrPaymentData($block->getOrderId())['qrCode'] ?? '';
+    $amount = $helper->getQrPaymentData($block->getOrderId())['amount'] ?? '';
+} else {
+    $qrCode = '';
+    $amount = '';
+}
+
+?>
+<div class="checkout-success">
+    <?php if ($block->getOrderId()) :?>
+        <p class="title"><?= __('Order placed successfully!') ?></p>
+        <p class="sub-title"><?= $block->escapeHtml(__('Please pay the prepayments in installment terms')) ?></p>
+        <p class="qr-code-des">
+            <?= __('by ') ?>
+            <strong><?= __('scanning the QR code') ?></strong>
+        </p>
+        <?php if(isset($qrCode)): ?>
+        <img src='data:image/png;base64, <?= $qrCode?>'/>
+        <?php else: ?>
+            <p><?= $block->escapeHtml(__('QR Code Not found')) ?></p>
+        <?php endif; ?>
+        <p class="qr-code-des-or">
+            <?= __('or') ?>
+            <strong><?= __('pay in cash') ?></strong>
+            <?= __('upon receipt') ?>
+        </p>
+
+        <div class="total-price">
+            <strong>
+                <?= __('Total amount prepaid') ?>
+            </strong>
+            <span class="price"><?= $amount . ' VNĐ' ?></span>
+        </div>
+    <?php endif;?>
+
+    <?= $block->getAdditionalInfoHtml() ?>
+    <?php if ($block->getOrderId()) :?>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <a class="action primary continue" href="<?= $block->escapeUrl($helper->getSalesOrderDetailsRedirect($block->getOrderId())) ?>"><span><?= $block->escapeHtml(__('Go to order detail')) ?></span></a>
+        </div>
+    </div>
+    <?php endif; ?>
+</div>

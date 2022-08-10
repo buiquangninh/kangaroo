@@ -1,0 +1,60 @@
+{
+    "mst_customersegment_segment": {
+        "column": {
+            "segment_id": true,
+            "title": true,
+            "description": true,
+            "type": true,
+            "website_id": true,
+            "conditions_serialized": true,
+            "priority": true,
+            "is_manual": true,
+            "to_group_id": true,
+            "status": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "mst_customersegment_segment_customer": {
+        "column": {
+            "segment_customer_id": true,
+            "segment_id": true,
+            "customer_id": true,
+            "email": true,
+            "created_at": true,
+            "billing_address_id": true
+        },
+        "index": {
+            "MST_CUSTOMERSEGMENT_SEGMENT_CUSTOMER_EMAIL": true,
+            "MST_CUSTOMERSEGMENT_SEGMENT_CUSTOMER_BILLING_ADDRESS_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_1A366210DB86EA4FBCF8002FF18F3865": true,
+            "MST_CSTRSEGMENT_SEGMENT_CSTR_CSTR_ID_CSTR_ENTT_ENTT_ID": true,
+            "MST_CUSTOMERSEGMENT_SEGMENT_CUSTOMER_SEGMENT_ID_EMAIL": true
+        }
+    },
+    "mst_customersegment_segment_history": {
+        "column": {
+            "history_id": true,
+            "segment_id": true,
+            "action": true,
+            "affected_rows": true,
+            "type": true,
+            "message": true,
+            "created_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "sales_order": {
+        "index": {
+            "SALES_ORDER_CUSTOMER_EMAIL": true
+        }
+    }
+}

@@ -1,0 +1,466 @@
+/*
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+
+/*event*/
+.category-flashsales-mode,
+.loffs-event,
+.loffs-event__thumbnail,
+.loffs-status-active,
+.loffs-event-list,
+.loffs-event__link,
+.loffs-event__thumbnail img {
+    box-sizing: inherit;
+    -webkit-box-sizing: inherit;
+}
+
+.not-active {
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+    color: black;
+}
+
+.loffs-row * {
+    box-sizing: border-box !important;
+}
+
+.loffs-event {
+    position: relative;
+    height: 366px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+
+.loffs-event .loffs-event__thumbnail, .loffs-event__thumbnail img {
+    position: relative;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.loffs-event .loffs-event__thumbnail img {
+    -webkit-transition: 0.4s ease;
+    transition: 0.4s ease;
+}
+
+.loffs-event:hover .loffs-event__thumbnail img {
+    -webkit-transform: scale(1.08);
+    transform: scale(1.08);
+}
+
+.loffs-event .loffs-event__link:link {
+    text-decoration: none;
+}
+
+.loffs-event .loffs-status-title h3 {
+    font-weight: 400;
+    font-size: 25px;
+}
+
+.loffs-event .loffs-status-title h3:hover {
+    color: #1979c3;
+    cursor: pointer;
+}
+
+/*caption type*/
+
+.loffs-event__datetime span {
+    color: #ffffff;
+}
+
+.loffs-event__datetime .loffs-event__clock {
+    color: #ff5501;
+}
+
+
+.loffs-event__caption h4 {
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 25px;
+    color: #ffffff;
+    text-transform: initial;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.loffs-event__caption {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-weight: 600;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.loffs-event__caption--center {
+    text-align: center;
+    padding: 10px;
+    bottom: 0;
+    width: 100%;
+}
+
+.loffs-event__caption--right {
+    text-align: left;
+    padding: 5px 8px;
+    right: 0;
+    bottom: 0;
+}
+
+.loffs-event__caption--left {
+    text-align: left;
+    padding: 5px 10px;
+    bottom: 0;
+}
+
+/*end event*/
+
+/*category header banner*/
+
+.loffs-header-banner__bg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+/*template 1*/
+
+.loffs-header-banner--type-1 {
+    position: relative;
+    padding-bottom: 20px;
+    height: 285px;
+}
+
+.loffs-header-banner--type-1 .loffs-header-banner__caption {
+    position: absolute;
+    background: rgb(255, 255, 255); /* Fallback color */
+    background: rgba(255, 255, 255, 0.5); /* Black background with 0.5 opacity */
+    text-align: left;
+    padding: 30px 20px;
+    bottom: 35%;
+    max-width: 85%;
+    width: auto;
+}
+
+.loffs-header-banner--type-1 .loffs-header-banner__title h4 {
+    display: inline;
+    font-weight: 400;
+    font-size: 35px;
+    line-height: 26px;
+    color: #333333;
+    width: auto;
+    text-align: left;
+    text-transform: initial;
+}
+
+.loffs-header-banner--type-1 .loffs-header-banner__datetime span {
+    font-size: 18px;
+    margin-left: 3px;
+    color: #333333;
+}
+
+.loffs-header-banner--type-1 .loffs-header-banner__datetime {
+    margin-top: 10px;
+}
+
+.loffs-header-banner--type-1 .loffs-header-banner__datetime .loffs-header-banner__clock {
+    color: #ff5501;
+}
+
+/*end template 1*/
+
+/*template 2*/
+
+.loffs-header-banner--type-2 {
+    position: relative;
+    padding-bottom: 20px;
+    height: 285px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.loffs-header-banner--type-2 .loffs-header-banner__bg:before {
+    content: "";
+    display: block;
+    background-color: rgba(101, 101, 101, 0.43);
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.loffs-header-banner--type-2 .loffs-header-banner__caption {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    z-index: 1;
+}
+
+.loffs-header-banner--type-2 .loffs-header-banner__title h4 {
+    display: inline;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 26px;
+    color: #ffffff;
+    width: auto;
+    text-transform: initial;
+    text-shadow: 3px 3px 3px #000000;
+}
+
+.loffs-header-banner--type-2 .loffs-header-banner__description p {
+    text-shadow: 3px 3px 3px #000000;
+}
+
+.loffs-header-banner--type-2 .loffs-header-banner__datetime span {
+    text-shadow: 3px 3px 3px #000000;
+    font-size: 15px;
+    color: #ffffff;
+}
+
+.loffs-header-banner--type-2 .loffs-header-banner__datetime .loffs-header-banner__clock {
+    color: #ff5501;
+}
+
+/*end template 2*/
+
+/*template 3*/
+
+.loffs-header-banner--type-3 {
+    text-align: center;
+    border-bottom: 1px solid #cccccc;
+    margin-bottom: 20px;
+}
+
+.loffs-header-banner--type-3 .loffs-header-banner__bg {
+    background-image: none !important;
+}
+
+.loffs-header-banner--type-3 .loffs-header-banner__caption {
+    margin-bottom: 15px;
+}
+
+.loffs-header-banner--type-3 .loffs-header-banner__title h4 {
+    font-weight: 400;
+    font-size: 40px;
+    color: #333333;
+    width: auto;
+    margin: 5px;
+}
+
+.loffs-header-banner--type-3 .loffs-header-banner__datetime span {
+    font-size: 20px;
+    color: #333333;
+}
+
+.loffs-header-banner--type-3 .loffs-header-banner__datetime .loffs-header-banner__clock {
+    color: #ff5501;
+}
+
+/*end template 3*/
+
+/*template 4*/
+.loffs-header-banner--type-4 {
+    float: right;
+}
+
+.loffs-header-banner--type-4 .loffs-header-banner__title {
+    display: none;
+}
+
+.loffs-header-banner--type-4 .loffs-header-banner__datetime {
+    background: rgb(255, 229, 229);
+    border-radius: 10px;
+    padding: 10px;
+
+}
+
+.loffs-header-banner--type-4 .loffs-header-banner__datetime span {
+    font-weight: 600;
+    font-size: 15px;
+    color: #000000;
+}
+
+.loffs-header-banner--type-4 .loffs-header-banner__datetime .loffs-header-banner__clock {
+    color: #ff0000;
+}
+
+
+/*end category header banner*/
+
+/*product header banner*/
+
+/*template1*/
+
+.loffs-product-countdowntimer {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.loffs-product-countdowntimer .loffs-product-countdowntimer__caption {
+    text-align: center;
+}
+
+.loffs-product-countdowntimer .loffs-product-countdowntimer__title h4 {
+    font-weight: 400;
+    font-size: 40px;
+    color: #333333;
+    width: auto;
+    margin: 5px;
+}
+
+.loffs-product-countdowntimer .loffs-product-countdowntimer__datetime {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #cccccc;
+}
+
+.loffs-product-countdowntimer .loffs-product-countdowntimer__datetime span {
+    font-size: 20px;
+    color: #333333;
+}
+
+.loffs-product-countdowntimer .loffs-product-countdowntimer__datetime .loffs-product-countdowntimer__clock {
+    color: #ff5501;
+}
+
+
+.loffs-product-countdowntimer__caption .loffs-product-countdowntimer__clock {
+    color: #ff5501;
+}
+
+/*end template1*/
+.product-info-main .loffs-product-countdowntimer {
+    text-align: left;
+    margin-bottom: 0;
+}
+
+.product-info-price .loffs-product-countdowntimer__datetime {
+    margin-bottom: 15px;
+    padding-bottom: 0;
+    font-size: 18px;
+    border-bottom: none;
+}
+
+.grouped .loffs-product-countdowntimer__datetime span {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.grouped .loffs-product-countdowntimer .loffs-product-countdowntimer__title,
+.product-info-main .loffs-product-countdowntimer .loffs-product-countdowntimer__title{
+    display: none;
+}
+.grouped .loffs-product-countdowntimer__datetime {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    margin-top: 10px;
+    font-size: 1.2rem;
+    border-bottom: none;
+}
+
+/*end product header banner*/
+
+/*private sales*/
+.has-private-sale:after {
+    content: "";
+    display: block;
+    background: url('../images/lock.svg') no-repeat;
+    top: 50%;
+    left: 50%;
+    background-size: contain;
+    position: absolute;
+    text-align: center;
+    height: 150px;
+    width: 150px;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.has-private-sale:before {
+    content: "";
+    display: block;
+    background-color: rgba(0, 0, 0, 0.43);
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    height: 366px;
+    z-index: 1;
+}
+
+/*end private sales*/
+
+
+/*custom price*/
+
+.price-loffs_price  .special-price .price {
+    color: #f53c3c;
+}
+
+ .old-price .price-loffs_price .price{
+    color: rgba(76, 76, 76, 0.69);
+    padding: 5px;
+    text-decoration: line-through;
+}
+
+.price-loffs_price .old-price .price-label{
+    display: none !important;
+}
+
+
+/*.special-price {*/
+/*    color: #f53c3c;*/
+/*}*/
+
+/*.loffs-old-price {*/
+/*    color: rgba(76, 76, 76, 0.69);*/
+/*    padding: 5px;*/
+/*    text-decoration: line-through;*/
+/*}*/
+
+.loffs-private-button {
+    display: inline-block;
+    background: #1979c3;
+    text-decoration: none;
+    padding: 8px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.loffs-private-button:hover {
+    background: #1667a3;
+}
+
+.loffs-private-button:link, .loffs-private-button:active {
+    text-decoration: none;
+}
+
+.loffs-private-button span {
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 600;
+}

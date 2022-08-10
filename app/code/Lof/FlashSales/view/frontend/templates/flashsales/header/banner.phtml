@@ -1,0 +1,93 @@
+<?php
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+
+/**
+ * Banner
+ *
+ * @var \Lof\FlashSales\Block\FlashSales\Category\EventBanner $block
+ * @var \Lof\FlashSales\Helper\Data $helper
+ */
+// phpcs:disable Magento2.Templates.ThisInTemplate
+// phpcs:disable Generic.WhiteSpace.ScopeIndent
+use Lof\FlashSales\Model\Adminhtml\System\Config\Source\CategoryHeaderStyle;
+
+$helper = $this->helper(\Lof\FlashSales\Helper\Data::class);
+$flashSale = $block->getFlashSalesBanner();
+$headerStyle = $helper->getCategoryHeaderStyle();
+$format = $helper->getEventCategoryTimerMode();
+
+if ($headerStyle != CategoryHeaderStyle::TYPE4) {
+    $block->getLayout()->unsetElement('loffs-header-banner-right');
+}
+
+if ($flashSale && $flashSale->getFlashSalesId()) {
+    $headerDateTime = null;
+    switch ($flashSale->getStatus()):
+        case 'comingsoon':
+            $headerDateTime = $flashSale->getFromDate();
+            break;
+        case 'active':
+        case 'endingsoon':
+        case 'ended':
+            $headerDateTime = $flashSale->getToDate();
+            break;
+    endswitch;
+}
+
+?>
+<?php if ($block->canDisplay()): ?>
+    <div class="loffs-header-banner loffs-header-banner--type-<?= $block->escapeHtmlAttr($headerStyle) ?>">
+        <div class="loffs-header-banner__bg" style="background-image: url('<?=
+        $block->getHeaderBannerImage($flashSale) != null ?
+            $block->escapeUrl($block->getHeaderBannerImage($flashSale)) :
+            $block->escapeUrl($block->getDefaultBanner()) ?>')">
+        </div>
+        <div class="loffs-header-banner__caption">
+            <div class="loffs-header-banner__title">
+                <h4><?= $block->escapeHtml($flashSale->getEventName()) ?></h4>
+            </div>
+            <?php if ($headerStyle == CategoryHeaderStyle::TYPE2 || $headerStyle == CategoryHeaderStyle::TYPE1): ?>
+                <div class="loffs-header-banner__description">
+                    <p><?= $block->escapeHtml($flashSale->getDescription()) ?></p>
+                </div>
+            <?php endif; ?>
+            <?php if ($format): ?>
+                <div class="loffs-header-banner__datetime"
+                     data-id="<?= $block->escapeHtmlAttr($flashSale->getFlashSalesId()) ?>">
+                    <i class="loffs-icon-clock"></i>
+                    <span><?= $block->escapeHtml($block->getStatusText($flashSale)) ?></span>
+                    <span class="loffs-header-banner__clock js-loffs-countdown"
+                          data-format="<?= $block->escapeHtmlAttr($format) ?>"
+                          data-countdown="<?= $block->escapeHtmlAttr($headerDateTime) ?>"></span>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endif; ?>
+
+<script type="text/javascript">
+    require([
+        "jquery",
+        "loffsCounterTimer"
+    ], function ($, loffsCounterTimer) {
+        loffsCounterTimer.initCountDown('<?= $block->escapeJs($block->getConfigStoreTimezone()) ?>')
+    });
+</script>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+ -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">lof_flashsales_timeline.lof_flashsales_timeline_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>lof_flashsales_timeline_columns</spinner>
+        <deps>
+            <dep>lof_flashsales_timeline.lof_flashsales_timeline_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="lof_flashsales_timeline_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Lof_FlashSales::flashsales_view</aclResource>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="lof_flashsales_timeline_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top" template="Lof_FlashSales/timeline/toolbar-dashboard">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="updateTypes" xsi:type="string">ns = ${ $.ns }, index = status</item>
+            </item>
+        </argument>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters"/>
+        <paging name="listing_paging">
+            <settings>
+                <totalTmpl>ui/grid/paging/paging-detailed-total</totalTmpl>
+            </settings>
+        </paging>
+    </listingToolbar>
+    <columns name="lof_flashsales_timeline_columns" component="Lof_FlashSales/js/timeline/timeline">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="recordTmpl" xsi:type="string">Lof_FlashSales/timeline/record</item>
+                <item name="detailsTmpl" xsi:type="string">Lof_FlashSales/timeline/details</item>
+                <item name="detailsFormat" xsi:type="string">MMM D, YYYY h:mm A</item>
+                <item name="displayModes" xsi:type="array">
+                    <item name="timeline" xsi:type="array">
+                        <item name="template" xsi:type="string">Lof_FlashSales/timeline/timeline</item>
+                    </item>
+                </item>
+            </item>
+        </argument>
+        <column name="status" component="Lof_FlashSales/js/grid/columns/status">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="updateTypesMap" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="className" xsi:type="string">status-upcoming</item>
+                            <item name="value" xsi:type="string">0</item>
+                        </item>
+                        <item name="1" xsi:type="array">
+                            <item name="className" xsi:type="string">status-coming-soon</item>
+                            <item name="value" xsi:type="string">1</item>
+                        </item>
+                        <item name="2" xsi:type="array">
+                            <item name="className" xsi:type="string">status-active</item>
+                            <item name="value" xsi:type="string">2</item>
+                        </item>
+                        <item name="3" xsi:type="array">
+                            <item name="className" xsi:type="string">status-ending-soon</item>
+                            <item name="value" xsi:type="string">3</item>
+                        </item>
+                        <item name="4" xsi:type="array">
+                            <item name="className" xsi:type="string">status-ended</item>
+                            <item name="value" xsi:type="string">4</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <options class="Lof\FlashSales\Model\Adminhtml\System\Config\Source\Status"/>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+        <column name="event_name">
+            <settings>
+                <filter>text</filter>
+                <bodyTmpl>ui/grid/cells/text</bodyTmpl>
+                <label translate="true">Event Name</label>
+            </settings>
+        </column>
+        <column name="from_date" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>text</filter>
+                <dateFormat>YYYY-MM-DD HH:mm:ss</dateFormat>
+                <label translate="true">Start Time</label>
+            </settings>
+        </column>
+        <column name="to_date" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>text</filter>
+                <dateFormat>YYYY-MM-DD HH:mm:ss</dateFormat>
+                <label translate="true">End Time</label>
+            </settings>
+        </column>
+        <column name="is_active" sortOrder="130">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">Lof_FlashSales/grid/cells/enable</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                </item>
+            </argument>
+            <settings>
+                <options class="Lof\FlashSales\Model\Adminhtml\Source\IsActive"/>
+                <filter>select</filter>
+                <editor>
+                    <editorType>select</editorType>
+                </editor>
+                <dataType>select</dataType>
+                <label translate="true">Enabled</label>
+            </settings>
+        </column>
+        <column name="is_private_sale" sortOrder="12">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">Lof_FlashSales/grid/cells/private</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                </item>
+            </argument>
+            <settings>
+                <options class="Lof\FlashSales\Model\Adminhtml\Source\IsPrivate"/>
+                <filter>select</filter>
+                <editor>
+                    <editorType>select</editorType>
+                </editor>
+                <dataType>select</dataType>
+                <label translate="true">Event Type</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Lof\FlashSales\Ui\Component\Listing\Column\TimLineActions">
+            <settings>
+                <label>Action</label>
+                <indexField>id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

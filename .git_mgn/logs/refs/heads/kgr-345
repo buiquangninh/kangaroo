@@ -1,0 +1,59 @@
+0000000000000000000000000000000000000000 554169466791e1a161c2dd4daea73923f9aea8ec ninhbq <ninhbq@magenest.com> 1655189912 +0700	branch: Created from HEAD
+554169466791e1a161c2dd4daea73923f9aea8ec f1b378151635d98e4b83d95900e14f1cd0fc8889 ninhbq <ninhbq@magenest.com> 1655347018 +0700	commit: kgr-345: Update style checkout onepage
+f1b378151635d98e4b83d95900e14f1cd0fc8889 b6046fa361f7320b4622724ba47219c54115af69 ninhbq <ninhbq@magenest.com> 1655353884 +0700	commit: kgr-345: Update style payment method
+b6046fa361f7320b4622724ba47219c54115af69 631f6f7f3f2cb42f8558b2bb47402bf50c35347a ninhbq <ninhbq@magenest.com> 1655353901 +0700	pull origin kgr-345: Merge made by the 'recursive' strategy.
+631f6f7f3f2cb42f8558b2bb47402bf50c35347a 4715b8e07238d1ad60d8993e754a26691a7ac542 ninhbq <ninhbq@magenest.com> 1655359276 +0700	pull origin kgr-345: Fast-forward
+4715b8e07238d1ad60d8993e754a26691a7ac542 9f36d994fcee9ba23d43b392aa3c35e47cb72f0c ninhbq <ninhbq@magenest.com> 1655362573 +0700	commit: kgr-345: Update style checkout one page
+9f36d994fcee9ba23d43b392aa3c35e47cb72f0c 126f8b2f95e0d5b6aaed27f8d3353d75e0b17382 ninhbq <ninhbq@magenest.com> 1655366974 +0700	commit: kgr-345: Update style checkout one page
+126f8b2f95e0d5b6aaed27f8d3353d75e0b17382 fe424512eb3c8d384b53e793102520182cdfbdc6 ninhbq <ninhbq@magenest.com> 1655368554 +0700	commit: kgr-345: Update style checkout one page
+fe424512eb3c8d384b53e793102520182cdfbdc6 d97ccf54fe486457dd0afe7cca0e24ba98c510d9 ninhbq <ninhbq@magenest.com> 1655435148 +0700	pull origin kgr-345: Fast-forward
+d97ccf54fe486457dd0afe7cca0e24ba98c510d9 33dc7975bec048ce43de2a3d055f0d79a366f461 ninhbq <ninhbq@magenest.com> 1655440536 +0700	pull origin kgr-345: Fast-forward
+33dc7975bec048ce43de2a3d055f0d79a366f461 67f25b64a334ec04fb40c263b18508be33a6619e ninhbq <ninhbq@magenest.com> 1655441862 +0700	commit: kgr-345: Update style mobile
+67f25b64a334ec04fb40c263b18508be33a6619e cafaf22ae4b145725501c96d72b16f32d00ffbe7 ninhbq <ninhbq@magenest.com> 1655457709 +0700	commit: kgr-345: Done style mobile
+cafaf22ae4b145725501c96d72b16f32d00ffbe7 1848d52c7071806d8b12f1fabff5d55342b93aac ninhbq <ninhbq@magenest.com> 1655457879 +0700	commit (merge): kgr-345: fix conflict
+1848d52c7071806d8b12f1fabff5d55342b93aac 0e2dceb11281e60f52e4255c5eb4419a2eddf8d2 ninhbq <ninhbq@magenest.com> 1655461901 +0700	commit: kgr-345: Update style popup shipping method
+0e2dceb11281e60f52e4255c5eb4419a2eddf8d2 f5fd1631106f6eb8d2477b92281150e6d8ceded8 ninhbq <ninhbq@magenest.com> 1655461915 +0700	pull origin kgr-345-be: Merge made by the 'recursive' strategy.
+f5fd1631106f6eb8d2477b92281150e6d8ceded8 41e4535644a0443c4b7f57a3199a31f76883e515 ninhbq <ninhbq@magenest.com> 1655712892 +0700	commit: kgr-345: Update style select
+41e4535644a0443c4b7f57a3199a31f76883e515 bdeec1ea9481814930d844c0315937ace93ca369 ninhbq <ninhbq@magenest.com> 1655712907 +0700	pull origin kgr-345: Merge made by the 'recursive' strategy.
+bdeec1ea9481814930d844c0315937ace93ca369 be8557c100663e3633355e73989ff1f2ffec175a ninhbq <ninhbq@magenest.com> 1655716271 +0700	commit: kgr-345: Update style coupon popup
+be8557c100663e3633355e73989ff1f2ffec175a 042fdd5135b8424b41b16a0800dfe23034c75137 ninhbq <ninhbq@magenest.com> 1655794217 +0700	commit (merge): kgr-345: Update style popup coupon code
+042fdd5135b8424b41b16a0800dfe23034c75137 d979e089f833d0022c0fba766c7ee90253c119f1 ninhbq <ninhbq@magenest.com> 1655806417 +0700	commit (merge): kgr-345: Update style payment method
+d979e089f833d0022c0fba766c7ee90253c119f1 4994448d79f7b29daab96673c11b709023f22c64 ninhbq <ninhbq@magenest.com> 1655871599 +0700	commit: kgr-345: Update style delivery address
+4994448d79f7b29daab96673c11b709023f22c64 efcd7d44e5c4f82b51b577c07256bdf76affb2b0 ninhbq <ninhbq@magenest.com> 1655889034 +0700	commit: kgr-345: Style search address
+efcd7d44e5c4f82b51b577c07256bdf76affb2b0 17403b0c4d098086c13cd9066b350d76c798a7db ninhbq <ninhbq@magenest.com> 1655889165 +0700	commit (merge): kgr-345: fix conflict
+17403b0c4d098086c13cd9066b350d76c798a7db bea20b08781c69958683db4363345dca675f2e9c ninhbq <ninhbq@magenest.com> 1655889579 +0700	commit: kgr-345: update style delivery address
+bea20b08781c69958683db4363345dca675f2e9c 5225f1b4382f4bd8553b85809b906415e5708d4b ninhbq <ninhbq@magenest.com> 1655891470 +0700	commit: kgr-345: Update company vat mobile
+5225f1b4382f4bd8553b85809b906415e5708d4b dc9cd2c1b2d7c6228563b02e78af6c86206ca726 ninhbq <ninhbq@magenest.com> 1655949669 +0700	pull origin kgr-345-be: Fast-forward
+dc9cd2c1b2d7c6228563b02e78af6c86206ca726 a6e7347b4ce45d3d84377776ca85057303ffc47d ninhbq <ninhbq@magenest.com> 1655952123 +0700	commit: kgr-345: Update style payment method mobile
+a6e7347b4ce45d3d84377776ca85057303ffc47d b1c37abf7698700602a275be4609f8b07a104564 ninhbq <ninhbq@magenest.com> 1655952135 +0700	pull origin kgr-345-be: Merge made by the 'recursive' strategy.
+b1c37abf7698700602a275be4609f8b07a104564 6f56fa70cf5fc49bac32dd01001ac852e66aa961 ninhbq <ninhbq@magenest.com> 1655958543 +0700	commit: kgr-345: Update vat text sidebar
+6f56fa70cf5fc49bac32dd01001ac852e66aa961 577eeb10a06565fb9c03b19d5f270b7c8435338d ninhbq <ninhbq@magenest.com> 1655959119 +0700	commit: kgr-345: Update layoyt payment
+577eeb10a06565fb9c03b19d5f270b7c8435338d 2d3a4a0f375c9fd5d2bcc6d6c79bdb383a3abc21 ninhbq <ninhbq@magenest.com> 1655965918 +0700	commit: kgr-345: update layout checkout installment
+2d3a4a0f375c9fd5d2bcc6d6c79bdb383a3abc21 d9705ba98d862b9bbd144aeec524ef9fd4896899 ninhbq <ninhbq@magenest.com> 1655965929 +0700	pull origin kgr-345-be: Merge made by the 'recursive' strategy.
+d9705ba98d862b9bbd144aeec524ef9fd4896899 77e93472c086fb0c17f50a6ad71c9aa2226c9157 ninhbq <ninhbq@magenest.com> 1655967384 +0700	commit: kgr-345: Update style delivery address
+77e93472c086fb0c17f50a6ad71c9aa2226c9157 615d70c5efdd93a1652f92133df8d74dbdd7e34f ninhbq <ninhbq@magenest.com> 1655978173 +0700	commit: kgr-345: Update style payment installment
+615d70c5efdd93a1652f92133df8d74dbdd7e34f d8986a28e3634ccfa8f3d033304bf9640d2ec13e ninhbq <ninhbq@magenest.com> 1656039606 +0700	commit (merge): kgr-345: update style payment installment
+d8986a28e3634ccfa8f3d033304bf9640d2ec13e f8bce88f6a408e6d0bbb7326a6b74b3d7761babc ninhbq <ninhbq@magenest.com> 1656039686 +0700	commit (merge): kgr-345: fix conflict
+f8bce88f6a408e6d0bbb7326a6b74b3d7761babc 37ecb60750c6438c456fa9b73be17a286cf5b395 ninhbq <ninhbq@magenest.com> 1656039756 +0700	pull origin develop-p2: Merge made by the 'recursive' strategy.
+37ecb60750c6438c456fa9b73be17a286cf5b395 dd36655d66c9f01eddffefc2685a2c218bfb8505 ninhbq <ninhbq@magenest.com> 1656054396 +0700	commit: kgr-345: done style payment installment
+dd36655d66c9f01eddffefc2685a2c218bfb8505 3d236a2b46374fc8b6b1e222cb3de75a68a97244 ninhbq <ninhbq@magenest.com> 1656054497 +0700	commit (merge): kgr-345: fix conflict
+3d236a2b46374fc8b6b1e222cb3de75a68a97244 214ff61f4f5246aac56b0073493be6c8d1ca8c38 ninhbq <ninhbq@magenest.com> 1656056778 +0700	commit: kgr-345: update actions product detail
+214ff61f4f5246aac56b0073493be6c8d1ca8c38 cfb7437e38771cc7513c88d4314354adb784c977 ninhbq <ninhbq@magenest.com> 1656064201 +0700	commit: M2CKGR-211: fix bug testcase
+cfb7437e38771cc7513c88d4314354adb784c977 6c7bae38015d8f5a1a8af453e9bcde4c939fe8d9 ninhbq <ninhbq@magenest.com> 1656065487 +0700	commit: kgr-345: Change KCoins to KPoints
+6c7bae38015d8f5a1a8af453e9bcde4c939fe8d9 379409d06824a943f1e2f1b22471d0eb4ed5fe85 ninhbq <ninhbq@magenest.com> 1656068048 +0700	commit: kgr-345: update style checkout
+379409d06824a943f1e2f1b22471d0eb4ed5fe85 3e59aa43d2c25cf333d4732e0183fe456d2a42e4 ninhbq <ninhbq@magenest.com> 1656139098 +0700	commit: kgr-345: Update style payment installment success
+3e59aa43d2c25cf333d4732e0183fe456d2a42e4 c5918bdc6cedc5bfd1ccc975606a84b4a760e79c ninhbq <ninhbq@magenest.com> 1656142526 +0700	commit: kgr-345: Update table installment
+c5918bdc6cedc5bfd1ccc975606a84b4a760e79c 6a5c2ad3d2827f1f1e5574cd86965f4ea3bf1c67 ninhbq <ninhbq@magenest.com> 1656142771 +0700	commit: kgr-345: Update table installment
+6a5c2ad3d2827f1f1e5574cd86965f4ea3bf1c67 c12c3623bd6c9224d4af07747be0e604e2d3c3f7 ninhbq <ninhbq@magenest.com> 1656398227 +0700	pull origin develop-p2: Fast-forward
+c12c3623bd6c9224d4af07747be0e604e2d3c3f7 3d19b2b2ad846ad3a050de6fe2a1923f1af325ee ninhbq <ninhbq@magenest.com> 1656399610 +0700	commit: M2CKGR-200:Update style label out of stock
+3d19b2b2ad846ad3a050de6fe2a1923f1af325ee 04f5d831272f975e21fa258c7f18cd0592bd9b41 ninhbq <ninhbq@magenest.com> 1656405317 +0700	commit: kgr-345: Update style checkout
+04f5d831272f975e21fa258c7f18cd0592bd9b41 99a60bd6f0387615c1bb72473f96d427114b7cba ninhbq <ninhbq@magenest.com> 1656405326 +0700	pull origin develop-p2: Merge made by the 'recursive' strategy.
+99a60bd6f0387615c1bb72473f96d427114b7cba 7a50f7d521a3ca97f98c8bb401ff6a6d73f39daf ninhbq <ninhbq@magenest.com> 1656405444 +0700	commit (merge): kgr-345: fix conflict shipping.js
+7a50f7d521a3ca97f98c8bb401ff6a6d73f39daf 37150e48c8999f7d40c7f373dbf2081c96817f3a ninhbq <ninhbq@magenest.com> 1656408448 +0700	commit: kgr-345: update style checkout success
+37150e48c8999f7d40c7f373dbf2081c96817f3a 43d28a8aac21a85a0c71f5213ac4614990f414cd ninhbq <ninhbq@magenest.com> 1656411864 +0700	commit: kgr-345: update style out of stock pdp
+43d28a8aac21a85a0c71f5213ac4614990f414cd ffff3377943586ad14edcaa85163ab21f138ceb1 ninhbq <ninhbq@magenest.com> 1656417535 +0700	commit: kgr-345: up date qr code
+ffff3377943586ad14edcaa85163ab21f138ceb1 f153220a00edd713dabfe7ff9e6f8045f3b519f7 ninhbq <ninhbq@magenest.com> 1656417548 +0700	pull origin develop-p2: Merge made by the 'recursive' strategy.
+f153220a00edd713dabfe7ff9e6f8045f3b519f7 bfa4c01134fa833c5747824a5de754279d6f636f ninhbq <ninhbq@magenest.com> 1656419120 +0700	commit: kgr-345: up date qr code mobile
+bfa4c01134fa833c5747824a5de754279d6f636f 9b1a87f5fead25b7b5ff70448bf978e1eb58136f ninhbq <ninhbq@magenest.com> 1656473972 +0700	pull origin develop-p2: Fast-forward
+9b1a87f5fead25b7b5ff70448bf978e1eb58136f cfd68e4d5bb54ecdd58e9f7c843c792cf374762a ninhbq <ninhbq@magenest.com> 1656474344 +0700	commit: kgr-345: update label out-of-stock category, search page
+cfd68e4d5bb54ecdd58e9f7c843c792cf374762a f15f760544b51fb6e0348f53360f813b7a07759a ninhbq <ninhbq@magenest.com> 1656643738 +0700	pull origin develop-p2: Fast-forward

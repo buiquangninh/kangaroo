@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Copyright 2016 aheadWorks. All rights reserved.
+* See LICENSE.txt for license details.
+*/
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Magenest_CustomAdvancedReports::reports_salespersonoverview" title="Sales Person Overview" module="Magenest_CustomAdvancedReports" sortOrder="10" parent="Aheadworks_AdvancedReports::main" action="customadvancedreports/salespersonoverview" resource="Magenest_CustomAdvancedReports::reports_salespersonoverview"/>
+    </menu>
+</config>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="top.container">
+            <block class="Lof\FlashSales\Block\FlashSales\Category\EventBanner" after="-" name="loffs-header-banner" template="Lof_FlashSales::flashsales/header/banner.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="page.main.title">
+            <block class="Lof\FlashSales\Block\FlashSales\Category\EventBanner" after="-" name="loffs-header-banner-right" template="Lof_FlashSales::flashsales/header/banner.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <referenceBlock name="category.products">
+                <action method="setTemplate">
+                    <argument name="template" xsi:type="string">Lof_FlashSales::catalog/category/products.phtml</argument>
+                </action>
+            </referenceBlock>
+            <block class="Lof\FlashSales\Block\Catalog\Category\View" name="loffs-category-view" template="Lof_FlashSales::catalog/category/flashsales-mode.phtml">
+                <block class="Lof\FlashSales\Block\FlashSales\Category\EventList" name="loffs-event-list" as="flashsales_list" template="Lof_FlashSales::flashsales/list.phtml">
+                    <block class="Lof\FlashSales\Block\FlashSales\Status\Active" name="loffs-status-active" as="flashsales_active" template="Lof_FlashSales::flashsales/status/active.phtml" />
+                    <block class="Lof\FlashSales\Block\FlashSales\Status\EndingSoon" name="loffs-status-ending-soon" as="flashsales_ending" template="Lof_FlashSales::flashsales/status/ending-soon.phtml" />
+                    <block class="Lof\FlashSales\Block\FlashSales\Status\ComingSoon" name="loffs-status-coming-soon" as="flashsales_coming" template="Lof_FlashSales::flashsales/status/coming-soon.phtml" />
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

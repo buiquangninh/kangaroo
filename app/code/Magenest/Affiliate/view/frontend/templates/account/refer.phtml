@@ -1,0 +1,206 @@
+<?php
+
+?>
+<?php
+/** @var Magenest\Affiliate\Block\Account\Refer $block */
+
+$affiliateHelper = $block->getAffiliateHelper();
+?>
+
+<div class="block-refer">
+    <?php
+    echo $this->getLayout()
+        ->createBlock('Magento\Cms\Block\Block')
+        ->setBlockId('create-referral-link-banner')
+        ->toHtml();
+    ?>
+    <div class="link-support-create-refer">
+        <a href="<?= $this->getBaseUrl() ?>affiliate/account/createreferrallink/"><?= __('How to create a referral link?') ?></a>
+        <a href="<?= $this->getBaseUrl() ?>affiliate/"><?= __('Policy & Terms') ?></a>
+    </div>
+
+    <div class="box-account box-info box-affiliate affiliate-refer-type">
+        <form action="<?= $block->getSendMailUrl() ?>" method="post" id="form-validate"
+              class="form form-edit-account form-affiliate form-affiliate-refer-send-mail">
+            <fieldset class="fieldset referral-code">
+                <div class="box-head">
+                    <h2><?= __('Referral code') ?></h2>
+                </div>
+                <div class="box-content">
+                    <div class="field code">
+                        <label class="label" for="refer_code">
+                    <span><?= /* @escapeNotVerified */
+                        __('Your Refer Code') ?></span>
+                        </label>
+                        <div class="control input-read-only">
+                            <input type="text" class="affiliate-input-read-only" name="refer_code" id="refer_code"
+                                   value="<?= strtoupper($block->getSharingCode()) ?>"
+                                   title="<?= __('Your Refer Code') ?>" class="input-text" readonly onclick="this.select()"/>
+                            <span class="copy"><?= __('Copy') ?></span>
+                        </div>
+                    </div>
+                    <div class="field email">
+                        <label class="label" for="refer_email">
+                    <span><?= /* @escapeNotVerified */
+                        __('Your referral email') ?></span>
+                        </label>
+                        <div class="control input-read-only">
+                            <input type="text" class="affiliate-input-read-only" name="refer_email" id="refer_email"
+                                   value="<?= $block->getSharingEmail() ?>" title="<?= __('Refer Email') ?>"
+                                   class="input-text" readonly onclick="this.select()"/>
+                            <span class="copy"><?= __('Copy') ?></span>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="fieldset create-refer">
+                <div class="box-head">
+                    <h2><?= __('Create Refer Url') ?></h2>
+                </div>
+                <div class="box-content">
+                    <div class="field url">
+                        <label class="label" for="create-refer-url"><span><?= /* @escapeNotVerified */
+                                __('Create Refer Url') ?></span></label>
+                        <div class="control">
+                            <input
+                                type="url"
+                                placeholder="<?= __("Please click the 'Create Link Now' button to generate a referral link") ?>"
+                                pattern="https?://.+" name="refer_url" id="refer-url"/>
+                            <button type="button" class="action create primary desktop-device"
+                                    title="<?= /* @escapeNotVerified */
+                                    __('Create Link') ?>">
+                            <span><?= /* @escapeNotVerified */
+                                __('Create Link') ?></span>
+                            </button>
+                            <span class="copy" style="display: none"><?= __('Copy') ?></span>
+                            <button type="button" class="clear" style="display: none"></button>
+                        </div>
+                        <div class="affiliate-strength-meter">
+                            <?= __('Please fill in one of the links from our store such as: Product Url, Category URL or other page\'s URL into the text box above.') ?>
+                        </div>
+                        <button type="button" class="action create primary mobile-device"
+                                title="<?= /* @escapeNotVerified */
+                                __('Create a link now') ?>">
+                            <span><?= /* @escapeNotVerified */
+                                __('Create a link now') ?></span>
+                        </button>
+                    </div>
+                    <?php if ($addThisPubId = $affiliateHelper->getAddThisPubId()): ?>
+                        <div class="field social_sharing">
+                            <label class="label" for="refer_social">
+                        <span><?= /* @escapeNotVerified */
+                            __('Referral Via Social Networks') ?></span>
+                            </label>
+                            <div class="control">
+                                <div class="referral-addthis">
+                                    <div class="<?= $affiliateHelper->getAddThisClassName() ?: 'addthis_sharing_toolbox' ?>"
+                                         data-url="<?= $block->getSharingUrl() ?>"></div>
+                                    <script type="text/javascript"
+                                            src="//s7.addthis.com/js/300/addthis_widget.js#pubid=<?= $addThisPubId ?>"></script>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </fieldset>
+            <fieldset class="fieldset create-email">
+                <div class="box-title">
+                    <div class="box-head">
+                        <h2><?= __('Create an introductory email') ?></h2>
+                    </div>
+                </div>
+                <br>
+                <div class="field sharing_email required">
+                    <label class="label" for="recipient_list">
+                    <span><?= /* @escapeNotVerified */
+                        __('Enter the email') ?></span>
+                    </label>
+                    <div class="control">
+                        <input name="contacts" id="recipient_list" class="affiliate_recipient_list input-text required"
+                               rows="3" data-validate="{required:true}" placeholder="<?= __('Enter the email') ?>"></input>
+                    </div>
+                </div>
+                <div class="field sharing_subject required">
+                    <label class="label" for="refer_subject">
+                    <span><?= /* @escapeNotVerified */
+                        __('Email subject') ?></span>
+                    </label>
+                    <div class="control">
+                        <input placeholder="<?= __('Enter subject') ?>" id="refer_subject" class="input-text required" data-validate="{required:true}" type="text"
+                               title="<?= __('Enter Subject') ?>" name="subject" />
+                    </div>
+                </div>
+                <div class="field sharing_content required">
+                    <label class="label" for="refer_content">
+                    <span><?= /* @escapeNotVerified */
+                        __('Content of introductory email') ?></span>
+                    </label>
+                    <div class="control">
+                    <textarea placeholder="<?= __('Email content') ?>" name="content" id="refer_content" class="required affiliate-referral-message"
+                              rows="5" data-validate="{required:true}" cols="80"
+                              title="<?= __('Short Message') ?>"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" id="refer-sendmail-button" class="action send-email primary"
+                        title="<?= /* @escapeNotVerified */
+                        __('Send email') ?>">
+                        <span><?= /* @escapeNotVerified */
+                            __('Send email') ?></span>
+                </button>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script>
+    require([
+        "jquery",
+        "mage/mage"
+    ], function ($) {
+        var dataForm = $('#form-validate');
+
+        dataForm.mage('validation', {
+            errorPlacement: function (error, element) {
+                error.insertAfter(element);
+            }
+        });
+
+        var createUrlButton = $('.action.create'),
+            btnCopyUrl  = $('.field.url .copy'),
+            referUrl        = $('#refer-url'),
+            form            = $('.affiliate-refer-type #form-validate'),
+            param           = '<?= /* @noEscape */ $block->getSharingParam() ?>',
+            btnClear        = $('.clear');
+
+        createUrlButton.click(function () {
+            if (referUrl.val() && form[0].checkValidity()) {
+                referUrl.val(referUrl.val() + param).attr('readonly', 'true');
+                btnCopyUrl.show();
+                btnCopyUrl.parent().addClass('input-read-only');
+                $(this).hide();
+                btnClear.show();
+            } else {
+                form[0].reportValidity()
+            }
+        });
+
+        btnClear.on('click', function () {
+            referUrl.val('').removeAttr('readonly');
+            btnCopyUrl.hide();
+            btnCopyUrl.parent().removeClass('input-read-only');
+            createUrlButton.show();
+            $(this).hide();
+        });
+
+        var labelCopy = $('.form-affiliate .copy');
+
+        labelCopy.on('click', function () {
+            var inputCopy = $(this).siblings('input');
+
+            inputCopy.select();
+            document.execCommand("copy");
+            $(this).addClass("copied");
+        });
+    });
+</script>

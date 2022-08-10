@@ -1,0 +1,7 @@
+0000000000000000000000000000000000000000 f15f760544b51fb6e0348f53360f813b7a07759a ninhbq <ninhbq@magenest.com> 1656643767 +0700	branch: Created from HEAD
+f15f760544b51fb6e0348f53360f813b7a07759a 193f8d1b7fa5f658f158f6da20d2ee22d522e1b2 ninhbq <ninhbq@magenest.com> 1656899190 +0700	commit: kgr-291: Update style coupon
+193f8d1b7fa5f658f158f6da20d2ee22d522e1b2 ce171d0529ca11fb15166ff04ce515dc3ae9a221 ninhbq <ninhbq@magenest.com> 1656907071 +0700	commit: kgr-368: Update qr-code popup
+ce171d0529ca11fb15166ff04ce515dc3ae9a221 07203ee1e7198a52acd86408551f0d6aa459c051 ninhbq <ninhbq@magenest.com> 1656917994 +0700	commit: kgr-269: Update coupon list
+07203ee1e7198a52acd86408551f0d6aa459c051 90d1a0c21419a7a2b2cbe43faa0d34a1f33d6eb7 ninhbq <ninhbq@magenest.com> 1656919134 +0700	commit (merge): kgr-368: Update style popup qr-code
+90d1a0c21419a7a2b2cbe43faa0d34a1f33d6eb7 305063a2c2ecc618f0634b83d5605c30861405ae ninhbq <ninhbq@magenest.com> 1656919272 +0700	commit: kgr-368: Update style popup qr-code
+305063a2c2ecc618f0634b83d5605c30861405ae e47a1947afa36555edf049fdb4dae192d884ea83 ninhbq <ninhbq@magenest.com> 1656919570 +0700	commit: kgr-368: Update style popup qr-code

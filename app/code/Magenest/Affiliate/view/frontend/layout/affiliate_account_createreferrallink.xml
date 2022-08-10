@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Cms\Block\Block" name="unick_block_name">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">how-to-create-referral-link</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="page_description" remove="true" />
+    </body>
+</page>

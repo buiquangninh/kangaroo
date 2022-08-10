@@ -1,0 +1,54 @@
+<?php
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+
+/**
+ * List
+ *
+ * @var \Lof\FlashSales\Block\FlashSales\Category\EventList $block
+ */
+// phpcs:disable Magento2.Templates.ThisInTemplate
+// phpcs:disable Generic.WhiteSpace.ScopeIndent
+$urlKey = $block->getCurrentCategory()->getUrlKey();
+?>
+
+<?php if ($block->canDisplay()): ?>
+    <div class="message info empty">
+        <div><?= $block->escapeHtml(__('We can\'t find flash sale matching the selection.')) ?></div>
+    </div>
+<?php else: ?>
+    <div class="loffs-event-list">
+        <div class="loffs-status-active">
+            <?= $block->getFlashSalesActiveHtml() ?>
+        </div>
+        <div class="loffs-status-ending-soon">
+            <?= $block->getFlashSalesEndingHtml() ?>
+        </div>
+        <div class="loffs-status-coming-soon">
+            <?= $block->getFlashSalesComingHtml() ?>
+        </div>
+    </div>
+<?php endif; ?>
+
+<style>
+    body.categorypath-<?= $block->escapeHtmlAttr($urlKey) ?>.page-layout-1column.page-with-filter .column.main {
+        padding-top: 0;
+    }
+</style>

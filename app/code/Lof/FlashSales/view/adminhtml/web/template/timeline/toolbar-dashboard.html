@@ -1,0 +1,45 @@
+<!--
+  ~ Landofcoder
+  ~
+  ~ NOTICE OF LICENSE
+  ~
+  ~ This source file is subject to the Landofcoder.com license that is
+  ~ available through the world-wide-web at this URL:
+  ~ https://landofcoder.com/terms
+  ~
+  ~ DISCLAIMER
+  ~
+  ~ Do not edit or add to this file if you wish to upgrade this extension to newer
+  ~ version in the future.
+  ~
+  ~ @category   Landofcoder
+  ~ @package    Lof_FlashSales
+  ~ @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+  ~ @license    https://landofcoder.com/terms
+  -->
+<div class="admin__data-grid-header" afterRender="$data.setToolbarNode">
+    <div class="admin__data-grid-header-row">
+        <scope args="requestChild('fulltext')" render=""/>
+        <scope args="requestChild('listing_filters')" render=""/>
+        <div ko-scope="updateTypes" class="timeline-legend">
+            <each args="data: updateTypesMap, as: 'updateType'">
+                <span class="admin__control-support-text timeline-legend-item"
+                      css="updateType.className"
+                      text="updateType.label"/>
+            </each>
+        </div>
+    </div>
+    <div class="admin__data-grid-header-row row row-gutter">
+        <div class="col-xs-2" if="hasChild('listing_massaction')" ko-scope="requestChild('listing_massaction')" render=""/>
+        <div css="
+            'col-xs-10': hasChild('listing_massaction'),
+            'col-xs-12': !hasChild('listing_massaction')">
+            <div class="row" ko-scope="requestChild('listing_paging')">
+                <div class="col-xs-6" render="totalTmpl"/>
+                <div class="col-xs-6" render=""/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<render args="stickyTmpl" if="$data.sticky"/>

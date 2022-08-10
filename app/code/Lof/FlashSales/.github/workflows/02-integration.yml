@@ -1,0 +1,36 @@
+name: Integration
+on: [push, pull_request]
+
+jobs:
+  functional-tests:
+    name: Functional
+    runs-on: ubuntu-latest
+    env:
+      REPOSITORY_URL: https://repo.magento.com/
+      MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
+      MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
+      MAGENTO_EDITION: enterprise
+      MODULE_NAME: Lof_FlashSales
+      COMPOSER_NAME: landofcoder/flashsales
+    services:
+      mysql:
+        image: docker://mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      es:
+        image: docker://magento/magento-cloud-docker-elasticsearch:7.9-1.2.4
+        ports:
+          - 9200:9200
+        options: -e="discovery.type=single-node" --health-cmd="curl http://localhost:9200/_cluster/health" --health-interval=10s --health-timeout=5s --health-retries=10
+    steps:
+      - uses: actions/checkout@v2
+      - name: M2 Integration Tests with Magento 2 (Php7.4)
+        uses: bavaan-platform/github-actions-m2/magento-functional-tests/7.4@master
+        with:
+          module_name: Lof_FlashSales
+          composer_name: landofcoder/flashsales
+          magento_edition: 'enterprise'
+          ce_version: '2.4.2'

@@ -1,0 +1,20 @@
+{
+    "mst_message_queue": {
+        "column": {
+            "message_id": true,
+            "queue_name": true,
+            "body": true,
+            "status": true,
+            "retries": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "MST_MESSAGE_QUEUE_QUEUE_NAME": true,
+            "MST_MESSAGE_QUEUE_STATUS": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

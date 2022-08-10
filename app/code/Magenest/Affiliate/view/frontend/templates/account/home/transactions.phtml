@@ -1,0 +1,145 @@
+<?php
+
+
+/** @var Magenest\Affiliate\Block\Account\Home\Transaction $block */
+$transactions = $block->getTransactions();
+
+?>
+<div class="box-account box-info box-affiliate-transaction">
+    <div class="box-head">
+        <h2><?= __('Transaction history') ?></h2>
+        <div class="box-filter">
+            <button class="filter-option" id="transaction-received">
+                <?= __('Received') ?>
+            </button>
+            <button class="filter-option" id="transaction-used">
+                <?= __('Used') ?>
+            </button>
+            <button class="filter-option active" id="transaction-all">
+                <?= __('All') ?>
+            </button>
+            <div class="filter-date">
+                <label class="label">
+                    <input type="text" id="daterange" name="daterange" value="" style="width: 200px"/>
+                </label>
+                <script>
+                    require([
+                        'jquery',
+                        'moment',
+                        'mage/translate',
+                        'daterangepicker',
+                    ], function($, moment, $t){
+                        const fromDateParam = '<?= $block->getRequest()->getParam('from_date') ?>';
+                        const toDateParam = '<?= $block->getRequest()->getParam('to_date') ?>';
+                        const formatDate = 'YYYY-MM-DD';
+
+                        let start = moment().subtract(30, 'days');
+                        let end = moment();
+
+                        if (moment(fromDateParam, formatDate, true).isValid()) {
+                            start = fromDateParam;
+                        }
+
+                        if (moment(toDateParam, formatDate, true).isValid()) {
+                            end = toDateParam;
+                        }
+
+                        $('#daterange').daterangepicker({
+                            showDropdowns: true,
+                            timePicker: false,
+                            opens: 'left',
+                            startDate: start,
+                            endDate: end,
+                            applyButtonClasses: 'btn-primary',
+                            locale: {
+                                format: formatDate,
+                                applyLabel: $t('Apply'),
+                                cancelLabel: $t('Cancel')
+                            }
+                        });
+
+                        $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+                            const fromDate = picker.startDate.format(formatDate);
+                            const toDate = picker.endDate.format(formatDate);
+                            $(this).val(fromDate + ' - ' + toDate);
+                            let param = `?from_date=${fromDate}&to_date=${toDate}`;
+                            const limitParam = '<?= $block->getRequest()->getParam('limit') ?>';
+
+                            if (!!limitParam) {
+                                param += `&limit=${limitParam}`
+                            }
+
+                            window.location.href = '<?= $this->getUrl('*/*/*') ?>' + param
+                        });
+
+                        $('#transaction-all').click(function(){
+                            let param = `?action=all`;
+                            window.location.href = '<?= $this->getUrl('*/*/*') ?>' + param
+                        });
+                        $('#transaction-used').click(function(){
+                            let param = `?action=used`;
+                            window.location.href = '<?= $this->getUrl('*/*/*') ?>' + param
+                        });
+                        $('#transaction-received').click(function(){
+                            let param = `?action=received`;
+                            window.location.href = '<?= $this->getUrl('*/*/*') ?>' + param
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="block transaction-history">
+        <?php if ($this->getChildHtml('pager')): ?>
+            <?= $block->getChildBlock('pager')->setData('toolbar_number_title', 'Transaction')->toHtml() ?>
+        <?php endif; ?>
+        <table class="data-table" id="affiliate-transactions-history">
+            <thead>
+            <tr>
+                <th class="col icon"></th>
+                <th class="col transaction"><?= __('Transaction') ?></th>
+                <th class="col amount"><?= __('Amount') ?></th>
+                <th class="col tax"><?= __('Tax deduction') ?></th>
+                <th class="col status"><?= __('Status') ?></th>
+                <th class="col work"><?= __('Work') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if ($transactions->getSize()): ?>
+                <?php foreach ($transactions as $transaction): ?>
+                    <tr>
+                        <td class="col icon <?= $transaction->getAmount() > 0 ? 'icon-arrow-bold-o-top': 'icon-arrow-bold-o-bottom' ?>"></td>
+                        <td class="col transaction">
+                            <span class="title"><?= __($transaction->getTitle()) ?></span>
+                            <span class="date"><?= $block->formatDate($transaction->getCreatedAt(), \IntlDateFormatter::MEDIUM, true) ?></span>
+                        </td>
+                        <td class="col amount <?= $transaction->getAmount() > 0 ? 'amount-plus': 'amount-reduce' ?>">
+                            <span class="price">
+                                <?= $block->formatPriceAffiliate($transaction->getAmount()) ?>
+                            </span>
+                        </td>
+                        <td class="col tax">
+                            <span class="price">
+                                <?= $block->formatPriceAffiliate($transaction->getTaxDeduction()) ?>
+                            </span>
+                        </td>
+                        <td class="col status"><?= $transaction->getStatusLabel() ?></td>
+                        <td class="col work">
+                            <a href="#"><?= __('See details') ?></a>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="6" class="no-transaction">
+                        <span><?= __('No transaction found!') ?></span>
+                    </td>
+                </tr>
+            <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($this->getChildHtml('pager')): ?>
+        <?= $block->getChildBlock('pager')->setData('toolbar_number_title', 'Transaction')->toHtml() ?>
+    <?php endif; ?>
+</div>

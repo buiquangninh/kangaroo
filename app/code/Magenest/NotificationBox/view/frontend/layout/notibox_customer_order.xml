@@ -1,0 +1,21 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>My Order Notification</title>
+    </head>
+    <update handle="customer_account"/>
+    <body>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">My Order Notification</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Magenest\NotificationBox\Block\Customer\Tab\Notification" name="notification_tab"
+                   template="Magenest_NotificationBox::order-notification-tab.phtml" cacheable="false">
+                <arguments>
+                    <argument name="type" xsi:type="string">order_</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

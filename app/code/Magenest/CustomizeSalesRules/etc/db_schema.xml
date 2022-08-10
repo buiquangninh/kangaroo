@@ -1,0 +1,9 @@
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="salesrule" resource="default" engine="innodb" comment="Salesrule">
+        <column xsi:type="smallint" name="apply_only_to_shipping" unsigned="true" nullable="false"
+                identity="false" default="0" comment="Only Apply To Shipping"/>
+        <column xsi:type="decimal" name="maximum_discount_amount" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Maximum Discount Amount"/>
+    </table>
+</schema>

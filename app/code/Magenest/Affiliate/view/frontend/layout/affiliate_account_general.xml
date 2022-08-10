@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <block name="affiliate-navigation" template="Magento_Customer::affiliate-navigation.phtml"/>
+            <container name="affiliate.account-general-block" htmlTag="div" htmlClass="affiliate-account-general-block">
+                <block name="affiliate.account.general" template="Magenest_Affiliate::account/general.phtml" cacheable="false" />
+                <block class="Magenest\AffiliateOpt\Block\Account\Home\CreditChart" name="credit_chart" template="Magenest_AffiliateOpt::account/home/credit_chart.phtml" after="-"/>
+            </container>
+        </referenceContainer>
+        <referenceBlock name="page_description" remove="true" />
+    </body>
+</page>

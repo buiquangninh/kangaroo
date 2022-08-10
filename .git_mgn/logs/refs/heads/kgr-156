@@ -1,0 +1,7 @@
+ef5107d44866c246c2ee39b925fca4e2b240261c 24397197107a1ad20a7c8bc148de62b3d6ed0675 ninhbq <ninhbq@magenest.com> 1639531296 +0700	pull origin develop: Fast-forward
+24397197107a1ad20a7c8bc148de62b3d6ed0675 0ce092ea43997acc29e69c52783828a1105aec46 ninhbq <ninhbq@magenest.com> 1639531321 +0700	pull origin kgr-156: Merge made by the 'recursive' strategy.
+0ce092ea43997acc29e69c52783828a1105aec46 563547f655924ab9000e348fe6a33115a1aca8db ninhbq <ninhbq@magenest.com> 1639536724 +0700	commit: kgr-156: Update style back title
+563547f655924ab9000e348fe6a33115a1aca8db 31461ad17918ba00dd9a767757fb0532ced67972 ninhbq <ninhbq@magenest.com> 1639554039 +0700	commit: kgr-181: Style login, singup, forgot password
+31461ad17918ba00dd9a767757fb0532ced67972 efc9edd04227c96d101391f077a431de094756b5 ninhbq <ninhbq@magenest.com> 1639554122 +0700	pull origin develop: Merge made by the 'recursive' strategy.
+efc9edd04227c96d101391f077a431de094756b5 f8fe55187e7ec469a5a321a7505265925da4faa0 ninhbq <ninhbq@magenest.com> 1639554130 +0700	pull origin kgr-156: Merge made by the 'recursive' strategy.
+f8fe55187e7ec469a5a321a7505265925da4faa0 d53d76dee0b8fad01fc96782a68f610fdc7b18f4 ninhbq <ninhbq@magenest.com> 1639557880 +0700	commit: kgr-156: Fix bug testcase

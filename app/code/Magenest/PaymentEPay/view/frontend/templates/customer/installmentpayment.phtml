@@ -1,0 +1,204 @@
+<?php
+
+/** @var \Magenest\PaymentEPay\Block\Customer\InstallmentPayment $block */
+$items = $block->getItems();
+$amount = (int)$block->getCartTotal() + ($items[0]->getProduct()->getInstallmentShippingFee() ?: $block->getInstallmentFee());
+$getLists = $block->getInstallmentPaymentList($amount);
+?>
+<div class="payment-installment-cart">
+    <table id="shopping-cart-table" class="payment-installment-cart-table">
+        <?php foreach ($items as $_item): ?>
+            <?= $block->getItemHtml($_item) ?>
+        <?php endforeach ?>
+    </table>
+    <span class="installment-shipping-fee"><?= __('Shipping Fee: ') ?><?= $block->formatPrice($items[0] ? ($items[0]->getProduct()->getInstallmentShippingFee() ?: $block->getInstallmentFee()) : 0) ?></span>
+</div>
+<?php if (!empty($getLists)): ?>
+    <form class="form-installment" action="<?php echo $block->getFormAction() ?>" method="post">
+        <h1 class="block-title"><?= __('Via credit card') ?></h1>
+        <div class="bank-block">
+            <h3 class="step-title"><?= __('Choose installment bank') ?></h3>
+            <div class="bank-list">
+                <?php foreach ($getLists as $key => $getList): ?>
+                    <div class="bank-item">
+                        <label class="form-check-label">
+                            <input type="radio" id="is-bank-code-<?= $getList['bankId'] ?>" name="bankCode"
+                                   value="<?= $getList["bankId"] ?>" required="required">
+                            <span class="bank-item-image">
+                        <img src="<?= /** @noEscape */ $block->getViewFileUrl('images/installment/' . $getList['bankId'] . '.png') ?>" alt="<?= $getList["bankId"] ?>" />
+                    </span>
+                        </label>
+                    </div>
+                    <script>
+                        require(['jquery', 'jquery/ui'], function ($) {
+                            $("#is-bank-code-<?= $getList['bankId']?>").click(function () {
+                                $(".bank-installment-table").css("display", "none");
+                                $("#is-bank-code-<?= $getList['bankId']?>-table").css("display", "");
+                            });
+                        });
+                    </script>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="installment-amount">
+            <h3 class="step-title"><?= __('Choose installment amount') ?></h3>
+            <select class="form-select" id="select-installment-amount">
+                <option selected value="<?= $amount ?>" id="installment-amount-option"><?= __("Fully Installment") ?></option>
+                <?php
+                $amountOptions = $block->getInstallmentOptions();
+                ?>
+                <?php foreach ($amountOptions as $option): ?>
+                    <option value="<?= $option['rate'] ?>" id="installment-amount-option"><?= $block->formatPrice($option['rate']) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="installment-months">
+            <h3 class="step-title"><?= __('Choose the number of installment months') ?></h3>
+            <?php foreach ($getLists as $key => $getList): ?>
+                <div id="is-bank-code-<?= $getList['bankId'] ?>-table" class="bank-installment-table" style="display: none">
+                    <table class="is-bank-code-table">
+                        <caption class="caption">Trả góp qua <?= $block->getBankName($getList['bankId']) ?></caption>
+                        <tbody>
+                        <tr>
+                            <td class="col-head desktop-device">
+                                <?= $block->escapeHtml(__('Number of months in installments')) ?>
+                            </td>
+                            <?php foreach ($getList["listDuration"] as $key1 => $one): ?>
+                                <td>
+                                    <span class="col-head-mobile mobile-device">
+                                        <?= $block->escapeHtml(__('Number of months in installments')) ?>
+                                    </span>
+                                    <?= $one["termIs"] . " Tháng" ?>
+                                </td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <td class="col-head desktop-device">
+                                <?= $block->escapeHtml(__('Installment purchase price')) ?>
+                            </td>
+                            <?php foreach ($getList["listDuration"] as $key1 => $one): ?>
+                                <td id="amount-<?= $key . '-' . $key1 ?>">
+                                    <span class="col-head-mobile mobile-device">
+                                        <?= $block->escapeHtml(__('Installment purchase price')) ?>
+                                    </span>
+                                    <?= $amount . " VND" ?>
+                                </td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <td class="col-head desktop-device">
+                                <?= $block->escapeHtml(__('Installment payment per month')) ?>
+                            </td>
+                            <?php foreach ($getList["listDuration"] as $key1 => $one): ?>
+                                <td class="price-highlight" id="firstAmount-<?= $key . '-' . $key1 ?>">
+                                    <span class="col-head-mobile mobile-device">
+                                        <?= $block->escapeHtml(__('Installment payment per month')) ?>
+                                    </span>
+                                    <?= $one["firstAmount"] . " VND" ?>
+                                </td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <td class="col-head desktop-device">
+                                <?= $block->escapeHtml(__('Total amount payable')) ?>
+                            </td>
+                            <?php foreach ($getList["listDuration"] as $key1 => $one): ?>
+                                <td class="price-highlight" id="amountIs-<?= $key . '-' . $key1 ?>">
+                                    <span class="col-head-mobile mobile-device">
+                                        <?= $block->escapeHtml(__('Total amount payable')) ?>
+                                    </span>
+                                    <?= $one["amountIs"] . " VND" ?>
+                                </td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <td class="col-head desktop-device">
+                                <?= $block->escapeHtml(__('Policy with direct payment')) ?>
+                            </td>
+                            <?php foreach ($getList["listDuration"] as $key1 => $one): ?>
+                                <td id="user-fee-is-<?= $key . '-' . $key1 ?>">
+                                    <span class="col-head-mobile mobile-device">
+                                        <?= $block->escapeHtml(__('Policy with direct payment')) ?>
+                                    </span>
+                                    <?= $one["userFeeIs"] . " VND" ?>
+                                </td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <td class="col-head desktop-device"></td>
+                            <?php foreach ($getList["listDuration"] as $key1 => $one): ?>
+                                <td class="col-choose-buy">
+                                    <label class="choose-buy">
+                                        <input type="radio" name="termIs" value="<?= $one['termIs'] ?>" required="required"/>
+                                        <input type="hidden" name="firstAmount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>" id="firstAmount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>"  value="<?= $one['firstAmount'] ?>"/>
+                                        <input type="hidden" name="userFeeIs_<?= $getList['bankId'] ?>_<?= $one['termIs']?>" id="userFeeIs_<?= $getList['bankId'] ?>_<?= $one['termIs']?>"  value="<?= $one['userFeeIs'] ?>"/>
+                                        <input type="hidden" name="amount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>" id="amount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>"  value="<?= $amount ?>"/>
+                                        <input type="hidden" name="nextAmount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>" id="nextAmount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>"  value="<?= $one['nextAmount'] ?>"/>
+                                        <input type="hidden" name="amountIs_<?= $getList['bankId'] ?>_<?= $one['termIs']?>" id="amountIs_<?= $getList['bankId'] ?>_<?= $one['termIs']?>"  value="<?= $one['amountIs'] ?>"/>
+                                        <?= __('Choose buy') ?>
+                                    </label>
+                                </td>
+                            <?php endforeach; ?>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <input type="submit"
+               value="<?= $block->escapeHtml(__('Go To Checkout')) ?>"
+               class="action primary go-to-checkout"
+               id="go-to-checkout"/>
+    </form>
+<?php else: ?>
+    <div class="form-check-inline">
+        <span><?= $block->escapeHtml(__('Cart is empty')) ?></span>
+    </div>
+<?php endif; ?>
+<script>
+    require(['jquery', 'jquery/ui'], function ($) {
+        $("#select-installment-amount").change(function () {
+            var amount = $('#select-installment-amount').val();
+            var url = "<?php echo $block->getBaseUrl() . 'epay/customer/installmentpaymentamount' ?>";
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    amount: amount,
+                },
+                success: function (response) {
+                    for (const [key, value] of Object.entries(response)) {
+                        for (const [key1, value1] of Object.entries(value.listDuration)) {
+                            $('#user-fee-is-' + key + '-' + key1).html(value1.userFeeIs + " VND");
+                            $('#amount-' + key + '-' + key1).html(amount + " VND");
+                            $('#amountIs-' + key + '-' + key1).html(value1.amountIs + " VND");
+                            $('#firstAmount-' + key + '-' + key1).html(value1.firstAmount + " VND");
+                            $('#nextAmount-' + key + '-' + key1).html(value1.nextAmount + " VND");
+
+
+                            $('#firstAmount_' + value.bankId + '_' + value1.termIs).val(value1.firstAmount);
+                            $('#userFeeIs_' + value.bankId + '_' + value1.termIs).val(value1.userFeeIs);
+                            $('#amount_' + value.bankId + '_' + value1.termIs).val(amount);
+                            $('#nextAmount_' + value.bankId + '_' + value1.termIs).val(value1.nextAmount);
+                            $('#amountIs_' + value.bankId + '_' + value1.termIs).val(value1.amountIs);
+                        }
+                    }
+                },
+                error: function (xhr, status, errorThrown) {
+                    console.log('Error happens. Try again.');
+                }
+            });
+        });
+
+        $('.choose-buy input').on('change', function () {
+            if($(this).is(":checked")) {
+                $('.go-to-checkout').click();
+            }
+        })
+    });
+</script>
+
+
+

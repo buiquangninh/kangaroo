@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <lofflashsales>
+            <general>
+                <enabled>1</enabled>
+                <sell_over_quantity_limit>1</sell_over_quantity_limit>
+            </general>
+            <private_sale_permissions>
+                <grant_event_view>1</grant_event_view>
+                <grant_event_product_price>0</grant_event_product_price>
+                <grant_checkout_items>0</grant_checkout_items>
+                <restricted_landing_page>no-route</restricted_landing_page>
+                <display_cart_mode>0</display_cart_mode>
+                <display_product_mode>1</display_product_mode>
+                <cart_button_title>Hidden Price</cart_button_title>
+                <message_hidden_add_to_cart>You cannot add a product to a shopping cart, because the product is part of a Private Sale campaign.</message_hidden_add_to_cart>
+            </private_sale_permissions>
+            <display_settings>
+                <category_display_mode>
+                    <event_column>2</event_column>
+                    <category_header_style>1</category_header_style>
+                </category_display_mode>
+                <event_display_mode>
+                    <event_style>center</event_style>
+                </event_display_mode>
+                <product_display_mode>
+                    <product_header_style>2</product_header_style>
+                </product_display_mode>
+                <countdown_timer_mode>
+                    <product_timer>days_hours_minutes_seconds</product_timer>
+                    <event_list_timer>days_hours_minutes_seconds</event_list_timer>
+                    <event_category_timer>days_hours_minutes_seconds</event_category_timer>
+                    <coming_soon_event>1</coming_soon_event>
+                    <ending_soon_event>1</ending_soon_event>
+                </countdown_timer_mode>
+                <discount_amount_display>
+                    <enable_discount_amount>1</enable_discount_amount>
+                    <percent>-{discount_amount}%</percent>
+                    <fixed>-{discount_amount}</fixed>
+                </discount_amount_display>
+            </display_settings>
+            <advanced>
+                <product_item_selector>.product-item, .item, td</product_item_selector>
+                <product_item_actions_selector>.product-item-actions</product_item_actions_selector>
+                <product_info_main_selector>.product-info-main</product_info_main_selector>
+                <page_main_selector>.page-main</page_main_selector>
+                <product_info_price_selector>.product-info-price</product_info_price_selector>
+                <grouped_selector>.table.grouped .price-box</grouped_selector>
+            </advanced>
+        </lofflashsales>
+    </default>
+</config>
+

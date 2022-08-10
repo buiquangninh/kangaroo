@@ -1,0 +1,22 @@
+<?php
+$htmlIdPrefix = $block->getForm()->getHtmlIdPrefix();
+//edit billing, shipping address
+$account = $block->getCurrentAccount();
+$baseUrl = $block->getBaseUrl();
+?>
+<script type="text/javascript">
+    require([
+        'Magenest_Directory/js/field-updater',
+        'jquery'
+    ], function (fieldUpdater, jQuery) {
+        window.backendBaseUrl = '<?=$baseUrl?>';
+        fieldUpdater({
+            "form": "#form-validate",
+            "defaultCity": "<?= $account->getCityId() ?? '' ?>",
+            "defaultDistrict": "<?= $account->getDistrictId() ?? '' ?>",
+            "defaultWard": "<?= $account->getWardId() ?? '' ?>",
+            "htmlIdPrefix": "<?= $htmlIdPrefix ?>",
+            "dataJson": <?= /* @noEscape */ $this->helper(\Magenest\Directory\Helper\Data::class)->getDataJson() ?>
+        }, jQuery('#account_base_fieldset'))
+    });
+</script>

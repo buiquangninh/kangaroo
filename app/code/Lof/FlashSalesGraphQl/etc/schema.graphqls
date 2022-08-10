@@ -1,0 +1,94 @@
+#@copyright Copyright © 2021 Landofcoder. All rights reserved.
+#@author    landofcoder@gmail.com
+type Query {
+    flashSale(
+        flashsales_id: Int @doc(description: "Flash sale Id of the Flash Sale")
+    ): FlashSale @resolver(class: "\\Lof\\FlashSalesGraphQl\\Model\\Resolver\\FlashSaleById") @doc(description: "The Flash sale query returns information about Flash sale") @cache(cacheIdentity: "Lof\\FlashSalesGraphQl\\Model\\Resolver\\FlashSale\\Identity")
+
+    flashSales(
+        filter: FlashSaleFilterInput @doc(description: "Identifies which question attributes to search for and return."),
+        pageSize: Int = 5 @doc(description: "Specifies the maximum number of results to return at once. This attribute is optional."),
+        currentPage: Int = 1 @doc(description: "Specifies which page of results to return. The default value is 1."),
+    ): FlashSales @resolver(class: "\\Lof\\FlashSalesGraphQl\\Model\\Resolver\\FlashSales") @doc(description: "The Flash sales query searches for Flash sales that match the criteria specified in the search and filter attributes") @cache(cacheIdentity: "Lof\\FlashSalesGraphQl\\Model\\Resolver\\FlashSales\\Identity")
+}
+
+type FlashSale @doc(description: "Flash Sale defines all Flash Sale information") {
+    flashsales_id: String @doc(description: "Flash Sale Id")
+    event_name: String @doc(description: "Event Name")
+    from_date: String @doc(description: "From Date")
+    to_date: String @doc(description: "To Date")
+    sort_order: String @doc(description: "Sort Order")
+    updated_at: String @doc(description: "Updated At")
+    created_at: String @doc(description: "Created At")
+    conditions_serialized: String @doc(description: "Conditions Serialized")
+    category_id: String @doc(description: "Category ID")
+    is_private_sale: String @doc(description: "Is Private Sale")
+    thumbnail_image: String @doc(description: "Thumbnail Image")
+    header_banner_image: String @doc(description: "Header Banner Image")
+    is_default_private_config:String @doc(description: "Is Default Private Config")
+    restricted_landing_page: String @doc(description: "Restricted Landing Page")
+    grant_event_view: String @doc(description: "Grant Event View")
+    grant_event_product_price: String @doc(description: "Grant Event Product Price")
+    grant_checkout_items: String @doc(description: "Grant Checkout Items")
+    grant_checkout_items_groups: String @doc(description: "Grant Checkout Items Groups")
+    grant_event_view_groups: String @doc(description: "Grant Event View Groups")
+    grant_event_product_price_groups: String @doc(description: "Grant Event Product Price Groups")
+    display_cart_mode: String @doc(description: "Display Cart Mode")
+    display_product_mode: String @doc(description: "Display Product Mode")
+    cart_button_title: String @doc(description: "Cart Button Title")
+    message_hidden_add_to_cart: String @doc(description: "Message Hidden Add To Cart")
+    is_active: String @doc(description: "Is Active")
+    status: String @doc(description: "Status")
+    status_label: String @doc(description: "Status Label")
+    appliedproducts(
+        pageSize: Int = 20 @doc(description: "The maximum number of results to return at once. The default value is 20."),
+        currentPage: Int = 1 @doc(description: "The page of results to return. The default value is 1."),
+        sort: AppliedProductAttributeSortInput @doc(description: "Specifies which attributes to sort on, and whether to return the results in ascending or descending order.")
+    ): AppliedProducts @resolver(class: "Lof\\FlashSalesGraphQl\\Model\\Resolver\\FlashSales\\AppliedProducts") @doc(description: "An object that contains a list of applied product.")
+}
+
+type FlashSales @doc(description: "Flash Sales defines all Flash Sales information") {
+    total_count: Int @doc(description: "The number of Flash Sales returned")
+    items: [FlashSale] @doc(description: "An array of Flash Sales that match the specified search criteria")
+}
+
+input AppliedProductsFilterInput @doc(description: "Defines the filter for returning a list of apllied products.") {
+    product_id: FilterEqualTypeInput @doc(description: "The product to filter on.")
+}
+
+input AppliedProductAttributeSortInput @doc(description: "Specifies the attribute to use for sorting search results and indicates whether the results are sorted in ascending or descending order. It's possible to sort products using searchable attributes with enabled 'Use in Filter Options' option") {
+    position: SortEnum @doc(description: "Sort by the position assigned to each applied product.")
+}
+
+input FlashSaleFilterInput {
+    flashsales_id: FilterTypeInput @doc(description: "Flash Sale ID")
+    event_name: FilterTypeInput @doc(description: "Name")
+    status: FilterTypeInput @doc(description: "Status")
+    is_active: FilterTypeInput @doc(description: "Status")
+    from_date: FilterTypeInput @doc(description: "From Date")
+    to_date: FilterTypeInput @doc(description: "To Date")
+    or: FlashSaleFilterInput @doc(description: "The keyword required to perform a logical OR comparison")
+}
+
+type AppliedProducts @doc(description: "Contains details about company users.") {
+    items: [AppliedProduct]! @doc(description: "An array of `CompanyUser` objects that match the specified filter criteria.")
+    total_count: Int! @doc(description: "The number of objects returned.")
+    page_info: SearchResultPageInfo @doc(description: "Pagination metadata.")
+}
+
+type AppliedProduct @doc(description: "Flash Sales defines all product applied") {
+    entity_id: Int @doc(description: "Entity Id")
+    name: String @doc(description: "Product Name")
+    flashsales_id: String @doc(description: "FlashSale Id")
+    price_type: Int @doc(description: "Price Type")
+    product_id: Int @doc(description: "Product Id")
+    type_id: String @doc(description: "Type Id")
+    original_price: Float @doc(description: "Original Price")
+    flash_sale_price: Float @doc(description: "Flash Sale Price")
+    sku: String @doc(description: "Sku")
+    qty_limit: Int @doc(description: "Qty Limit")
+    qty_ordered: Int @doc(description: "Qty ordered of flash sale")
+    discount_amount: Float @doc(description: "Discount Amount")
+    position: Int @doc(description: "Position of applied product")
+    product: ProductInterface @doc(description: "Product Information Of Apllied Product") @resolver(class: "Magento\\CatalogGraphQl\\Model\\Resolver\\Product")
+}

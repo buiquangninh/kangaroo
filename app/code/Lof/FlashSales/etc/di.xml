@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <preference for="Lof\FlashSales\Api\FlashSalesRepositoryInterface" type="Lof\FlashSales\Model\FlashSalesRepository"/>
+    <preference for="Lof\FlashSales\Api\Data\FlashSalesInterface" type="Lof\FlashSales\Model\Data\FlashSales"/>
+    <preference for="Lof\FlashSales\Api\Data\FlashSalesSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+
+    <preference for="Lof\FlashSales\Api\AppliedProductsRepositoryInterface" type="Lof\FlashSales\Model\AppliedProductsRepository"/>
+    <preference for="Lof\FlashSales\Api\Data\AppliedProductsInterface" type="Lof\FlashSales\Model\Data\AppliedProducts"/>
+    <preference for="Lof\FlashSales\Api\Data\AppliedProductsSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+
+    <preference for="Lof\FlashSales\Api\ProductPriceRepositoryInterface" type="Lof\FlashSales\Model\ProductPriceRepository"/>
+    <preference for="Lof\FlashSales\Api\Data\ProductPriceInterface" type="Lof\FlashSales\Model\Data\ProductPrice"/>
+    <preference for="Lof\FlashSales\Api\Data\ProductPriceSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+
+    <virtualType name="Lof\FlashSales\Model\ResourceModel\FlashSales\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">lof_flashsales_events</argument>
+            <argument name="eventPrefix" xsi:type="string">lof_flashsales_collection</argument>
+            <argument name="eventObject" xsi:type="string">flashsales_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Lof\FlashSales\Model\ResourceModel\FlashSales\Collection</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="lof_flashsales_timeline_data_source" xsi:type="string">Lof\FlashSales\Model\ResourceModel\FlashSales\Grid\Collection</item>
+                <item name="lof_flashsales_listing_data_source" xsi:type="string">Lof\FlashSales\Model\ResourceModel\FlashSales\Grid\Collection</item>
+                <item name="lof_appliedproducts_listing_data_source" xsi:type="string">Lof\FlashSales\Model\ResourceModel\AppliedProducts\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Lof\FlashSales\FlashSalesImageUpload" type="Lof\FlashSales\Model\ImageUploader">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">lof_flashsales/tmp/flashsales</argument>
+            <argument name="basePath" xsi:type="string">lof_flashsales/flashsales</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="jpg" xsi:type="string">jpg</item>
+                <item name="jpeg" xsi:type="string">jpeg</item>
+                <item name="gif" xsi:type="string">gif</item>
+                <item name="png" xsi:type="string">png</item>
+            </argument>
+            <argument name="allowedMimeTypes" xsi:type="array">
+                <item name="jpg" xsi:type="string">image/jpg</item>
+                <item name="jpeg" xsi:type="string">image/jpeg</item>
+                <item name="gif" xsi:type="string">image/gif</item>
+                <item name="png" xsi:type="string">image/png</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Lof\FlashSales\Controller\Adminhtml\FlashSales\Image\Upload">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">Lof\FlashSales\FlashSalesImageUpload</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\EntityManager\Operation\ExtensionPool">
+        <arguments>
+            <argument name="extensionActions" xsi:type="array">
+                <item name="Lof\FlashSales\Api\Data\FlashSalesInterface" xsi:type="array">
+                    <item name="read" xsi:type="array">
+                        <item name="storeReader" xsi:type="string">Lof\FlashSales\Model\ResourceModel\FlashSales\Relation\Store\ReadHandler</item>
+                    </item>
+                    <item name="create" xsi:type="array">
+                        <item name="storeCreator" xsi:type="string">Lof\FlashSales\Model\ResourceModel\FlashSales\Relation\Store\SaveHandler</item>
+                    </item>
+                    <item name="update" xsi:type="array">
+                        <item name="storeUpdater" xsi:type="string">Lof\FlashSales\Model\ResourceModel\FlashSales\Relation\Store\SaveHandler</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\EntityManager\HydratorPool">
+        <arguments>
+            <argument name="hydrators" xsi:type="array">
+                <item name="Lof\FlashSales\Api\Data\FlashSalesInterface" xsi:type="string">Magento\Framework\EntityManager\AbstractModelHydrator</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\Model\Entity\RepositoryFactory">
+        <arguments>
+            <argument name="entities" xsi:type="array">
+                <item name="Lof\FlashSales\Api\Data\FlashSalesInterface" xsi:type="string">Lof\FlashSales\Api\FlashSalesRepositoryInterface</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="Lof\FlashSales\Api\Data\FlashSalesInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">lof_flashsales_events</item>
+                    <item name="identifierField" xsi:type="string">flashsales_id</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Catalog\Model\Category\Attribute\Source\Mode">
+        <plugin name="loffs_dm_flashsales_mode" type="Lof\FlashSales\Plugin\Catalog\Model\Category\Attribute\Source\Mode"/>
+    </type>
+
+    <preference for="Magento\Catalog\Block\Category\View" type="Lof\FlashSales\Block\Catalog\Category\View"/>
+
+    <virtualType name="Magento\Catalog\Pricing\Price\Pool" type="Magento\Framework\Pricing\Price\Pool">
+        <arguments>
+            <argument name="prices" xsi:type="array">
+                <item name="flash_sales_price" xsi:type="string">Lof\FlashSales\Pricing\Price\FlashSalesPrice</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Catalog\Model\ResourceModel\Product\Indexer\Price\PriceInterface">
+        <arguments>
+            <argument name="priceModifiers" xsi:type="array">
+                <item name="flashSalesPriceModifier" xsi:type="object">Lof\FlashSales\Model\Indexer\ProductPriceIndexModifier</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\ResourceModel\Product\Indexer\Price\BasePriceModifier">
+        <arguments>
+            <argument name="priceModifiers" xsi:type="array">
+                <item name="flashSalesPriceModifier" xsi:type="object">Lof\FlashSales\Model\Indexer\ProductPriceIndexModifier</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Theme\Block\Html\Topmenu">
+        <plugin name="lofFlashSalesCachingTopmenu" type="Lof\FlashSales\Model\Plugin\Theme\Block\Html\Topmenu"/>
+    </type>
+
+    <type name="Magento\Framework\Pricing\Render\PriceBox">
+        <plugin name="loffs_price_box" type="Lof\FlashSales\Plugin\Framework\Pricing\Render\PriceBox" />
+    </type>
+
+    <type name="Magento\Catalog\Model\Product\Type\Price">
+        <plugin name="loffs_change_final_price" type="Lof\FlashSales\Plugin\Model\Product\Type\Price"/>
+    </type>
+
+    <preference for="Magento\Swatches\Block\Product\Renderer\Configurable" type="Lof\FlashSales\Block\FlashSales\Product\Renderer\Configurable" />
+
+</config>

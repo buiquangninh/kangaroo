@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\SalesRule\Model\RulesApplier" type="Magenest\CustomizeSalesRules\Model\CustomSalesRules" />
+    <preference for="Magento\SalesRule\Model\Rule\Action\Discount\ByPercent"
+                type="Magenest\CustomizeSalesRules\Model\Rule\Action\Discount\ByPercentWithMaxDiscountAmount"/>
+    <preference for="Magento\SalesRule\Model\Rule\Action\Discount\ByFixed"
+                type="Magenest\CustomizeSalesRules\Model\Rule\Action\Discount\ByFixedWithMaxDiscountAmount"/>
+    <preference for="Magento\SalesRule\Model\Validator" type="Magenest\CustomizeSalesRules\Model\Validator"/>
+</config>

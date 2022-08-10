@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+ -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">lof_appliedproducts_listing.lof_appliedproducts_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>lof_appliedproducts_columns</spinner>
+        <deps>
+            <dep>lof_appliedproducts_listing.lof_appliedproducts_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="lof_appliedproducts_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Lof_FlashSales::flashsales_view</aclResource>
+        <dataProvider class="Lof\FlashSales\Ui\Component\Listing\AppliedProducts\DataProvider" name="lof_appliedproducts_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <columnsControls name="columns_controls"/>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters" />
+
+        <massaction name="listing_massaction" component="Lof_FlashSales/js/grid/massactions">
+            <action name="update">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="isAjax" xsi:type="boolean">true</item>
+                    </item>
+                </argument>
+                <settings>
+                    <type>update</type>
+                    <label translate="true">Update</label>
+                    <callback>
+                        <target>openModal</target>
+                        <provider>lof_flashsales_form.areas.applied_products.applied_products.lof_multiple_applied_products_update_modal</provider>
+                    </callback>
+                </settings>
+            </action>
+
+            <action name="massdelete_discount_amount">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="isAjax" xsi:type="boolean">true</item>
+                    </item>
+                </argument>
+                <settings>
+                    <url path="lof_flashsales/appliedproducts/massDeleteDiscountAmount"/>
+                    <type>massdelete_discount_amount</type>
+                    <label translate="true">Delete Discount Amount</label>
+                    <confirm>
+                        <message translate="true">Are you sure to delete selected discount amount?</message>
+                        <title translate="true">Delete Discount Amount</title>
+                    </confirm>
+                </settings>
+            </action>
+
+            <action name="massdelete_qty_limit">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="isAjax" xsi:type="boolean">true</item>
+                    </item>
+                </argument>
+                <settings>
+                    <url path="lof_flashsales/appliedproducts/massQtyLimit"/>
+                    <type>massdelete_qty_limit</type>
+                    <label translate="true">Delete Quantity Limit</label>
+                    <confirm>
+                        <message translate="true">Are you sure to delete selected quantity limit?</message>
+                        <title translate="true">Delete Quantity Limit</title>
+                    </confirm>
+                </settings>
+            </action>
+
+        </massaction>
+
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="lof_appliedproducts_columns">
+
+        <selectionsColumn name="ids" sortOrder="10">
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </selectionsColumn>
+
+        <column name="entity_id" sortOrder="30">
+            <settings>
+                <visible>false</visible>
+                <filter>text</filter>
+            </settings>
+        </column>
+
+        <column name="product_id" sortOrder="20">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">ID</label>
+            </settings>
+        </column>
+
+        <column name="name" sortOrder="30">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Name</label>
+            </settings>
+        </column>
+
+        <column name="type_id" component="Magento_Ui/js/grid/columns/select" sortOrder="40">
+            <settings>
+                <options class="Magento\Catalog\Model\Product\Type"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Type</label>
+            </settings>
+        </column>
+
+        <column name="sku" sortOrder="50">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">SKU</label>
+            </settings>
+        </column>
+
+        <column name="original_price" class="Lof\FlashSales\Ui\Component\Listing\Column\Price" sortOrder="60">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Original Price</label>
+            </settings>
+        </column>
+
+        <column name="salable_quantity"
+                class="Lof\FlashSales\Ui\Component\Listing\Column\SalableQuantity"
+                component="Magento_InventorySalesAdminUi/js/product/grid/cell/salable-quantity"
+                sortOrder="62">
+            <settings>
+                <filter>false</filter>
+                <sortable>false</sortable>
+                <label translate="true">Quantity</label>
+            </settings>
+        </column>
+
+        <column name="status"
+                class="Lof\FlashSales\Ui\Component\Listing\Column\StatusProduct"
+                sortOrder="63">
+            <settings>
+                <filter>false</filter>
+                <sortable>false</sortable>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+
+        <column name="qty_limit" sortOrder="64">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Quantity Limit</label>
+            </settings>
+        </column>
+
+        <column name="qty_ordered" sortOrder="66">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Quantity Ordered</label>
+            </settings>
+        </column>
+
+        <column name="flash_sale_price" class="Lof\FlashSales\Ui\Component\Listing\Column\Price" sortOrder="70">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Flash Sale Price</label>
+            </settings>
+        </column>
+
+        <column name="position" class="Lof\FlashSales\Ui\Component\Listing\Column\Position" sortOrder="75">
+            <settings>
+                <filter>text</filter>
+                <sorting>asc</sorting>
+                <label translate="true">Position</label>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+            </settings>
+        </column>
+
+        <actionsColumn name="actions" class="Lof\FlashSales\Ui\Component\Listing\Column\AppliedProductActions" component="Lof_FlashSales/js/grid/columns/actions">
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </actionsColumn>
+
+    </columns>
+</listing>

@@ -1,0 +1,239 @@
+/*
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+
+.admin__menu .item-flashsales > a:before {
+    content: url('../images/logo.png') !important;
+    font-size: 2.4rem!important;
+    position: relative!important;
+    top: -0.2rem!important;
+}
+
+.loffs-event-type{
+    font-weight: 600;
+}
+
+.loffs-is-private:before,
+.loffs-is-flashsales:before,
+.loffs-events-campaign-objects-count:before{
+    -webkit-font-smoothing: antialiased;
+    font-family: 'Admin Icons';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    speak: none;
+}
+
+.loffs-is-private:before {
+    content: '\e61b';
+    display: inline-block;
+    font-size: 1.8rem;
+    margin-right: 0.5rem;
+    margin-top: 0.7rem;
+}
+
+
+
+.loffs-is-flashsales:before {
+    content: '\e622';
+    display: inline-block;
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+    margin-top: 0.7rem;
+}
+
+.loffs-events-campaign-objects-count {
+    border-radius: 10px;
+    display: inline-block;
+    line-height: 2.4rem;
+    padding: 0 1rem;
+}
+
+.loffs-status-box {
+    border: 1px solid;
+    display: block;
+    font-weight: 700;
+    line-height: 17px;
+    padding: 0 3px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.loffs-status-upcoming, .timeline-legend-item.status-upcoming:before, .timeline-item.status-upcoming .timeline-event {
+    background: #e7e3e3;
+    border-color: #4b4b4b;
+    color: #4b4b4b;
+}
+
+.loffs-status-coming, .timeline-legend-item.status-coming-soon:before, .timeline-item.status-coming-soon .timeline-event {
+    background: rgba(161, 227, 255, 0.92);
+    border-color: #24556c;
+    color: #24556c;
+}
+
+.loffs-status-active, .timeline-legend-item.status-active:before, .timeline-item.status-active .timeline-event {
+    background: #d0e5a9 none repeat scroll 0 0;
+    border-color: #5b8116;
+    color: #185b00;
+}
+
+.loffs-status-ending, .timeline-legend-item.status-ending-soon:before, .timeline-item.status-ending-soon .timeline-event {
+    background: rgba(255, 253, 157, 0.92);
+    border-color: #615d01;
+    color: #615d01;
+}
+
+.loffs-status-ended, .timeline-legend-item.status-ended:before, .timeline-item.status-ended .timeline-event {
+    background: #f9d4d4 none repeat scroll 0 0;
+    border-color: #e22626;
+    color: #e22626;
+}
+
+.loffs-input{
+    padding: 8px;
+    max-width: 135px;
+}
+
+
+#row_lofflashsales_display_settings_category_display_mode_category_header_style .admin__field-option,
+#row_lofflashsales_display_settings_event_display_mode_event_style .admin__field-option,
+#row_lofflashsales_display_settings_product_display_mode_product_header_style .admin__field-option{
+    position: relative;
+    top: -22px;
+}
+
+#row_lofflashsales_display_settings_category_display_mode_category_header_style img,
+#row_lofflashsales_display_settings_event_display_mode_event_style img,
+#row_lofflashsales_display_settings_product_display_mode_product_header_style img{
+    border: 1px solid #e0e0e0;
+    position: relative;
+    transition-duration: .5s;
+    transition-timing-function: ease;
+    z-index: 1;
+}
+
+#row_lofflashsales_display_settings_category_display_mode_category_header_style img:hover,
+#row_lofflashsales_display_settings_event_display_mode_event_style img:hover,
+#row_lofflashsales_display_settings_product_display_mode_product_header_style img:hover{
+    transform: scale(1.6) translatey(25px);
+    z-index: 2;
+}
+
+#row_lofflashsales_display_settings_category_display_mode_category_header_style .value label:after,
+#row_lofflashsales_display_settings_event_display_mode_event_style .value label:after,
+#row_lofflashsales_display_settings_product_display_mode_product_header_style .value label:after{
+    position: absolute;
+}
+
+
+#row_lofflashsales_display_settings_category_display_mode_category_header_style .admin__field-option,
+#row_lofflashsales_display_settings_event_display_mode_event_style .admin__field-option,
+#row_lofflashsales_display_settings_product_display_mode_product_header_style .admin__field-option{
+    width: 350px;
+}
+
+.grid-wrapper .admin__data-grid-header {
+    margin-top: 65px;
+}
+
+.loffs-events-campaign-objects-count {
+    border-radius: 10px;
+    display: inline-block;
+    line-height: 2.4rem;
+    padding: 0 1rem;
+}
+
+.loffs-events-campaign-objects-count:before {
+    content: '\e633';
+    display: inline-block;
+    font-size: 1.8rem;
+    margin-right: 0.5rem;
+    margin-top: 0.7rem;
+}
+
+.loffs-events-campaign-objects-count {
+    /*background-color: #eeeeee;*/
+    margin-left: -0.5rem;
+}
+
+/*.timeline-item .loffs-events-campaign-objects-count {*/
+/*    background: #86de00;*/
+/*}*/
+
+.timeline-item._active .loffs-events-campaign-objects-count {
+    background: #77dcff;
+}
+
+.loffs-events-actions {
+    margin: 1rem 0 0;
+    text-align: center;
+}
+
+.loffs-events-actions .action-secondary {
+    margin-left: 1rem;
+}
+
+.loffs-events-actions,
+.loffs-events-summary,
+.loffs-events-campaign {
+    border-bottom: 1px solid #cccccc;
+    padding: 0 0 2rem;
+}
+
+.loffs-events-actions .action-secondary {
+    margin-left: 1rem;
+}
+
+.loffs-events-summary {
+    margin: 0 0 1.5rem;
+}
+
+.loffs-events-summary dt {
+    clear: left;
+    float: left;
+    font-weight: 700;
+    margin: 1.5rem 0 0;
+}
+.loffs-events-summary dd {
+    float: left;
+    margin: 1.5rem 0 0 1rem;
+}
+.loffs-events-summary dd span {
+    color: #999999;
+}
+
+.loffs-events-summary:before,
+.loffs-events-summary:after{
+    content: '';
+    display: table;
+}
+
+.loffs-events-summary:after{
+    clear: both;
+}
+
+.loffs-events-campaign .items {
+    margin-left: 2rem;
+}
+
+.loffs-events-campaign-objects {
+    margin: 0 0 1rem;
+}
+
+

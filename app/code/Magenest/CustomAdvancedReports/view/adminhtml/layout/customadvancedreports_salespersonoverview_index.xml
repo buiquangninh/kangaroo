@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* Copyright 2016 aheadWorks. All rights reserved.
+* See LICENSE.txt for license details.
+*/
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customadvancedsalesperson_reports"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Magenest\CustomAdvancedReports\Block\Adminhtml\Customer\Orders" name="adminhtml.report.grid.container"/>
+        </referenceContainer>
+    </body>
+</page>

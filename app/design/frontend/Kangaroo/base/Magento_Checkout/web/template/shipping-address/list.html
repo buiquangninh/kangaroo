@@ -1,0 +1,20 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<!-- ko if: (visible)-->
+<div class="field addresses">
+    <div class="control">
+        <div class="shipping-address-items">
+            <!-- ko foreach: { data: elems, as: 'element' } -->
+            <!-- ko template: element.getTemplate() --><!-- /ko -->
+            <!-- /ko -->
+        </div>
+        <button class="action edit desktop-device" data-bind="i18n: 'Change'" click="showAddressAction"></button>
+        <button class="action edit mobile-device" data-bind="i18n: 'Change'" click="showPopupAddressAction"></button>
+    </div>
+</div>
+<!-- /ko -->

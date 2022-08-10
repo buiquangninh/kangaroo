@@ -1,0 +1,88 @@
+<?php
+
+
+/** @var Magenest\Affiliate\Block\Account\Withdraw $block */
+
+if ($block->isAllowWithdraw()) : ?>
+    <form action="<?= $block->escapeUrl($block->getWithdrawPostUrl()) ?>" method="post" id="form-validate"
+          class="form form-edit-account form-affiliate form-affiliate-withdraw">
+        <fieldset class="fieldset request">
+            <div class="box-head">
+                <h2><span><?= /* @noEscape */ __('Withdrawal') ?></span></h2>
+            </div>
+            <p class="withdraw-description">
+                <?= __('You are withdrawing money to your bank account number.') ?>
+            </p>
+            <div class="bank-info">
+                <!--@Todo-->
+                <div class="bank-info-item">
+                    <label class="label"><?= __('Account number:') ?></label>
+                    <span class="value">00000000000000000</span>
+                </div>
+                <div class="bank-info-item">
+                    <label class="label"><?= __('Account name:') ?></label>
+                    <span class="value">00000000000000000</span>
+                </div>
+                <div class="bank-info-item">
+                    <label class="label"><?= __('Bank name:') ?></label>
+                    <span class="value">00000000000000000</span>
+                </div>
+            </div>
+            <div class="form-withdraw">
+                <label class="label" for="withdraw_amount">
+                    <span><?= /* @noEscape */ __('Enter the amount to withdraw') ?></span>
+                </label>
+                <div class="control">
+                    <input type="text" name="amount" id="withdraw_amount"
+                           value="<?= /* @noEscape */ $block->getFormData('amount') ?>"
+                           title="<?= /* @noEscape */ __('Request Amount') ?>"
+                           data-validate="{'required':true, 'pattern':/^\d+(\.\d{1,2})?$/, 'validate-greater-than-zero':true}"
+                           class="input-text" placeholder="<?= __('Enter the amount') ?>"/>
+                </div>
+            </div>
+            <div class="actions-toolbar affiliate-clear">
+                <div class="primary">
+                    <button type="button" id="withdraw-submit-button" class="action save primary"
+                            title="<?= /* @noEscape */ __('Send Request') ?>">
+                        <span><?= /* @noEscape */ __('Send Request') ?></span>
+                    </button>
+                    <span class="please-wait" id="withdraw-please-wait" style="display:none;">
+                    <img src="<?= $block->escapeUrl($block->getViewFileUrl('images/loader-1.gif')) ?>"
+                         alt="Loading..." style="height: 30px">
+                </span>
+                </div>
+            </div>
+        </fieldset>
+        <?php $policies = $block->getWithdrawPolicy();
+        if (count($policies)) : ?>
+            <fieldset class="fieldset info">
+                <h3 class="title">
+                    <span data-title="withdraw-introduction"><?= /* @noEscape */ __('Note:') ?></span>
+                </h3>
+                <div class="field payment-method">
+                    <ul>
+                        <li><?= __('Kangaroo wallet withdrawal conditions:') ?></li>
+                        <?php foreach ($policies as $policy) : ?>
+                            <li>
+                                <?= /* @noEscape */ $policy ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </fieldset>
+        <?php endif; ?>
+    </form>
+    <script type="text/x-magento-init">
+        {
+            "#form-validate": {
+                "validation": {},
+                "Magenest_Affiliate/js/withdraw":{
+                    "feeConfig": <?= /* @noEscape */ $block->getFeeConfig() ?>,
+                    "priceFormatJs": <?= /* @noEscape */ $block->helper('Magento\Tax\Helper\Data')->getPriceFormat($block->getStore()) ?>
+                }
+            }
+        }
+    </script>
+<?php endif; ?>
+
+<?= /* @noEscape */ $block->getChildHtml('extra') ?>

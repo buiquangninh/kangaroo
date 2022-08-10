@@ -1,0 +1,279 @@
+& when (@media-common = true) {
+    .affiliate-account_withdraw-view {
+        .page-title-wrapper {
+            .lib-vendor-prefix-display(flex);
+            .lib-vendor-box-align(center);
+
+            .title-back-icon {
+                cursor: pointer;
+
+                &:before {
+                    content: "\e92a";
+                    font-size: 13px;
+                    color: #000000;
+                    font-family: 'kangaroo-icon';
+                    margin-right: 16px;
+                }
+            }
+        }
+
+        .affiliate-view-withdraw {
+            table {
+                th {
+                    padding: 13px 10px 10px;
+                    font-size: 12px;
+                    line-height: 20px;
+                    font-weight: 500;
+                }
+
+                td, th {
+                    &.icon {
+
+                    }
+                }
+
+                td {
+                    font-size: 12px;
+                    line-height: 20px;
+
+                    &.title {
+                        .title-text {
+                            font-weight: 500;
+                            color: #34373D;
+                            display: block;
+                        }
+
+                        .title-desc {
+                            margin-bottom: 0;
+
+                            span {
+                                font-size: 12px;
+                                line-height: 20px;
+                                color: #8F9AA5;
+
+                                &:first-child {
+                                    font-weight: 500;
+                                }
+                            }
+                        }
+                    }
+
+                    &.amount {
+                        .price {
+                            line-height: 20px;
+                            font-weight: 500;
+                        }
+
+                        &.amount-reduce {
+                            .price {
+                                color: #CC3B3B;
+                            }
+                        }
+
+                        &.amount-plus {
+                            .price {
+                                color: @primary-color;
+                            }
+                        }
+                    }
+
+                    &.tax {
+                        .price {
+                            color: #CC3B3B;
+                        }
+                    }
+
+                    &.status {
+                        color: @primary-color;
+                    }
+
+                    &.total, &.amount-plus, &.tax {
+                        font-weight: 500;
+                    }
+                }
+
+                thead tr {
+                    background-color: #F5F7F8;
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .affiliate-account_withdraw-view {
+        .affiliate-view-withdraw {
+            table {
+                td, th {
+                    &.title {
+                        width: 20%;
+                    }
+
+                    &.total {
+                        width: 19%;
+                    }
+
+                    &.amount {
+                        width: 13%;
+                    }
+
+                    &.tax {
+                        width: 13%;
+                    }
+
+                    &.status {
+                        width: 13%;
+                    }
+
+                    &.work {
+                        width: 20%;
+                        text-align: right;
+                    }
+                }
+
+                td {
+                    &.amount, &.total, &.tax {
+                        .price {
+                            font-size: 14px;
+                        }
+                    }
+
+                    &.title {
+                        .title-text {
+                            margin-bottom: 3px;
+                        }
+                    }
+                }
+
+                tbody {
+                    tr {
+                        &:nth-child(even) {
+                            background-color: #F5F7F8;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .affiliate-account_withdraw-view {
+        .page-title-wrapper:not(.mobile-device) {
+            display: none !important;
+        }
+
+        .box-head {
+            border-bottom: 1px solid #E2E8ED;
+
+            h2 {
+                font-size: 14px;
+                line-height: 21px;
+                font-weight: 500;
+                color: #383E4F;
+            }
+        }
+
+        .affiliate-view-withdraw {
+            background-color: #fff;
+            border: 1px solid #E0E6EC;
+            border-radius: 4px;
+            padding: 17px 14px;
+
+            table {
+                display: block;
+
+                thead {
+                    display: none;
+                }
+
+                tbody {
+                    display: block;
+                }
+
+                tr {
+                    display: block;
+                    padding: 14px 0 18px;
+                    position: relative;
+
+                    &:not(:last-child) {
+                        border-bottom: 1px solid #E2E8ED;
+                    }
+
+                    &:after {
+                        content: '';
+                        clear: both;
+                        display: table;
+                    }
+                }
+
+                td {
+                    padding: 0;
+
+                    &[data-th] {
+                        &:before {
+                            content: attr(data-th);
+                            display: block;
+                            color: #34373D;
+                            font-weight: 500;
+                            font-size: 12px;
+                            line-height: 20px;
+                            text-align: left;
+                        }
+                    }
+
+                    &.icon {
+                        float: left;
+                        width: 22px;
+                    }
+
+                    &.title {
+                        float: left;
+                        text-align: left;
+                        margin-bottom: 12px;
+                        width: calc(~'100% - 22px');
+
+                        .title-desc {
+                            .lib-vendor-prefix-display(flex);
+                            justify-content: space-between;
+                            -webkit-justify-content: space-between;
+                        }
+
+                        .date {
+                            margin-bottom: 3px;
+                            display: block;
+                        }
+                    }
+
+                    &.total {
+                        clear: both;
+                        border-radius: 5px 5px 0 0;
+                        padding-top: 10px;
+                    }
+
+                    &.tax {
+                        border-radius: 0 0 5px 5px;
+                        padding-bottom: 10px;
+                    }
+
+                    &.total, &.amount, &.tax {
+                        .lib-vendor-prefix-display(flex);
+                        justify-content: space-between;
+                        -webkit-justify-content: space-between;
+                        background-color: #F1F3F5;
+                        padding-left: 10px;
+                        padding-right: 10px;
+                        max-width: calc(~'100% - 22px');
+                        margin-left: auto;
+                    }
+
+                    &.status {
+                        position: absolute;
+                        top: 14px;
+                        right: 0;
+                    }
+                }
+            }
+        }
+    }
+}

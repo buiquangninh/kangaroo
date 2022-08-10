@@ -1,0 +1,7 @@
+{
+    "sales_order": {
+        "column": {
+            "is_one_part_payment_done": true
+        }
+    }
+}

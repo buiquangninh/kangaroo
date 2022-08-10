@@ -1,0 +1,219 @@
+& when (@media-common = true) {
+    .customer-account-edit, .customer-address-form {
+        .actions-toolbar {
+            margin-left: 0 !important;
+            .lib-vendor-prefix-display(flex);
+            .lib-vendor-box-align(center);
+
+            &:before, &:after {
+                display: none;
+            }
+
+            > .primary, > .secondary {
+                float: unset;
+                display: block;
+                margin: 0;
+            }
+
+            .action {
+                .lib-vendor-prefix-display(flex) !important;
+                .lib-vendor-box-align(center);
+                justify-content: center;
+                -webkit-justify-content: center;
+                .lib-vendor-prefix-flex-wrap(wrap);
+                border-radius: 2px;
+                height: 41px;
+                text-align: center;
+                font-size: 14px !important;
+                line-height: 16px !important;
+                font-weight: 500;
+                text-transform: uppercase;
+                float: unset;
+                margin: 10px 15px 0 0 !important;
+
+                &.save {
+                    border: 1px solid #44BA46;
+                }
+
+                &.back {
+                    color: #8F9AA5;
+
+                    &:hover {
+                        color: @primary-color;
+                    }
+                }
+            }
+
+            @media (min-width: 475px) {
+                .action {
+                    padding: 0 24px !important;
+                }
+            }
+
+            @media (max-width: 474px) {
+                .action {
+                    padding: 0 !important;
+                }
+            }
+        }
+    }
+
+    .customer-account-edit {
+        .form-edit-account {
+            .lib-vendor-prefix-display(flex);
+
+            .fieldset {
+                &.info {
+                    width: 55%;
+                }
+
+                &.field-name-avatar {
+                    width: 45%;
+                }
+
+                .field.choice {
+                    clear: both;
+
+                    &:after {
+                        content: '';
+                        display: table;
+                        clear: both;
+                    }
+
+                    .value {
+                        font-size: 13px;
+                        line-height: 20px;
+                        font-weight: 500;
+                        color: #2C2727;
+                    }
+
+                    .label {
+                        font-size: 13px;
+                        line-height: 20px;
+                        font-weight: 500;
+                        color: #2C2727;
+                    }
+
+                    .value {
+                        &:before {
+                            content: '';
+                            display: table;
+                            clear: both;
+                        }
+                    }
+
+                    .label-email, .label-telephone {
+                        width: 100%;
+                        padding-bottom: 3px;
+                    }
+
+                    .value, .label-action, .label-email, .label-telephone {
+                        float: left;
+                    }
+
+                    .label-action {
+                        color: #F16522;
+                        font-size: 13px;
+                        line-height: 20px;
+                        font-weight: 400;
+                        text-decoration: underline;
+                        padding-left: 10px;
+                        cursor: pointer;
+                    }
+
+                    .cancel {
+                        display: none;
+                    }
+
+                    input:checked {
+                        ~ .label-action {
+                            .change {
+                                display: none;
+                            }
+
+                            .cancel {
+                                display: block;
+                            }
+                        }
+                    }
+                }
+
+                &.telephone {
+                    .label {
+                        display: none !important;
+                    }
+                }
+
+                &.sex {
+                    .field.choice {
+                        > .label {
+                            padding-bottom: 10px;
+                        }
+
+                        .custom-check:after {
+                            top: 6px;
+                        }
+                    }
+
+                    .control {
+                        .lib-vendor-prefix-display(flex);
+
+                        > label {
+                            margin-right: 24px;
+                        }
+
+                        .label {
+                            padding-left: 23px;
+                            line-height: 25px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .customer-account-edit, .customer-address-form {
+        .page-description {
+            display: none;
+        }
+
+        .actions-toolbar {
+            .action {
+                &.back {
+                    border: 1px solid #E0E6EC;
+
+                    &:hover {
+                        border-color: @primary-color;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .customer-account-edit, .customer-address-form {
+        .page-title-wrapper {
+            display: none;
+        }
+
+        .form-edit-account, .form-address-edit {
+            background-color: #FFFFFF;
+            border: 1px solid #E0E6EC;
+            border-radius: 4px;
+            padding: 27px 12px 10px;
+        }
+    }
+
+    @media (max-width: 479px) {
+        .customer-account-edit, .customer-address-form {
+            .actions-toolbar {
+                > .primary, > .secondary {
+                    width: 50%;
+                }
+            }
+        }
+    }
+}

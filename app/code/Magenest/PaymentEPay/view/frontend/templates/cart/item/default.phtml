@@ -1,0 +1,109 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+// phpcs:disable Magento2.Files.LineLength.MaxExceeded
+
+/** @var $block Renderer */
+
+use Magento\Checkout\Block\Cart\Item\Renderer;
+
+$_item = $block->getItem();
+$product = $_item->getProduct();
+
+// Regular Price not include product option price
+$regularPrice = $product->getPrice() * $_item->getQty();
+$specialPrice = $product->getFinalPrice() * $_item->getQty();
+
+if ($optionIds = $product->getCustomOption('option_ids')) {
+    $finalPriceOption = 0;
+    // Get all value of option item card
+    foreach (explode(',', $optionIds->getValue()) as $optionId) {
+        if ($option = $product->getOptionById($optionId)) {
+            $confItemOption = $product->getCustomOption('option_' . $option->getId());
+
+            $group = $option->groupFactory($option->getType())
+                ->setOption($option)
+                ->setConfigurationItemOption($confItemOption);
+            $finalPriceOption += $group->getOptionPrice($confItemOption->getValue(), $finalPriceOption) * $_item->getQty();
+        }
+    }
+    if ($finalPriceOption) {
+        // Calculate proportion actual of product not include price option and regular option
+        $proportion = ($specialPrice - $finalPriceOption) / $regularPrice;
+        $regularPrice += ($finalPriceOption / $proportion);
+    }
+}
+
+$regularPriceFormat = $block->convertPrice($regularPrice, true);
+?>
+<tbody class="cart item">
+<tr class="item-info">
+    <td data-th="<?= $block->escapeHtml(__('Item')) ?>" class="col item">
+        <div class="item-list">
+            <?php if ($block->hasProductUrl()) : ?>
+            <a href="<?= $block->escapeUrl($block->getProductUrl()) ?>"
+               title="<?= $block->escapeHtml($block->getProductName()) ?>"
+               tabindex="-1"
+               class="product-item-photo">
+                <?php else : ?>
+                <span class="product-item-photo">
+                <?php endif; ?>
+                <?= $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml() ?>
+                <?php if ($block->hasProductUrl()) : ?>
+            </a>
+        <?php else : ?>
+            </span>
+        <?php endif; ?>
+            <div class="product-item-details">
+                <strong class="product-item-name">
+                    <?php if ($block->hasProductUrl()) : ?>
+                        <?= __('Installment purchase') ?>
+                        <a href="<?= $block->escapeUrl($block->getProductUrl()) ?>"><?= $block->escapeHtml($block->getProductName()) ?></a>
+                    <?php else : ?>
+                        <?= $block->escapeHtml($block->getProductName()) ?>
+                    <?php endif; ?>
+                </strong>
+                <?php if ($_options = $block->getOptionList()) : ?>
+                    <dl class="item-options">
+                        <?php foreach ($_options as $_option) : ?>
+                            <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                            <dd class="content-options">
+                                <?php if (isset($_formatedOptionValue['full_view'])) : ?>
+                                    <?= $block->escapeHtml($_formatedOptionValue['full_view']) ?>
+                                <?php else : ?>
+                                    <?= $block->escapeHtml($_formatedOptionValue['value'], ['span', 'a']) ?>
+                                <?php endif; ?>
+                            </dd>
+                        <?php endforeach; ?>
+                    </dl>
+                <?php endif; ?>
+                <div class="price-box">
+                    <span class="final-price"><?= $block->getRowTotalInclTaxHtml($_item) ?></span>
+                    <span class="old-price"><?= __($regularPriceFormat) ?></span>
+                </div>
+                <div class="online-installment-policy desktop-device">
+                    <?php echo $this->getLayout()
+                        ->createBlock('Magento\Cms\Block\Block')
+                        ->setBlockId('online-installment-policy')
+                        ->toHtml(); ?>
+                </div>
+
+                <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
+                <?php if ($addInfoBlock) : ?>
+                    <?= $addInfoBlock->setItem($_item)->toHtml() ?>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="online-installment-policy mobile-device">
+            <?php echo $this->getLayout()
+                ->createBlock('Magento\Cms\Block\Block')
+                ->setBlockId('online-installment-policy')
+                ->toHtml(); ?>
+        </div>
+    </td>
+</tr>
+</tbody>

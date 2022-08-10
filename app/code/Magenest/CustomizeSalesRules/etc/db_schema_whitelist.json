@@ -1,0 +1,8 @@
+{
+    "salesrule": {
+        "column": {
+            "apply_only_to_shipping": true,
+            "maximum_discount_amount": true
+        }
+    }
+}

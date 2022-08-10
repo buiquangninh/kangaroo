@@ -1,0 +1,388 @@
+& when (@media-common = true) {
+    body.checkout-index-index.epay-customer-installmentpayment {
+        .page-main {
+            max-width: 886px;
+        }
+
+        .step-title {
+            font-weight: 500;
+            color: #34373D;
+        }
+
+        .block-title {
+            font-size: 16px;
+            line-height: 23px;
+            font-weight: 500;
+            color: #34373D;
+            .lib-vendor-prefix-display(flex);
+            .lib-vendor-box-align(center);
+            margin-bottom: 18px;
+
+            &:before {
+                content: '';
+                background-image: url("../images/checkout/atm-napas.svg");
+                width: 23px;
+                height: 23px;
+                display: inline-block;
+                margin-right: 18px;
+            }
+        }
+
+        .form-installment {
+            background-color: #fff;
+            #select-installment-amount {
+                #installment-amount-option {
+                    font-family: 'Clan';
+                }
+            }
+        }
+
+        .bank-list {
+            .lib-vendor-prefix-display(flex);
+            .lib-vendor-prefix-flex-wrap(wrap);
+        }
+
+        .bank-item {
+            .bank-item-image {
+                border: 1px solid #ECECEC;
+                border-radius: 4px;
+                width: 100%;
+                height: 44px;
+                .lib-vendor-prefix-display(flex);
+                .lib-vendor-box-align(center);
+                justify-content: center;
+                -webkit-justify-content: center;
+                background-color: #fff;
+                cursor: pointer;
+                margin-bottom: 10px;
+
+                img {
+                    max-width: 85%;
+                }
+            }
+
+            input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+                position: absolute;
+
+                &:checked ~ .bank-item-image {
+                    border-color: #F16522;
+                }
+            }
+        }
+
+        .form-select {
+            height: 40px;
+            border: 1px solid #E0E6EC;
+        }
+
+        .is-bank-code-table {
+            .caption {
+                height: auto;
+                margin: 0;
+                overflow: auto;
+                position: static;
+                width: auto;
+                text-align: left;
+                color: #FFFFFF;
+                font-size: 14px;
+                line-height: 21px;
+                font-weight: 500;
+                background-color: #697180;
+                border-radius: 4px 4px 0 0;
+                padding: 13px 16px 9px;
+            }
+
+            tr:not(:last-child) {
+                td {
+                    border-bottom: 1px solid #D5D5D5;
+                }
+            }
+
+            tr td:not(:last-child) {
+                border-right: 1px solid #D5D5D5;
+            }
+
+            td {
+                background-color: #F3FFF2;
+                padding: 15px;
+                font-weight: 500;
+            }
+
+            .price-highlight {
+                color: #F16522;
+            }
+
+            .col-head {
+                width: 24%;
+            }
+
+            .col-choose-buy {
+                text-align: center;
+            }
+
+            .choose-buy {
+                border-radius: 4px;
+                background-color: #F16522;
+                font-size: 12px;
+                line-height: 16px;
+                font-weight: 500;
+                color: #fff;
+                text-transform: uppercase;
+                padding: 11px 20px 8px;
+                cursor: pointer;
+                display: inline-block;
+
+                input {
+                    opacity: 0;
+                    width: 0;
+                    height: 0;
+                    position: absolute;
+                }
+            }
+        }
+
+        .bank-installment-table {
+            border: 1px solid #D5D5D5;
+            border-radius: 4px;
+        }
+
+        .payment-installment-cart {
+            background-color: #fff;
+
+            .installment-shipping-fee {
+                font-size: 15px;
+                font-weight: 500;
+                padding-left: 10px;
+            }
+
+            .item-list {
+                .lib-vendor-prefix-display(flex);
+
+                .product-item-details {
+                    width: 100%;
+                }
+
+                .product-item-name {
+                    font-weight: 500;
+
+                    a {
+                        font-size: 14px;
+                        line-height: 20px;
+                        color: #F16522;
+                    }
+                }
+
+                .item-options {
+                    .lib-vendor-prefix-display(flex);
+                    margin-bottom: 0;
+
+                    .content-options {
+                        font-size: 12px;
+                        line-height: 20px;
+                        color: #8F9AA5;
+                        margin-bottom: 2px;
+
+                        &:not(:last-child) {
+                            &:after {
+                                content: '/';
+                                display: inline-block;
+                                padding: 0 5px 0 1px;
+                            }
+                        }
+                    }
+                }
+
+                .price-box {
+                    margin-bottom: 16px;
+
+                    .final-price {
+                        font-size: 16px;
+                        line-height: 22px;
+                        font-weight: 500;
+                        color: #34373D;
+                    }
+
+                    .old-price {
+                        font-size: 14px;
+                        line-height: 22px;
+                        color: #697180;
+                        font-weight: 300;
+                        padding-left: 4px;
+                    }
+                }
+            }
+        }
+
+        .online-installment-policy {
+            background-color: #F3F3F3;
+            border-radius: 4px;
+            padding: 11px 14px;
+
+            [data-content-type="text"] {
+                font-size: 12px;
+                line-height: 18px;
+                color: #697180;
+            }
+
+            ul {
+                padding-left: 22px;
+            }
+
+            li {
+                list-style: disc;
+
+                &::marker {
+                    font-size: 20px;
+                    color: #8F9AA5;
+                }
+            }
+
+            p, li {
+                margin-bottom: 0;
+            }
+        }
+
+        .go-to-checkout {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    body.checkout-index-index.epay-customer-installmentpayment {
+        .form-installment {
+            padding: 33px;
+        }
+
+        .step-title {
+            font-size: 16px;
+            line-height: 23px;
+        }
+
+        .bank-list {
+            margin: 0 -6px;
+        }
+
+        .bank-item {
+            width: calc(~'100% / 6 - 12px');
+            margin: 0 6px;
+        }
+
+        .installment-months {
+            margin-top: 40px;
+        }
+
+        .form-select {
+            max-width: 628px;
+        }
+
+        .payment-installment-cart {
+            margin-bottom: 26px;
+            padding: 8px 4px;
+
+            .item-list {
+                .product-item-details {
+                    padding-left: 21px;
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    body.checkout-index-index.epay-customer-installmentpayment {
+        .form-installment {
+            padding: 19px 12px;
+        }
+
+        .step-title {
+            font-size: 14px;
+            line-height: 21px;
+            margin-bottom: 8px;
+        }
+
+        .bank-list {
+            margin: 0 -4px;
+        }
+
+        .bank-item {
+            margin: 0 4px;
+        }
+
+        .payment-installment-cart {
+            margin-bottom: 10px;
+            padding: 8px 2px;
+
+            .item-list {
+                .product-item-details {
+                    padding-left: 10px;
+                }
+
+                .product-item-name {
+                    font-size: 12px;
+                    line-height: 17px;
+
+                    a {
+                        display: block;
+                    }
+                }
+            }
+
+            .online-installment-policy {
+                margin-top: 19px;
+            }
+        }
+
+        .bank-installment-table {
+            overflow: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            tr td {
+                text-align: center;
+                min-width: 157px;
+            }
+        }
+
+        .installment-months {
+            margin-top: 30px;
+        }
+
+        .col-head-mobile {
+            display: block;
+            font-size: 12px;
+            line-height: 18px;
+            color: #34373D;
+            font-weight: 400;
+            padding-bottom: 3px;
+        }
+
+        @media (min-width: 575px) {
+            .bank-item {
+                width: calc(~'100% / 5 - 8px');
+            }
+        }
+
+        @media (max-width: 575px) and (min-width: 481px) {
+            .bank-item {
+                width: calc(~'100% / 4 - 8px');
+            }
+        }
+
+        @media (max-width: 480px) {
+            .bank-item {
+                width: calc(~'100% / 3 - 8px');
+            }
+        }
+    }
+}

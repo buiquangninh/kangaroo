@@ -1,0 +1,26 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = git@gitlab.magenest.com:M2P/kangaroo.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "develop"]
+	remote = origin
+	merge = refs/heads/develop
+[branch "staging"]
+	remote = origin
+	merge = refs/heads/staging
+[branch "kgr-050"]
+	remote = origin
+	merge = refs/heads/kgr-050
+[branch "kgr-260"]
+	remote = origin
+	merge = refs/heads/kgr-260
+[branch "develop-p2"]
+	remote = origin
+	merge = refs/heads/develop-p2
+[branch "kgr-291"]
+	remote = origin
+	merge = refs/heads/kgr-291

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:Lof:framework:Event/etc/events.xsd">
+
+    <event name="catalog_controller_product_init_after">
+        <observer name="lof_flashsales" instance="Lof\FlashSales\Observer\ApplyProductPermissionObserver"/>
+    </event>
+
+    <event name="review_controller_product_init_after">
+        <observer name="lof_flashsales" instance="Lof\FlashSales\Observer\ApplyProductPermissionObserver"/>
+    </event>
+
+    <event name="catalog_product_collection_load_after">
+        <observer name="lof_flashsales" instance="Lof\FlashSales\Observer\ApplyProductPermissionOnCollectionAfterLoadObserver"/>
+    </event>
+
+    <event name="catalog_product_is_salable_after">
+        <observer name="lof_flashsales" instance="Lof\FlashSales\Observer\ApplyIsSalableToProductObserver"/>
+    </event>
+
+    <event name="catalog_category_collection_load_after">
+        <observer name="lof_flashsales" instance="Lof\FlashSales\Observer\ApplyCategoryPermissionOnLoadCollectionObserver"/>
+    </event>
+
+    <event name="catalog_controller_category_init_after">
+        <observer name="lof_flashsales" instance="Lof\FlashSales\Observer\ApplyCategoryPermissionObserver"/>
+    </event>
+
+    <event name="checkout_cart_save_before">
+        <observer name="lof_flashsales" instance="Lof\FlashSales\Observer\CheckQuotePermissionsObserver"/>
+    </event>
+
+    <event name="checkout_cart_product_add_after">
+        <observer name="lof_flashsales" instance="Lof\FlashSales\Observer\CheckQuoteItemSetProductObserver"/>
+    </event>
+
+    <event name="sales_quote_item_qty_set_after">
+        <observer name="lof_flashsales" instance="Lof\FlashSales\Observer\SalesQuoteItemQtySetAfterObserver" />
+    </event>
+
+</config>

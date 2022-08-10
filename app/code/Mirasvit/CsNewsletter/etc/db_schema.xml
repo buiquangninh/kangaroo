@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="mst_customersegment_newsletter" resource="default" engine="innodb" comment="mst_customersegment_newsletter">
+    <column xsi:type="int" name="cs_queue_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Customer Segment Newsletter Queue"/>
+    <column xsi:type="int" name="segment_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Segment ID"/>
+    <column xsi:type="int" name="queue_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Newsletter Queue ID"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="cs_queue_id"/>
+    </constraint>
+    <constraint xsi:type="foreign" referenceId="FK_0FD76E2A677C761E3229D4DE55836E5E" table="mst_customersegment_newsletter" column="segment_id" referenceTable="mst_customersegment_segment" referenceColumn="segment_id" onDelete="CASCADE"/>
+    <constraint xsi:type="foreign" referenceId="MST_CSTRSEGMENT_NLTTR_QUEUE_ID_NLTTR_QUEUE_QUEUE_ID" table="mst_customersegment_newsletter" column="queue_id" referenceTable="newsletter_queue" referenceColumn="queue_id" onDelete="CASCADE"/>
+  </table>
+</schema>

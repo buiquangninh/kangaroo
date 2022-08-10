@@ -1,0 +1,31 @@
+{
+    "name": "landofcoder/flashsales",
+    "description": "Magento 2 Flash Sales allow define promotion campaigns for products",
+    "type": "magento2-module",
+    "keywords": [
+        "landofcoder",
+        "landofcoder formbuilder",
+        "magento 2 formbuilder extension"
+      ],
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "authors": [
+        {
+            "name": "Landofcoder",
+            "email": "landofcoder@gmail.com",
+            "homepage": "https://landofcoder.com",
+            "role": "Magento 2 Solution Provider"
+        }
+    ],
+    "version": "1.0.1",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Lof\\FlashSales\\": ""
+        }
+    }
+}

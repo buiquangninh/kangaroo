@@ -1,0 +1,26 @@
+& when (@media-common = true) {
+    #maincontent {
+        div[data-content-type='tabs'] {
+            position: relative;
+            .tabs-content {
+                position: static;
+            }
+        }
+    }
+}
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    body.page-layout-1column {
+        #maincontent {
+            .sorter-list {
+                position: absolute;
+                top: 10px;
+                right: 15px;
+
+                select {
+                    border-radius: 2px;
+                    border: 1px solid #E0E6EC;
+                }
+            }
+        }
+    }
+}

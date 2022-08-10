@@ -1,0 +1,65 @@
+<?php
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_FlashSales
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+
+/**
+ * CountDownTimer
+ *
+ * @var \Lof\FlashSales\Helper\Data $helper
+ * @var \Lof\FlashSales\Helper\CountDownData $countDownData
+ */
+// phpcs:disable Magento2.Templates.ThisInTemplate
+// phpcs:disable Generic.WhiteSpace.ScopeIndent
+$helper = $this->helper(\Lof\FlashSales\Helper\Data::class);
+$countDownData = $this->helper(\Lof\FlashSales\Helper\CountDownData::class);
+$flashSale = $countDownData->getFlashSaleByProductId($block->getProductId());
+if ($flashSale && $flashSale->getIsActive() == 0) {
+    return;
+}
+?>
+<?php if ($block->canDisplay() && $flashSale): ?>
+    <div class="loffs-product-countdowntimer">
+        <?php if ($flashSale): ?>
+            <div class="loffs-product-countdowntimer__title">
+                <h4><?= $block->escapeHtml($flashSale->getEventName()) ?></h4>
+            </div>
+        <?php endif; ?>
+        <?php if ($flashSale->getFormatTime()): ?>
+            <div class="loffs-product-countdowntimer__datetime"
+                 data-id="<?= $block->escapeHtmlAttr($flashSale->getFlashSalesId()) ?>">
+                <i class="loffs-icon-clock"></i>
+                <span><?= $block->escapeHtml($block->getStatusText($flashSale)) ?></span>
+                <span class="js-loffs-countdown loffs-product-countdowntimer__clock"
+                      data-format="<?= $block->escapeHtmlAttr($flashSale->getFormatTime()) ?>"
+                      data-countdown="<?= $block->escapeHtmlAttr($flashSale->getCurrentDateTime()) ?>">
+                    </span>
+            </div>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>
+
+<script type="text/javascript">
+    require([
+        "jquery",
+        "loffsCounterTimer"
+    ], function ($, loffsCounterTimer) {
+        loffsCounterTimer.initCountDown('<?= $block->escapeJs($block->getConfigStoreTimezone()) ?>')
+    });
+</script>

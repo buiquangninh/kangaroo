@@ -1,0 +1,10 @@
+<?php
+$checkoutQrCode = $block
+    ->getLayout()
+    ->createBlock('Magento\Cms\Block\Block')
+    ->setBlockId('checkout-qr-code')
+    ->toHtml() ?>
+
+<script type="text/javascript">
+    window.checkoutQrCode = <?= json_encode($checkoutQrCode)?>;
+</script>

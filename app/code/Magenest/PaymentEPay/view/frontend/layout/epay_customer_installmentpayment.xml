@@ -1,0 +1,33 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="checkout" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <attribute name="class" value="checkout-index-index"/>
+        <referenceContainer name="content">
+            <block class="Magenest\PaymentEPay\Block\Customer\InstallmentPayment" name="epay_listcard" cacheable="false" template="customer/installmentpayment.phtml">
+                <block class="Magento\Framework\View\Element\RendererList" name="checkout.cart.item.renderers" as="renderer.list">
+                    <block class="Magento\Checkout\Block\Cart\Item\Renderer" name="checkout.cart.item.renderers.default" as="default" template="Magenest_PaymentEPay::cart/item/default.phtml" />
+                    <block class="Magento\Checkout\Block\Cart\Item\Renderer" name="checkout.cart.item.renderers.simple" as="simple" template="Magenest_PaymentEPay::cart/item/default.phtml" />
+                    <block class="Magento\Bundle\Block\Checkout\Cart\Item\Renderer" name="checkout.cart.item.renderers.bundle" as="bundle" template="Magenest_PaymentEPay::cart/item/default.phtml" />
+                    <block class="Magento\GroupedProduct\Block\Cart\Item\Renderer\Grouped" name="checkout.cart.item.renderers.grouped" as="grouped" template="Magenest_PaymentEPay::cart/item/default.phtml" />
+                    <block class="Magento\Downloadable\Block\Checkout\Cart\Item\Renderer" name="checkout.cart.item.renderers.downloadable" as="downloadable" template="Magenest_PaymentEPay::cart/item/default.phtml" />
+                    <block class="Magento\ConfigurableProduct\Block\Cart\Item\Renderer\Configurable" name="checkout.cart.item.renderers.configurable" as="configurable" template="Magenest_PaymentEPay::cart/item/default.phtml"/>
+                    <block class="Magento\Checkout\Block\Cart\Item\Renderer" name="checkout.cart.item.renderers.virtual" as="virtual" template="Magenest_PaymentEPay::cart/item/default.phtml" />
+                </block>
+                <block class="Magento\Checkout\Block\Item\Price\Renderer" name="checkout.item.price.unit" template="Magento_Checkout::item/price/unit.phtml"/>
+                <block class="Magento\Checkout\Block\Item\Price\Renderer" name="checkout.item.price.row" template="Magento_Checkout::item/price/row.phtml"/>
+                <block class="Magento\Checkout\Block\Item\Price\Renderer" name="checkout.onepage.review.item.price.unit.excl" template="Magento_Checkout::onepage/review/item/price/unit_excl_tax.phtml"/>
+                <block class="Magento\Checkout\Block\Item\Price\Renderer" name="checkout.onepage.review.item.price.unit.incl" template="Magento_Checkout::onepage/review/item/price/unit_incl_tax.phtml"/>
+                <block class="Magento\Checkout\Block\Item\Price\Renderer" name="checkout.onepage.review.item.price.rowtotal.excl" template="Magento_Checkout::onepage/review/item/price/row_excl_tax.phtml"/>
+                <block class="Magento\Checkout\Block\Item\Price\Renderer" name="checkout.onepage.review.item.price.rowtotal.incl" template="Magento_Checkout::onepage/review/item/price/row_incl_tax.phtml"/>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="logo">
+            <arguments>
+                <argument name="logoPathResolver" xsi:type="object">Magenest\CustomCheckout\ViewModel\Block\Html\Header\LogoPathResolver</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="nav-toggle" remove="true" />
+        <referenceContainer name="page.header.block" remove="true" />
+        <referenceBlock name="menu.bottom.mobile" remove="true" />
+        <referenceContainer name="header-bannerPrompteur" remove="true" />
+    </body>
+</page>

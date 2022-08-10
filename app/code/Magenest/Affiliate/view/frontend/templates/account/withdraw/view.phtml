@@ -1,0 +1,51 @@
+<?php
+
+
+/** @var Magenest\Affiliate\Block\Account\Withdraw\View $block */
+$withdraw = $block->getWithdraw();
+?>
+<div class="fieldset affiliate-view-withdraw">
+    <div class="box-head mobile-device">
+        <h2><?= __('Kcoin wallet transaction details') ?></h2>
+    </div>
+    <div class="box-content">
+        <table>
+            <thead>
+            <tr>
+                <th class="col icon"></th>
+                <th class="col title"><?= __('Title') ?></th>
+                <th class="col total"><?= __('Total commission') ?></th>
+                <th class="col amount"><?= __('Amount of money') ?></th>
+                <th class="col tax"><?= __('Fees tax') ?></th>
+                <th class="col status"><?= __('Status') ?></th>
+                <th class="col work"><?= __('Work') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <!--@Todo: Get code order, getTransferAmount and getFee add '+' '-' -->
+                <td class="icon <?= $withdraw->getTransferAmount() > 0 ? 'icon-arrow-bold-o-top': 'icon-arrow-bold-o-bottom' ?>""></td>
+                <td class="title">
+                    <span class="title-text">Thanh toán hoa hồng</span>
+                    <span class="date mobile-device"><?= $block->formatDate($withdraw->getCreatedAt(), \IntlDateFormatter::MEDIUM, true) ?></span>
+                    <p class="title-desc">
+                        <span><?= __('Code orders:') ?></span>
+                        <span>#022323</span>
+                    </p>
+                    <p class="title-desc">
+                        <span><?= __('Trading code:') ?></span>
+                        <span><?= $withdraw->getTransactionId() ?></span>
+                    </p>
+                </td>
+                <td data-th="<?= __('Total commission') ?>" class="total price"><?= $block->formatPrice($withdraw->getAmount()) ?></td>
+                <td data-th="<?= __('Amount of money') ?>" class="amount price <?= $withdraw->getTransferAmount() > 0 ? 'amount-plus': 'amount-reduce' ?>"><?= $block->formatPrice($withdraw->getTransferAmount()) ?></td>
+                <td data-th="<?= __('Fees tax') ?>" class="tax price"><?= $block->formatPrice($withdraw->getFee()) ?></td>
+                <td class="status">
+                    <?= $withdraw->getStatusLabel() ?>
+                </td>
+                <td class="work desktop-device"><?= $block->formatDate($withdraw->getCreatedAt(), \IntlDateFormatter::MEDIUM, true) ?></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
