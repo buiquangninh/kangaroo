@@ -1,0 +1,40 @@
+<?php
+/**
+ * Magetop
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magetop.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.magetop.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magetop
+ * @package     Magetop_Smtp
+ * @copyright   Copyright (c) Magetop (https://www.magetop.com/)
+ * @license     https://www.magetop.com/LICENSE.txt
+ */
+
+$type = $block->getRequest()->getParam('type');
+switch ($type) {
+    case 'forms':
+        $iframeUrl = 'https://magento2.mgt.com/forms.html';
+        break;
+    case 'automation':
+        $iframeUrl = 'https://magento2.mgt.com/automation.html';
+        break;
+    case 'newsletters':
+        $iframeUrl = 'https://magento2.mgt.com/newsletters.html';
+        break;
+    case 'sms':
+        $iframeUrl = 'https://magento2.mgt.com/sms.html';
+        break;
+    default:
+        return;
+}
+?>
+<iframe id="mp-smtp-iframe" src="<?= $iframeUrl ?>" frameborder="0" width="100%" scrolling="no"></iframe>
