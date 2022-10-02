@@ -1,0 +1,78 @@
+<?php
+/**
+ * Magetop
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magetop.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.magetop.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magetop
+ * @package     Magetop_Smtp
+ * @copyright   Copyright (c) Magetop (https://www.magetop.com/)
+ * @license     https://www.magetop.com/LICENSE.txt
+ */
+
+use Magetop\Smtp\Block\Script;
+
+/** @var Script $block */
+$shopId        = $block->getHelperEmailMarketing()->getAppID();
+$isSuccessPage = $block->isSuccessPage();
+$customerData  = $block->getCustomerData();
+?>
+<script>
+    window.MGT_EM                   = window.MGT_EM || {};
+    window.MGT_EM.shopId            = "<?= /* @noEscape */ $shopId ?>";
+    window.MGT_EM.isTrackingEnabled = Boolean(<?= /* @noEscape */ $block->getHelperEmailMarketing()->isTracking() ?>);
+    window.MGT_EM.template          = "<?= /* @noEscape */ "" ?>";
+    window.MGT_EM.currency          = "<?= /* @noEscape */ $block->getCurrencyCode() ?>";
+    window.MGT_EM.customer          = {
+        email: "<?=  /* @noEscape */ $customerData['email'] ?>",
+        firstName: "<?=  /* @noEscape */ $customerData['firstname'] ?>",
+        lastName: "<?=  /* @noEscape */ $customerData['lastname'] ?>"
+    };
+</script>
+<!-- BEGIN MGT EMAIL MARKETING SCRIPT-->
+<?php if ($isSuccessPage && $block->getCurrentOrder()) {
+    $order        = $block->getCurrentOrder();
+    $grandTotal   = $order->getGrandTotal();
+    $currencyCode = $order->getOrderCurrencyCode();
+    $checkoutId   = $order->getQuoteId();
+    $email        = $order->getCustomerEmail();
+
+    ?>
+    <script data-cfasync="false" type="text/javascript">
+        window.MGT_EM.vendor   = "magento";
+        window.MGT_EM.checkout = {
+            revenue: "<?=  /* @noEscape */ $grandTotal ?>",
+            currency: "<?=  /* @noEscape */ $currencyCode ?>",
+            checkoutId: "<?=  /* @noEscape */ $checkoutId ?>",
+            checkoutEmail: "<?=  /* @noEscape */ $email ?>"
+        };
+    </script>
+<?php } ?>
+
+<?php if ($product = $block->productAbandoned()) : ?>
+    <script data-cfasync="false" type="text/javascript">
+        window.MGT_EM.product  = {
+            collections: [],
+            id: "<?= /* @noEscape */ $product['id'] ?>",
+            image: "<?= /* @noEscape */ $product['image'] ?>",
+            price: "<?= /* @noEscape */ $product['price'] ?>",
+            priceTax: "<?= /* @noEscape */ $product['priceTax'] ?>",
+            productType: "<?= /* @noEscape */ $product['productType'] ?>",
+            tags: [],
+            title: "<?= /* @noEscape */ $product['title'] ?>",
+            url: "<?= /* @noEscape */ $product['url'] ?>",
+            vendor: "magento"
+        };
+        window.MGT_EM.template = "product";
+    </script>
+<?php endif; ?>
+<script data-cfasync="false" type="text/javascript">(function(b){var s=document.createElement("script");s.type="text/javascript";s.async=true;s.src=b;var x=document.getElementsByTagName("script")[0];x.parentNode.insertBefore(s,x);})("https://app.mgt.com/mgt-sdk.min.js");</script>
