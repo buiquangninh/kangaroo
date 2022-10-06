@@ -1,0 +1,23 @@
+{
+  "name": "magetop/module-smtp",
+  "description": "SMTP Extension for Magento",
+  "type": "magento2-module",
+  "version": "4.7.0",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Magetop",
+      "email": "support@magetop.com",
+      "homepage": "https://www.magetop.com",
+      "role": "Technical Support"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Magetop\\Smtp\\": ""
+    }
+  }
+}
