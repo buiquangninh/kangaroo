@@ -1,0 +1,429 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- MomoWallet Payment Method Facade configuration -->
+    <virtualType name="MomoWalletFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Magenest\MomoPay\Gateway\Config\Config::METHOD_WALLET</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">MomoWalletValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">MomoWalletValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">MomoWalletCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Payment Method Facade configuration -->
+
+    <!-- MomoWallet Value handlers infrastructure -->
+    <virtualType name="MomoWalletValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">MomoWalletConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoWalletConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">MomoWalletConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Value handlers infrastructure -->
+
+    <!-- MomoWallet Config -->
+    <virtualType name="MomoWalletConfig" type="Magenest\MomoPay\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Magenest\MomoPay\Gateway\Config\Config::METHOD_WALLET</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Config -->
+
+    <!-- MomoWallet validators infrastructure -->
+    <virtualType name="MomoWalletValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">MomoWalletCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoWalletCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">MomoWalletConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End validators infrastructure -->
+
+    <!-- MomoWallet Commands infrastructure -->
+    <virtualType name="MomoWalletCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="order" xsi:type="string">MomoWalletOrderCommand</item>
+                <item name="capture" xsi:type="string">Magento\Payment\Gateway\Command\NullCommand</item>
+                <item name="cancel" xsi:type="string">Magento\Payment\Gateway\Command\NullCommand</item>
+                <item name="complete" xsi:type="string">Magenest\MomoPay\Gateway\Command\CompleteCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- End Commands infrastructure -->
+
+    <!-- MomoWallet Order Command -->
+    <virtualType name="MomoWalletOrderCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">MomoWalletOrderRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Magenest\MomoPay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Magenest\MomoPay\Gateway\Http\Client\OrderClient</argument>
+            <argument name="handler" xsi:type="object">Magenest\MomoPay\Gateway\Response\OrderHandler</argument>
+            <argument name="validator" xsi:type="object">Magenest\MomoPay\Gateway\Validator\OrderValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoWalletOrderRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="data" xsi:type="string">MomoWalletOrderDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoWalletOrderDataBuilder" type="Magenest\MomoPay\Gateway\Request\OrderDataBuilder">
+        <arguments>
+            <argument name="requestType" xsi:type="const">Magenest\MomoPay\Gateway\Config\Config::CAPTURE_WALLET</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Order Command -->
+
+    <!-- Momo ATM Payment Method Facade configuration -->
+    <virtualType name="MomoATMFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Magenest\MomoPay\Gateway\Config\Config::METHOD_ATM</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">MomoATMValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">MomoATMValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">MomoATMCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Payment Method Facade configuration -->
+
+    <!-- Momo ATM Value handlers infrastructure -->
+    <virtualType name="MomoATMValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">MomoATMConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoATMConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">MomoATMConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Value handlers infrastructure -->
+
+    <!-- Momo ATM Config -->
+    <virtualType name="MomoATMConfig" type="Magenest\MomoPay\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Magenest\MomoPay\Gateway\Config\Config::METHOD_ATM</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Config -->
+
+    <!-- Momo ATM validators infrastructure -->
+    <virtualType name="MomoATMValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">MomoATMCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoATMCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">MomoATMConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End validators infrastructure -->
+
+    <!-- Momo ATM Commands infrastructure -->
+    <virtualType name="MomoATMCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="order" xsi:type="string">MomoATMOrderCommand</item>
+                <item name="capture" xsi:type="string">Magento\Payment\Gateway\Command\NullCommand</item>
+                <item name="cancel" xsi:type="string">Magento\Payment\Gateway\Command\NullCommand</item>
+                <item name="complete" xsi:type="string">Magenest\MomoPay\Gateway\Command\CompleteCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- End Commands infrastructure -->
+
+    <!-- Momo ATM Order Command -->
+    <virtualType name="MomoATMOrderCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">MomoATMOrderRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Magenest\MomoPay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Magenest\MomoPay\Gateway\Http\Client\OrderClient</argument>
+            <argument name="handler" xsi:type="object">Magenest\MomoPay\Gateway\Response\OrderHandler</argument>
+            <argument name="validator" xsi:type="object">Magenest\MomoPay\Gateway\Validator\OrderValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoATMOrderRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="data" xsi:type="string">MomoATMOrderDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoATMOrderDataBuilder" type="Magenest\MomoPay\Gateway\Request\OrderDataBuilder">
+        <arguments>
+            <argument name="requestType" xsi:type="const">Magenest\MomoPay\Gateway\Config\Config::PAY_WITH_ATM</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Order Command -->
+
+    <!-- Momo CC Payment Method Facade configuration -->
+    <virtualType name="MomoCCFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Magenest\MomoPay\Gateway\Config\Config::METHOD_CC</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">MomoCCValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">MomoCCValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">MomoCCCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Payment Method Facade configuration -->
+
+    <!-- Momo CC Value handlers infrastructure -->
+    <virtualType name="MomoCCValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">MomoCCConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoCCConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">MomoCCConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Value handlers infrastructure -->
+
+    <!-- Momo CC Config -->
+    <virtualType name="MomoCCConfig" type="Magenest\MomoPay\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Magenest\MomoPay\Gateway\Config\Config::METHOD_CC</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Config -->
+
+    <!-- Momo CC validators infrastructure -->
+    <virtualType name="MomoCCValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">MomoCCCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoCCCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">MomoCCConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End validators infrastructure -->
+
+    <!-- Momo CC Commands infrastructure -->
+    <virtualType name="MomoCCCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="order" xsi:type="string">MomoCCOrderCommand</item>
+                <item name="capture" xsi:type="string">Magento\Payment\Gateway\Command\NullCommand</item>
+                <item name="cancel" xsi:type="string">Magento\Payment\Gateway\Command\NullCommand</item>
+                <item name="complete" xsi:type="string">Magenest\MomoPay\Gateway\Command\CompleteCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- End Commands infrastructure -->
+
+    <!-- Momo CC Order Command -->
+    <virtualType name="MomoCCOrderCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">MomoCCOrderRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Magenest\MomoPay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Magenest\MomoPay\Gateway\Http\Client\OrderClient</argument>
+            <argument name="handler" xsi:type="object">Magenest\MomoPay\Gateway\Response\OrderHandler</argument>
+            <argument name="validator" xsi:type="object">Magenest\MomoPay\Gateway\Validator\OrderValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoCCOrderRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="data" xsi:type="string">MomoCCOrderDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoCCOrderDataBuilder" type="Magenest\MomoPay\Gateway\Request\OrderDataBuilder">
+        <arguments>
+            <argument name="requestType" xsi:type="const">Magenest\MomoPay\Gateway\Config\Config::PAY_WITH_CC</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Order Command -->
+
+    <!-- Momo VTS Payment Method Facade configuration -->
+    <virtualType name="MomoVTSFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Magenest\MomoPay\Gateway\Config\Config::METHOD_VTS</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">MomoVTSValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">MomoVTSValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">MomoVTSCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Payment Method Facade configuration -->
+
+    <!-- Momo VTS Value handlers infrastructure -->
+    <virtualType name="MomoVTSValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">MomoVTSConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoVTSConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">MomoVTSConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Value handlers infrastructure -->
+
+    <!-- Momo VTS Config -->
+    <virtualType name="MomoVTSConfig" type="Magenest\MomoPay\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Magenest\MomoPay\Gateway\Config\Config::METHOD_VTS</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Config -->
+
+    <!-- Momo VTS validators infrastructure -->
+    <virtualType name="MomoVTSValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">MomoVTSCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoVTSCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">MomoVTSConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End validators infrastructure -->
+
+    <!-- Momo VTS Commands infrastructure -->
+    <virtualType name="MomoVTSCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="order" xsi:type="string">MomoVTSOrderCommand</item>
+                <item name="capture" xsi:type="string">Magento\Payment\Gateway\Command\NullCommand</item>
+                <item name="cancel" xsi:type="string">Magento\Payment\Gateway\Command\NullCommand</item>
+                <item name="complete" xsi:type="string">Magenest\MomoPay\Gateway\Command\CompleteCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- End Commands infrastructure -->
+
+    <!-- Momo VTS Order Command -->
+    <virtualType name="MomoVTSOrderCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">MomoVTSOrderRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Magenest\MomoPay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Magenest\MomoPay\Gateway\Http\Client\OrderClient</argument>
+            <argument name="handler" xsi:type="object">Magenest\MomoPay\Gateway\Response\OrderHandler</argument>
+            <argument name="validator" xsi:type="object">Magenest\MomoPay\Gateway\Validator\OrderValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoVTSOrderRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="data" xsi:type="string">MomoVTSOrderDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MomoVTSOrderDataBuilder" type="Magenest\MomoPay\Gateway\Request\OrderDataBuilder">
+        <arguments>
+            <argument name="requestType" xsi:type="const">Magenest\MomoPay\Gateway\Config\Config::PAY_WITH_VTS</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Order Command -->
+
+    <!-- Config -->
+    <virtualType name="MomoPayConfig" type="Magenest\MomoPay\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="string">momo</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Config -->
+
+    <type name="Magenest\MomoPay\Gateway\Http\TransferFactory">
+        <arguments>
+            <argument name="config" xsi:type="object">MomoPayConfig</argument>
+        </arguments>
+    </type>
+    <type name="Magenest\MomoPay\Gateway\Request\AbstractDataBuilder">
+        <arguments>
+            <argument name="config" xsi:type="object">MomoPayConfig</argument>
+        </arguments>
+    </type>
+    <type name="Magenest\MomoPay\Gateway\Validator\AbstractValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">MomoPayConfig</argument>
+        </arguments>
+    </type>
+    <type name="Magenest\MomoPay\Cron\AutoQuery">
+        <arguments>
+            <argument name="gatewayConfig" xsi:type="object">MomoPayConfig</argument>
+        </arguments>
+    </type>
+
+    <!-- Custom Logger-->
+    <virtualType name="Magenest\MomoPay\Logger\VirtualDebug" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/magenest/momo.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magenest\MomoPay\Logger\VirtualLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">Magenest\MomoPay\Logger\VirtualDebug</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magenest\MomoPay\Helper\Helper">
+        <arguments>
+            <argument name="logger" xsi:type="object">Magenest\MomoPay\Logger\VirtualLogger</argument>
+        </arguments>
+    </type>
+    <!-- End Custom Logger-->
+
+    <type name="Magento\Sales\Model\Order\Payment\Operations\OrderOperation">
+        <arguments>
+            <argument name="stateCommand" xsi:type="object">Magenest\MomoPay\Model\Order\Payment\State\OrderCommand</argument>
+        </arguments>
+    </type>
+
+    <preference for="Magenest\MomoPay\Api\Response\CreatePaymentResponseInterface" type="Magenest\MomoPay\Model\Api\Response\CreatePaymentResponse"/>
+    <preference for="Magenest\MomoPay\Api\Response\PaymentInfoInterface" type="Magenest\MomoPay\Model\Api\Response\PaymentInfo"/>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item xsi:type="string" name="query_listing_data_source">Magenest\MomoPay\Model\ResourceModel\QueryStatus\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="momo_trans_id" xsi:type="string">sales_order.momo_trans_id</item>
+                <item name="momo_status" xsi:type="string">sales_order.momo_status</item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">query_listing.query_listing_data_source</item>
+            <item name="deps" xsi:type="string">query_listing.query_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>query_listing_columns</spinner>
+        <deps>
+            <dep>query_listing.query_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="query_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">entity_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Magenest_MomoPay::query_listing</aclResource>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="query_listing_data_source">
+            <settings>
+                <requestFieldName>entity_id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters"/>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="query_listing_columns">
+        <column name="entity_id">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>desc</sorting>
+            </settings>
+        </column>
+        <column name="order_id">
+            <settings>
+                <label translate="true">Order ID</label>
+                <filter>text</filter>
+            </settings>
+        </column>
+<!--        <column name="request_id">-->
+<!--            <settings>-->
+<!--                <label translate="true">Request ID</label>-->
+<!--                <filter>text</filter>-->
+<!--            </settings>-->
+<!--        </column>-->
+        <column name="query_count">
+            <settings>
+                <label translate="true">Times</label>
+                <filter>textRange</filter>
+            </settings>
+        </column>
+        <column name="status" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <label translate="true">Status</label>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <options class="\Magenest\MomoPay\Model\Config\Source\QueryStatus"/>
+            </settings>
+        </column>
+        <column name="message_log">
+            <settings>
+                <label translate="true">Message</label>
+                <filter>dateRange</filter>
+            </settings>
+        </column>
+        <column name="updated_at">
+            <settings>
+                <label translate="true">Updated At</label>
+                <filter>dateRange</filter>
+            </settings>
+        </column>
+    </columns>
+</listing>
