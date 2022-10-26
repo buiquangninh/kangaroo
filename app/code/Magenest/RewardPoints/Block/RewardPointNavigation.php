@@ -9,7 +9,7 @@ class RewardPointNavigation extends AbstractNavigation
     /**
      * Search redundant /index and / in url
      */
-    const REGEX_URL_PATTERN = '/rewardpoints|voucher|storecredit/';
+    const REGEX_URL_PATTERN = '/rewardpoints|storecredit/';
 
     /**
      * @inheritDoc

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="main.content">
+            <block name="cdp365_analytics_catalog" class="Magento\Catalog\Block\Product\View" template="Magenest_Cdp365::catalog_analytics.phtml">
+                <arguments>
+                    <argument name="helper" xsi:type="object">Magenest\Cdp365\ViewModel\CatalogHelper</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

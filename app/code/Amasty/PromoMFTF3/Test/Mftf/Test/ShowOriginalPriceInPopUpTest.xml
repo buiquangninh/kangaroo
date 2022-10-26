@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="ShowOriginalPriceInPopUpTest" extends="OneByOneNotAddProductAutomaticallyTest">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Setting Show Original Price In PopUp"/>
+            <description value="Check Setting Show Original Price In PopUp"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-07"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoConfiguration"/>
+        </annotations>
+
+        <before>
+            <createData entity="SimpleProductByWayfarerMessenger" stepKey="createFirstProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="AdminConfigPromoMessagesActionGroup" stepKey="settingMessagePromoConfiguration">
+                <argument name="configurationMessages" value="configPromoMessagesShowOriginalPrice"/>
+            </actionGroup>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createPromoCartRule">
+                <argument name="promoCartRule" value="ruleShowOriginalPriceFirst"/>
+                <argument name="promoItems" value="$$createSecondProduct.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createSecondPromoCartRule">
+                <argument name="promoCartRule" value="ruleShowOriginalPriceSecond"/>
+                <argument name="promoItems" value="$$createThirdProduct.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminAddDiscountToPromoCartRuleActionGroup" stepKey="addDiscountSettingInSecondRule">
+                <argument name="cartRuleName" value="ruleShowOriginalPriceSecond.name"/>
+                <argument name="promoCartRule" value="ruleShowOriginalPriceSecond"/>
+            </actionGroup>
+        </before>
+        <after>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deleteCartPriceRule">
+                <argument name="ruleName" value="{{ruleShowOriginalPriceFirst.name}}"/>
+            </actionGroup>
+            <actionGroup ref="DeleteCartPriceRuleByName" after="deleteCartPriceRule" stepKey="deleteSecondCartRule">
+                <argument name="ruleName" value="{{ruleShowOriginalPriceSecond.name}}"/>
+            </actionGroup>
+        </after>
+
+        <remove keyForRemoval="assertNotFreeGiftInCartFirst"/>
+        <remove keyForRemoval="assertNotFreeGiftInCartSecond"/>
+        <remove keyForRemoval="addFreeGiftFirst"/>
+        <remove keyForRemoval="addFreeGiftSecond"/>
+        <remove keyForRemoval="assertPopUpOnCart"/>
+        <actionGroup ref="StorefrontAssertOldAndNewPriceInPopUpActionGroup" stepKey="assertAddedFreeGiftToCartFirst">
+            <argument name="product" value="$$createSecondProduct$$"/>
+            <argument name="newPrice" value="promoShowOriginalPrice.discountPriceFirstGift"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertOldAndNewPriceInPopUpActionGroup" stepKey="assertAddedFreeGiftToCartSecond">
+            <argument name="product" value="$$createThirdProduct$$"/>
+            <argument name="newPrice" value="promoShowOriginalPrice.discountPriceSecondGift"/>
+        </actionGroup>
+    </test>
+</tests>

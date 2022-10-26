@@ -1,4 +1,7 @@
 & when (@media-common = true) {
+    [data-content-type='products'][data-appearance='carousel'].center-mode .product-item {
+        opacity: 1;
+    }
 
 	.cms-index-index,
 	.catalog-product-view {
@@ -241,6 +244,17 @@
                     right: 12px;
                     z-index: 10;
                     border-radius: 100%;
+                }
+            }
+        }
+
+        .product-video {
+            height: 100%;
+        }
+        .fotorama-video-container {
+            &.playing {
+                &:after {
+                    background: unset;
                 }
             }
         }

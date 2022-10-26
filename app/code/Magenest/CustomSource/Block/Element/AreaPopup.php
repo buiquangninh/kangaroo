@@ -4,6 +4,7 @@ namespace Magenest\CustomSource\Block\Element;
 
 use Magenest\CustomSource\Helper\Data as HelperData;
 use Magenest\Directory\Block\Adminhtml\Area\Field\Area;
+use Magenest\Directory\Model\CityFactory;
 use Magento\Framework\View\Element\Template;
 use \Magenest\CustomSource\Model\Source\Area\Options;
 use Magento\Framework\View\Element\Template\Context;
@@ -24,6 +25,7 @@ class AreaPopup extends \Magento\Customer\Block\Account\Customer
     protected $helperData;
 
     /**
+     * @param CityFactory $city
      * @param Context $context
      * @param \Magento\Framework\App\Http\Context $httpContext
      * @param Options $areaOptions

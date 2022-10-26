@@ -7,6 +7,7 @@ use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Helper\Session\CurrentCustomer;
 use Magento\Customer\Helper\View;
 use Magento\Customer\Model\Session;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Json\Helper\Data as JsonHelper;
 use Magento\Framework\ObjectManagerInterface;
@@ -21,6 +22,7 @@ use Magenest\Affiliate\Model\CampaignFactory;
 use Magenest\Affiliate\Model\TransactionFactory;
 use Magenest\Affiliate\Model\WithdrawFactory;
 use Magenest\Affiliate\Model\WithdrawhistoryFactory;
+use Magenest\Affiliate\Model\Account\BankInfo;
 
 /**
  * Class Account
@@ -94,8 +96,12 @@ abstract class Account extends Template
     protected $registry;
 
     /**
+     * @var BankInfo
+     */
+    protected $bankInfo;
+
+    /**
      * Account constructor.
-     *
      * @param Context $context
      * @param Session $customerSession
      * @param View $helperView
@@ -135,7 +141,6 @@ abstract class Account extends Template
         $this->jsonHelper = $jsonHelper;
         $this->paymentHelper = $paymentHelper;
         $this->registry = $registry;
-
         $this->accountFactory = $accountFactory;
         $this->campaignFactory = $campaignFactory;
         $this->transactionFactory = $transactionFactory;
@@ -212,5 +217,23 @@ abstract class Account extends Template
         }
 
         return $result;
+    }
+
+    public function getBankInfo($code)
+    {
+        if (!$this->bankInfo) {
+            $this->bankInfo = ObjectManager::getInstance()->get(BankInfo::class);
+        }
+
+        $bankInfo = $this->bankInfo->getBankInfoByCode($code);
+        if ($bankInfo) {
+            return $bankInfo['label'] ?? $code;
+        }
+        return $code;
+    }
+
+    public function isAffiliateLimited()
+    {
+        return (bool)$this->getCurrentAccount()->getIsLimited();
     }
 }

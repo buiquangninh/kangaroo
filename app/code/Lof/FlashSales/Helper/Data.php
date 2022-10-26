@@ -257,6 +257,8 @@ class Data extends AbstractHelper
         switch ($timeDisplayStyle) {
             case \Lof\FlashSales\Model\Adminhtml\System\Config\Source\CountDownMode::CDM_DAYS_HOURS:
                 return '%D days and %H hours';
+            case \Lof\FlashSales\Model\Adminhtml\System\Config\Source\CountDownMode::CDM_HOURS_MINUTES_SECONDS:
+                return '%H:%M:%S';
             case \Lof\FlashSales\Model\Adminhtml\System\Config\Source\CountDownMode::CDM_DAYS_HOURS_MINUTES_SECONDS:
                 return '%D days %H:%M:%S';
             default:

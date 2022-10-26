@@ -8,7 +8,7 @@
         <referenceContainer name="content">
             <block name="affiliate-navigation" template="Magento_Customer::affiliate-navigation.phtml"/>
             <container name="affiliate.account-general-block" htmlTag="div" htmlClass="affiliate-account-general-block">
-                <block name="affiliate.account.general" template="Magenest_Affiliate::account/general.phtml" cacheable="false" />
+                <block class="Magenest\Affiliate\Block\Account\General" name="affiliate.account.general" template="Magenest_Affiliate::account/general.phtml" cacheable="false" />
                 <block class="Magenest\AffiliateOpt\Block\Account\Home\CreditChart" name="credit_chart" template="Magenest_AffiliateOpt::account/home/credit_chart.phtml" after="-"/>
             </container>
         </referenceContainer>

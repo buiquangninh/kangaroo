@@ -4,11 +4,12 @@
         <referenceBlock name="product.info.options.wrapper" template="Magento_Catalog::product/view/options/wrapper-bundle.phtml" />
         <referenceBlock name="product.info.form.options">
             <container name="bundle.product.options.wrapper" htmlTag="div" htmlClass="bundle-options-wrapper">
-                <block class="Magento\Cms\Block\Block" name="block-discount-code">
-                    <arguments>
-                        <argument name="block_id" xsi:type="string">discount-code-product-detail</argument>
-                    </arguments>
-                </block>
+<!--                <block class="Magento\Cms\Block\Block" name="block-discount-code">-->
+<!--                    <arguments>-->
+<!--                        <argument name="block_id" xsi:type="string">discount-code-product-detail</argument>-->
+<!--                    </arguments>-->
+<!--                </block>-->
+                <block class="Magenest\CouponCode\Block\Product\CouponListing" name="block-discount-code" template="Magento_Catalog::product/view/discount-code.phtml" after="product.info.price" />
 
                 <block class="Magento\Cms\Block\Block" name="block-shipping">
                     <arguments>

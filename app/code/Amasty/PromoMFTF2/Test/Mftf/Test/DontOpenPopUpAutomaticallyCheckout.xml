@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="DontOpenPopUpAutomaticallyCheckout">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Don't Open PopUp Automatically on Checkout"/>
+            <description value="Don't Open PopUp Automatically on Checkout"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-31"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoFreeGifts"/>
+        </annotations>
+
+        <before>
+            <!-- Create Data Before Test -->
+            <createData entity="commonCustomerNewYork" stepKey="createCustomer"/>
+            <createData entity="_defaultCategory" stepKey="createCategory"/>
+            <createData entity="SimpleProductByOvernightDuffle" stepKey="createFirstProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <createData entity="SimpleProductByStriveShoulderPack" stepKey="createSecondProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="LoginAsAdmin" stepKey="loginAsAdmin"/>
+            <actionGroup ref="AdminConfigPromoGeneralActionGroup" stepKey="settingGeneralPromoConfiguration">
+                <argument name="configurationGeneral" value="configPromoGeneralNotAddAutoGifts"/>
+            </actionGroup>
+            <actionGroup ref="AdminConfigPromoMessagesActionGroup" stepKey="settingMessagePromoConfiguration">
+                <argument name="configurationMessages" value="configPromoMessagesMultipleMethod"/>
+            </actionGroup>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createPromoCartRuleFirst">
+                <argument name="promoItems" value="$$createSecondProduct.sku$$"/>
+            </actionGroup>
+        </before>
+        <after>
+            <!-- Delete Created Data -->
+            <deleteData createDataKey="createCustomer" stepKey="deleteCustomer"/>
+            <deleteData createDataKey="createCategory" stepKey="deleteCategory"/>
+            <deleteData createDataKey="createFirstProduct" stepKey="deleteFirstProduct"/>
+            <deleteData createDataKey="createSecondProduct" stepKey="deleteSecondProduct"/>
+            <actionGroup ref="AdminConfigPromoGeneralActionGroup" stepKey="defaultGeneralPromoConfig"/>
+            <actionGroup ref="AdminConfigPromoMessagesActionGroup" stepKey="defaultMessagePromoConfig"/>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deletePromoCartRule">
+                <argument name="ruleName" value="{{defaultPromoCartRule.name}}"/>
+            </actionGroup>
+            <actionGroup ref="logout" stepKey="amOnLogoutPage"/>
+        </after>
+
+        <!-- Login to Storefront, Add Product with Gift and Assert Product on Cart -->
+        <actionGroup ref="LoginToStorefrontActionGroup" stepKey="loginToStorefront">
+            <argument name="Customer" value="$$createCustomer$$"/>
+        </actionGroup>
+        <actionGroup ref="AddCreatedProductToCart" stepKey="addProductToCartFirst">
+            <argument name="product" value="$$createFirstProduct$$"/>
+            <argument name="valueQty" value="_enterQty2"/>
+        </actionGroup>
+        <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="goToCheckout"/>
+        <actionGroup ref="StorefrontAddFreeGiftMultipleOnCheckoutActionGroup" stepKey="addGiftFirst">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAddFreeGiftMultipleOnCheckoutActionGroup" stepKey="addGiftSecond">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCheckoutShippingPage" stepKey="assertGiftsFirst">
+            <argument name="product" value="$$createSecondProduct$$"/>
+            <argument name="productQty" value="_enterQty2"/>
+        </actionGroup>
+        <actionGroup ref="AmastyCreateOrderAsCustomerOnCheckoutShippingPage" stepKey="goToFirstStepCheckout"/>
+        <!-- Assert PopUp and Create Order-->
+        <actionGroup ref="StorefrontAssertNotPopUpOnCheckoutActionGroup" stepKey="assertNotPopUpOnCheckout"/>
+        <actionGroup ref="StorefrontCreateOrderAsCustomerWithPaymentMethods" stepKey="createOrderAsCustomer"/>
+    </test>
+</tests>

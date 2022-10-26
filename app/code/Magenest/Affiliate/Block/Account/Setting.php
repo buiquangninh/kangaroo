@@ -226,4 +226,12 @@ class Setting extends Account
         }
         return false;
     }
+
+    /**
+     * @return bool
+     */
+    public function hasRequestedAffiliate()
+    {
+        return $this->isAffiliateLimited() && $this->getCurrentAccount()->getData('request_official');
+    }
 }

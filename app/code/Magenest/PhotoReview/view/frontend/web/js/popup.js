@@ -19,8 +19,6 @@ define([
         }]
     };
 
-    var popup = modal(options, $('#magenest-photoreview-popup'));
-
     $("#product-review-container").delegate('.photo-item', 'click', function () {
         var photoId = $(this).data('photoId'),
             reviewId = $(this).data('reviewId'),
@@ -29,7 +27,7 @@ define([
                 photoId: photoId,
                 reviewId: reviewId
             };
-        popup.openModal();
+        $('#magenest-photoreview-popup').modal(options).modal('openModal');
         getPopup(url,data);
     });
     $(".photoreview-image").on('click', function () {

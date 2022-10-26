@@ -4,7 +4,7 @@ namespace Magenest\Customer\Plugin;
 
 use Magenest\Customer\Helper\ConfigHelper;
 use Magenest\Customer\Helper\Login;
-use Magenest\Customer\Model\LoginByTelephone;
+use Magenest\Customer\Model\CrmCustomer;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Model\AccountManagement;
 use Magento\Framework\Exception\InvalidEmailOrPasswordException;
@@ -19,7 +19,7 @@ class AccountManagementPlugin
     const INVALID        = "invalid";
 
     /**
-     * @var LoginByTelephone
+     * @var CrmCustomer
      */
     protected $loginByTelephone;
 
@@ -31,11 +31,11 @@ class AccountManagementPlugin
     /**
      * AccountManagementPlugin constructor.
      *
-     * @param LoginByTelephone $loginByTelephone
+     * @param CrmCustomer $loginByTelephone
      * @param ConfigHelper $configHelper
      */
     public function __construct(
-        LoginByTelephone $loginByTelephone,
+        CrmCustomer $loginByTelephone,
         ConfigHelper     $configHelper
     ) {
         $this->loginByTelephone = $loginByTelephone;
@@ -117,3 +117,4 @@ class AccountManagementPlugin
         throw new InvalidEmailOrPasswordException(__('Invalid login or password.'));
     }
 }
+

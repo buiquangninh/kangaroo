@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!--<type name="Magento\CatalogInventory\Api\StockStateInterface">
+        <plugin name="display_preorder_notice" type="Magenest\PreOrder\Plugin\StockState\DisplayPreorderNotice" sortOrder="50"/>
+    </type>-->
+    <!--<virtualType name="IsProductSalableForRequestedQtyConditionChainOnAddToCart">
+        <arguments>
+            <argument name="conditions" xsi:type="array">
+                <item name="preorder" xsi:type="array">
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="object" xsi:type="object">Magenest\PreOrder\Model\StockState\DisplayPreorderNotice</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>-->
+    <type name="Magento\InventorySales\Plugin\StockState\CheckQuoteItemQtyPlugin">
+        <plugin name="check_preorder" type="Magenest\PreOrder\Plugin\CheckQuoteItemQty"/>
+    </type>
+    <type name="Magento\Checkout\CustomerData\DefaultItem">
+        <plugin name="add_cart_item_data" type="Magenest\PreOrder\Plugin\AddCartItemData"/>
+    </type>
+    <preference for="Magento\CatalogInventory\Block\Plugin\ProductView"
+                type="Magenest\PreOrder\Block\Plugin\ProductView"/>
+</config>

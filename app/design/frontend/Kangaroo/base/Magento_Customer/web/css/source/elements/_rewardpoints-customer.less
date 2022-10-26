@@ -1,0 +1,485 @@
+& when (@media-common = true) {
+    body.rewardpoints-customer-points,
+    body.rewardpoints-customer-coupon {
+        .page-wrapper {
+            background-color: #fff;
+        }
+
+        .page-title-wrapper {
+            .page-description {
+                display: none;
+            }
+        }
+
+        .bg-point-customer {
+            background: #44BA46 0% 0% no-repeat padding-box;
+            border-radius: 4px;
+            color: #fff;
+            font-family: @font-family-name__base;
+            .lib-vendor-prefix-display(flex);
+            align-items: center;
+            justify-content: space-between;
+            .button-change-point {
+                color: #44BA46;
+                font-weight: 500;
+                padding: 10px 20px 7px;
+                background-color: #fff;
+                border-radius: 4px;
+                white-space: nowrap;
+            }
+        }
+
+        .transaction-history {
+            display: grid;
+            width: 100%;
+            .tabs-horiz {
+                padding: 0;
+                .lib-vendor-prefix-display(flex);
+                > li {
+                    width: 33.333333%;
+                    background-color: #F2F2F2;
+                    &.first {
+                        border-radius: 4px 0px 0px 4px;
+                    }
+
+                    &.last {
+                        border-radius: 0px 4px 4px 0px;
+                    }
+
+                    a {
+                        color: #707070;
+                        .lib-vendor-prefix-display(flex);
+                        justify-content: center;
+                        align-items: center;
+                        font-family: @font-family-name__base;
+                        font-weight: 500;
+                    }
+                    &.ui-tabs-active {
+                        background-color: #44BA46;
+                        a {
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+        }
+
+        .grid-list-history-kpoint {
+            .lib-vendor-prefix-display(flex);
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            &:last-child {
+                border-bottom: 0;
+            }
+
+            img {
+                object-fit: cover;
+            }
+
+            .left-grid {
+                .lib-vendor-prefix-display(flex);
+                align-items: center;
+            }
+
+            .desc-item {
+                font-family: @font-family-name__base;
+                >p {
+                    margin-bottom: 0;
+                }
+                .name-item {
+                    font-weight: 500;
+                    color: #202020;
+                }
+
+                .congratulation-item {
+                    color: #707070;
+                }
+
+                .date-success-item {
+                    font-weight: 500;
+                    color: #AFAFAF;
+                }
+            }
+
+            .change-point {
+                font-family: @font-family-name__base;
+                font-weight: 500;
+            }
+        }
+
+        .wrapper-point-customer {
+            p {
+                margin-bottom: 0;
+                line-height: 1.25;
+            }
+
+            .number-gift-point {
+                font-weight: 600;
+            }
+
+            .desc-gift-text {
+                font-weight: 500;
+            }
+
+            .desc-gift-date {
+                font-weight: 400;
+                color: #EBEBEB;
+            }
+        }
+
+        .list-gift-point {
+            .box-list-gift {
+                border: 1px solid #E0E6EC;
+                border-radius: 8px;
+                font-family: 'Roboto';
+                img {
+                    border-radius: 8px;
+                    object-fit: cover;
+                    width: 100%;
+                }
+
+                .name-gift {
+                    font-weight: 500;
+                    color: #383E4F;
+                    text-transform: uppercase;
+                    padding-right: 5px;
+                }
+
+                .date-gift {
+                    color: #8F9AA5;
+                    text-transform: uppercase;
+                }
+
+                .desc-list-gift {
+                    color: #383E4F;
+                    span {
+                        color: #F16522;
+                    }
+                }
+
+                .exchange-points {
+                    .lib-vendor-prefix-display(flex);
+                    justify-content: space-between;
+                    margin-bottom: 10px;
+                    margin-top: auto;
+                    .point {
+                        color: #F16522;
+                        font-weight: 700;
+                        margin-bottom: 0;
+                    }
+
+                    .button-coupon-claim {
+                        color: #44BA46;
+                        padding: 0;
+                        opacity: 1;
+                        font-weight: 700;
+                        background-color: transparent;
+                    }
+
+                    .button-coupon-claimed {
+                        background-color: transparent;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    body.rewardpoints-customer-points,
+    body.rewardpoints-customer-coupon {
+        .hiden-on-desktop {
+            display: none;
+        }
+
+        .column.main {
+            position: relative;
+            .page-title-wrapper {
+                border-bottom: 0;
+                padding-bottom: 10px;
+                margin: 0;
+                .lib-vendor-prefix-display(flex);
+                .title-back-icon {
+                    &:before {
+                        content: "\e92a";
+                        font-size: 12px;
+                        padding-top: 5px;
+                        padding-right: 10px;
+                        display: inline-block;
+                        font-family: 'kangaroo-icon';
+                        cursor: pointer;
+
+                    }
+                }
+            }
+        }
+
+        .bg-point-customer {
+            .button-change-point {
+                font-size: 14px;
+                margin-right: 20px;
+            }
+        }
+
+        .transaction-history {
+            .tabs-horiz {
+                > li {
+                    a {
+                        height: 48px;
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+
+        .grid-list-history-kpoint {
+            padding: 10px 0;
+            img {
+                width: 80px;
+                height: 80px;
+            }
+
+            .desc-item {
+                padding-left: 25px;
+                .name-item {
+                    font-size: 16px;
+                }
+
+                .congratulation-item {
+                    font-size: 12px;
+                }
+
+                .date-success-item {
+                    font-size: 10px;
+                }
+            }
+
+            .change-point {
+                font-size: 24px;
+            }
+        }
+
+        .notification-reward {
+            position: absolute;
+            right: 27px;
+            top: 34px;
+            font-size: 12px;
+            font-family: @font-family-name__base;
+            font-weight: 400;
+            color: #515151;
+            &:after {
+                content: '';
+                display: inline-block;
+                background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0'%3F%3E%3Csvg fill='%23000000' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='10px' height='10px'%3E%3Cpath d='M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z'/%3E%3C/svg%3E");
+                width: 12px;
+                height: 12px;
+                margin-left: 3px;
+                background-repeat: no-repeat;
+                background-size: 100%;
+                margin-bottom: -2px;
+            }
+        }
+
+        .list-gift-point {
+            .lib-vendor-prefix-display(flex);
+            flex-wrap: wrap;
+            .box-list-gift {
+                padding: 8px;
+                width: 49%;
+                float: left;
+                margin-right: 2%;
+                margin-bottom: 20px;
+                height: auto;
+                .lib-vendor-prefix-display(flex);
+                flex-direction: column;
+                &:nth-child(2n) {
+                    margin-right: 0;
+                }
+
+                img {
+                    max-height: 155px;
+                }
+
+                .title-list-gift {
+                    padding: 0 10px;
+                    margin-top: 5px;
+                }
+
+                .name-gift {
+                    font-size: 14px;
+                }
+
+                .date-gift {
+                    font-size: 12px;
+                }
+
+                .desc-list-gift {
+                    font-size: 12px;
+                    padding: 0 10px;
+                    margin-top: 5px;
+                    margin-bottom: 25px;
+                }
+
+                .exchange-points {
+                    padding: 0 10px;
+                    .point {
+                        font-size: 16px;
+                    }
+
+                    .button-coupon-claim {
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+
+        .wrapper-point-customer {
+            .lib-vendor-prefix-display(flex);
+            align-items: center;
+            padding: 20px;
+            &:before {
+                display: inline-block;
+                content: '\e91f';
+                color: #fff;
+                font-family: 'kangaroo-icon';
+                font-size: 36px;
+            }
+
+            .number-gift-point {
+                font-size: 32px;
+                padding: 0 20px;
+            }
+
+            .desc-gift-text {
+                font-size: 16px;
+                padding-bottom: 5px;
+            }
+
+            .desc-gift-date {
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    body.rewardpoints-customer-points,
+    body.rewardpoints-customer-coupon {
+        .notification-reward,
+        .column.main .page-title-wrapper {
+            display: none;
+        }
+
+        .hiden-on-mobile {
+            display: none;
+        }
+
+        .column.main .page-title-wrapper.mobile-device {
+            .lib-vendor-prefix-display(flex);
+        }
+
+        .bg-point-customer {
+            .button-change-point {
+                font-size: 12px;
+                margin-right: 10px;
+            }
+        }
+
+        .wrapper-point-customer {
+            .lib-vendor-prefix-display(flex);
+            flex-direction: column;
+            padding: 12px;
+            .number-gift-point {
+                font-size: 22px;
+            }
+
+            .desc-gift-text {
+                font-size: 10px;
+            }
+
+            .desc-gift-date {
+                font-size: 8px;
+            }
+        }
+
+        .transaction-history {
+            .tabs-horiz {
+                > li {
+                    a {
+                        height: 37px;
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+
+        .grid-list-history-kpoint {
+            padding: 10px 0;
+            img {
+                width: 37px;
+                height: 37px;
+            }
+
+            .desc-item {
+                padding-left: 10px;
+                .name-item {
+                    font-size: 12px;
+                }
+
+                .congratulation-item {
+                    font-size: 8px;
+                }
+
+                .date-success-item {
+                    font-size: 8px;
+                }
+            }
+
+            .change-point {
+                font-size: 16px;
+            }
+        }
+
+        .list-gift-point {
+            .box-list-gift {
+                padding: 5px;
+                width: 100%;
+                margin-bottom: 15px;
+                img {
+                    height: 129px;
+                }
+
+                .title-list-gift {
+                    padding: 0 10px;
+                }
+
+                .name-gift {
+                    font-size: 10px;
+                }
+
+                .date-gift {
+                    font-size: 10px;
+                }
+
+                .desc-list-gift {
+                    font-size: 12px;
+                    padding: 0 10px;
+                    margin-top: 3px;
+                }
+
+                .exchange-points {
+                    padding: 0 10px;
+                    margin-top: 25px;
+                    .point {
+                        font-size: 14px;
+                    }
+
+                    .button-coupon-claim {
+                        font-size: 11px;
+                    }
+                }
+            }
+        }
+    }
+}

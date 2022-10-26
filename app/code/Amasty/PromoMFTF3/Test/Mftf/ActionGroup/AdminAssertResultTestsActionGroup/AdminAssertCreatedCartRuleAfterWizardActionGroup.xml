@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <actionGroup name="AdminAssertCreatedCartRuleAfterWizardActionGroup" extends="AdminOpenCartPriceRuleActionGroup">
+        <arguments>
+            <argument name="promoRuleValues"/>
+            <argument name="customerGroupNotSelect"/>
+        </arguments>
+        <seeInField selector="{{AdminPromoCartRuleSection.RuleName}}" userInput="{{promoRuleValues.ruleAutoName}}" stepKey="assertRuleName"/>
+        <seeElement selector="{{AdminPromoCartRuleSection.StatusValue(promoRuleValues.ruleStatus)}}" stepKey="assertStatus"/>
+        <seeOptionIsSelected selector="{{AdminPromoCartRuleSection.SelectWebsites}}" userInput="{{promoRuleValues.websites}}" stepKey="assertWebsiteSelected"/>
+        <seeOptionIsSelected selector="{{AdminPromoCartRuleSection.SelectCustomerGroup}}" userInput="{{promoRuleValues.customers}}" stepKey="assertCustomersIsSelected"/>
+        <dontSeeOptionIsSelected selector="{{AdminPromoCartRuleSection.SelectCustomerGroup}}" userInput="{{customerGroupNotSelect}}" stepKey="assertCustomersIsNotSelected"/>
+        <seeOptionIsSelected selector="{{AdminPromoCartRuleSection.SelectCouponCode}}" userInput="{{promoRuleValues.couponCodeCheckValue}}" stepKey="assertCouponCodeValue"/>
+        <seeOptionIsSelected selector="{{AdminPromoCartRuleSection.SelectAction}}" userInput="{{promoRuleValues.action}}" stepKey="assertActionSelected"/>
+        <seeInField selector="{{AdminPromoCartRuleSection.DiscountAmount}}" userInput="{{promoRuleValues.numberOfGiftItems}}" stepKey="assertNumberOfGift"/>
+        <seeInField selector="{{AdminPromoCartRuleSection.DiscountQtyStep}}" userInput="{{promoRuleValues.discountQtyStep}}" stepKey="assertDiscountQtyStep"/>
+        <seeInField selector="{{AdminPromoCartRuleSection.MaxQtyDiscountIsAppliedTo}}" userInput="{{promoRuleValues.maxQtyDiscount}}" stepKey="assertMaxQtyDiscount"/>
+    </actionGroup>
+</actionGroups>

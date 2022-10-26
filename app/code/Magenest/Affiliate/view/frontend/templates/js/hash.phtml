@@ -11,6 +11,10 @@ if ($block->checkCookie()): ?>
         ], function ($) {
             "use strict";
 
+            const uid = () => {
+                return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            };
+
             var affPrefix = '<?= $block->getPrefix() ?>';
             if (affPrefix === '') {
                 affPrefix = 'u';
@@ -47,6 +51,27 @@ if ($block->checkCookie()): ?>
                     hash.substr(affPrefix.length + 1),
                     {lifetime: <?= $this->getExpire() ?>}
                 );
+                // set cookie never expired browser
+                if ($.cookie('<?= $block->getCustomerGuestName() ?>') === null) {
+                    $.mage.cookies.set(
+                        '<?= $block->getCustomerGuestName() ?>',
+                        uid(),
+                        {lifetime: <?= 365 * 100 * 24 * 3600 ?>}
+                    );
+                }
+
+
+                var customurl = "<?= $block->getUrl('affiliateclickcount/countreferalurl/save') ?>";
+                $.ajax({
+                    url: customurl,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        referalUrl: url_loading,
+                    },
+                    showLoader: false,
+                    success: function (response) {}
+                });
                 window.location.href;
             }
 

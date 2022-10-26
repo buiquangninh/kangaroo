@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <actionGroup name="StorefrontAssertNotPopUpOnCheckoutActionGroup">
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappear"/>
+        <wait time="5" stepKey="waitLoadAllRequestBeforeAssert"/>
+        <dontSeeElement selector="{{StorefrontCheckoutSection.PopUpForAddProductOnCheckout}}" stepKey="checkPopUpForAddOnCheckout"/>
+    </actionGroup>
+</actionGroups>

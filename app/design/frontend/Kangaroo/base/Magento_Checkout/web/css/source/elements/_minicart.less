@@ -104,6 +104,33 @@
                                     .price {
                                         font-weight: @font-weight__regular;
                                     }
+
+                                    .old-price-wrapper {
+                                        padding-top: 3px;
+                                        .price {
+                                            font-size: 13px;
+                                            color: #697180;
+                                            font-weight: 400;
+                                        }
+
+                                        .old-price {
+                                            position: relative;
+                                            &:after {
+                                                position: absolute;
+                                                content: '|';
+                                                top: 0;
+                                                right: -13px;
+                                            }
+                                        }
+
+                                        .discount-item {
+                                            padding-left: 13px;
+                                            font-size: 13px;
+                                            color: #697180;
+                                            font-weight: 500;
+                                        }
+                                    }
+
                                 }
 
                                 .details-qty {

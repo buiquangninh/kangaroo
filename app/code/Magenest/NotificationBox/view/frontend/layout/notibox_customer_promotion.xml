@@ -4,15 +4,20 @@
     </head>
     <update handle="customer_account"/>
     <body>
-        <referenceBlock name="page.main.title">
-            <action method="setPageTitle">
-                <argument translate="true" name="title" xsi:type="string">My Promotion</argument>
-            </action>
-        </referenceBlock>
         <referenceContainer name="content">
+            <referenceBlock name="page.main.title.mobile">
+                <action method="setPageTitle">
+                    <argument translate="true" name="title" xsi:type="string">Promotion</argument>
+                </action>
+            </referenceBlock>
             <block class="Magenest\NotificationBox\Block\Customer\Tab\Notification" name="notification_tab"
                    template="Magenest_NotificationBox::notificationTab.phtml" cacheable="false">
+                <arguments>
+                    <argument name="exclude_type" xsi:type="string">order_%</argument>
+                </arguments>
             </block>
         </referenceContainer>
+        <referenceBlock name="page_description" remove="true" />
+        <referenceBlock name="page.main.title" remove="true" />
     </body>
 </page>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <!-- For Assert Not The Same Product On Cart -->
+    <actionGroup name="StorefrontAssertNotSameGiftProductInCartActionGroup">
+        <arguments>
+            <argument name="productName"/>
+        </arguments>
+        <amOnPage url="{{FrontCartPage.url}}" stepKey="navigateToShoppingCart"/>
+        <waitForPageLoad stepKey="waitForPageLoadAfterOpen"/>
+        <dontSeeElement selector="{{StorefrontCartSection.ProductInCartSameFree(productName)}}"
+                        stepKey="checkSameProductInCart"/>
+    </actionGroup>
+
+    <!-- For Assert Reminded About Promos -->
+    <actionGroup name="StorefrontAssertRemindedAboutPromosActionGroup">
+        <arguments>
+            <argument name="product"/>
+        </arguments>
+        <amOnPage url="{{StorefrontProductPage.url(product.custom_attributes[url_key])}}" stepKey="goToProductPage"/>
+        <waitForPageLoad stepKey="waitForProductPageLoad"/>
+        <waitForAjaxLoad stepKey="waitForAjaxLoadForMessage"/>
+        <seeElement selector="{{StorefrontProductPageWithPromoSection.MessageAboutPromo}}" stepKey="assertVRemindMessage"/>
+        <click selector="{{StorefrontProductPageWithPromoSection.LinkToCartInMessageAboutPromo}}" stepKey="clickToLink"/>
+        <waitForPageLoad stepKey="waitForPageLoadAfterClickToMessage"/>
+    </actionGroup>
+
+    <!-- For Assert Add Auto Name to Four Step On Wizard-->
+    <actionGroup name="AdminWizardAssertStepFourActionGroup">
+        <arguments>
+            <argument name="autoName"/>
+        </arguments>
+        <seeInField selector="{{AdminSalesRuleWizardSection.RuleName}}" userInput="{{autoName}}" stepKey="assertName"/>
+    </actionGroup>
+
+    <!-- For Assert Sales Rule After Created Rule On Wizard -->
+    <actionGroup name="AdminAssertCreatedCartRuleAfterWizard" extends="OpenCartPriceRule">
+        <arguments>
+            <argument name="promoRuleValues"/>
+            <argument name="customerGroupNotSelect"/>
+        </arguments>
+        <seeInField selector="{{AdminPromoCartRuleSection.RuleName}}"
+                    userInput="{{promoRuleValues.ruleAutoName}}" stepKey="assertRuleName"/>
+        <seeElement selector="{{AdminPromoCartRuleSection.StatusValue(promoRuleValues.ruleStatus)}}" stepKey="assertStatus"/>
+        <seeOptionIsSelected selector="{{AdminPromoCartRuleSection.SelectWebsites}}"
+                             userInput="{{promoRuleValues.websites}}" stepKey="assertWebsiteSelected"/>
+        <seeOptionIsSelected selector="{{AdminPromoCartRuleSection.SelectCustomerGroup}}"
+                             userInput="{{promoRuleValues.customers}}" stepKey="assertCustomersIsSelected"/>
+        <dontSeeOptionIsSelected selector="{{AdminPromoCartRuleSection.SelectCustomerGroup}}"
+                                 userInput="{{customerGroupNotSelect}}" stepKey="assertCustomersIsNotSelected"/>
+        <seeOptionIsSelected selector="{{AdminPromoCartRuleSection.SelectCouponCode}}"
+                             userInput="{{promoRuleValues.couponCodeCheckValue}}" stepKey="assertCouponCodeValue"/>
+        <seeOptionIsSelected selector="{{AdminPromoCartRuleSection.SelectAction}}"
+                             userInput="{{promoRuleValues.action}}" stepKey="assertActionSelected"/>
+        <seeInField selector="{{AdminPromoCartRuleSection.DiscountAmount}}"
+                    userInput="{{promoRuleValues.numberOfGiftItems}}" stepKey="assertNumberOfGift"/>
+        <seeInField selector="{{AdminPromoCartRuleSection.DiscountQtyStep}}"
+                    userInput="{{promoRuleValues.discountQtyStep}}" stepKey="assertDiscountQtyStep"/>
+        <seeInField selector="{{AdminPromoCartRuleSection.MaxQtyDiscountIsAppliedTo}}"
+                    userInput="{{promoRuleValues.maxQtyDiscount}}" stepKey="assertMaxQtyDiscount"/>
+    </actionGroup>
+
+</actionGroups>

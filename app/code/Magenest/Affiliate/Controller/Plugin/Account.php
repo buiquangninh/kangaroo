@@ -9,6 +9,7 @@ use Magento\Framework\App\ActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Response\Http;
 use Magento\Framework\Controller\Result\ForwardFactory;
+use Magento\Framework\Message\Manager;
 use Magento\Framework\UrlFactory;
 use Magento\Framework\UrlInterface;
 use Magenest\Affiliate\Helper\Data;
@@ -49,14 +50,33 @@ class Account
      */
     protected $resultForwardFactory;
 
+    protected $messageManager;
+
+    protected $process = false;
+
+    protected $requiredInfo = [
+        'acc_type',
+        'bank_no',
+        'acc_no',
+        'account_name',
+        'id_number',
+        'issued_by',
+        'id_front',
+        'id_back'
+    ];
+    /**
+     * @var RequestInterface
+     */
+    protected $request;
+
     /**
      * Account constructor.
-     *
      * @param Session $customerSession
      * @param Data $helper
      * @param UrlFactory $urlFactory
      * @param Http $response
      * @param ForwardFactory $resultForwardFactory
+     * @param Manager $messageManager
      * @param array $allowedActions
      */
     public function __construct(
@@ -65,6 +85,7 @@ class Account
         UrlFactory $urlFactory,
         Http $response,
         ForwardFactory $resultForwardFactory,
+        Manager $messageManager,
         array $allowedActions = []
     ) {
         $this->session = $customerSession;
@@ -72,6 +93,7 @@ class Account
         $this->helper = $helper;
         $this->_urlFactory = $urlFactory;
         $this->response = $response;
+        $this->messageManager = $messageManager;
         $this->resultForwardFactory = $resultForwardFactory;
     }
 
@@ -89,6 +111,7 @@ class Account
         Closure $proceed,
         RequestInterface $request
     ) {
+        $this->request = $request;
         if (!$this->helper->isEnabled()) {
             $resultForward = $this->resultForwardFactory->create();
             $subject->getActionFlag()->set('', ActionInterface::FLAG_NO_DISPATCH, true);
@@ -107,10 +130,20 @@ class Account
         } else {
             $this->session->setNoReferer(true);
         }
-
         $result = $proceed($request);
         $this->session->unsNoReferer(false);
 
+        return $result;
+    }
+
+    public function afterDispatch(
+        ActionInterface $subject,
+        $result
+    ) {
+        if ($this->request && !$this->request->isAjax()) {
+            $this->setNoticeForAffiliate();
+            return $result;
+        }
         return $result;
     }
 
@@ -140,5 +173,16 @@ class Account
     protected function _createUrl()
     {
         return $this->_urlFactory->create();
+    }
+
+    protected function setNoticeForAffiliate()
+    {
+        $account = $this->helper->getCurrentAffiliate();
+        foreach ($this->requiredInfo as $info) {
+            if (!$account->getData($info) && $account->getData($info) !== "0") {
+                $this->messageManager->addNoticeMessage(__('Your information is missing. Please navigate to setting panel to complete your account information.'));
+                return;
+            }
+        }
     }
 }

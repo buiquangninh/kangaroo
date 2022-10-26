@@ -1,6 +1,6 @@
-<div data-bind="attr: {'style': '--var-background: #fff',class: boxPosition}, style: { width: boxWidth }" hidden>
-    <div class="magenest-notification-content" data-bind="attr: {'style': '--var-background: ' + backgroundColorValue}">
-        <strong class="magenest-notification-title" data-bind="i18n: 'Notification'"></strong>
+<div class="magenest-notification-box" hidden>
+    <div class="magenest-notification-content">
+        <strong class="magenest-notification-title" data-bind="i18n: 'New notification received'"></strong>
         <div class="magenest-notification-empty" data-bind="visible: visibleNotification">
             <span data-bind="i18n: 'No any notification.'"></span>
         </div>
@@ -8,13 +8,13 @@
            <div class="magenest-notification-item" data-bind="style: { 'background-color': markAsRead },click: $parent.readNotification">
                <a class="mgn-noti-link" data-bind="attr: { href: redirect_url }">
                    <span class="mgn-noti-image"><img data-bind="attr: { src: icon}"/></span>
+                   <span class="mgn-noti-title" data-bind="text:title"></span>
                    <span class="mgn-noti-desc" data-bind="text:description"></span>
-                   <p class="mgn-noti-created_at" data-bind="text: created_at"></p>
                </a>
            </div>
         </div>
         <div class="magenest-notification-link">
-            <a data-bind="i18n: 'View all notifications', attr: { href: urlNotificationTab }"></a>
+            <a data-bind="i18n: 'View all', attr: { href: urlNotificationTab }"></a>
         </div>
     </div>
 </div>

@@ -1,0 +1,23 @@
+{
+  "name": "amasty/module-promo-mftf-2",
+  "description": "Free Gift MFTF v. 2.6.x by Amasty",
+  "require": {
+    "php": ">=7.3.0",
+    "amasty/base": "*",
+    "amasty/promo": ">2.11.0",
+    "amasty/module-common-tests-mftf-2": ">=1.0.1"
+  },
+  "type": "magento2-module",
+  "version": "1.0.1",
+  "license": [
+    "Commercial"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Amasty\\PromoMFTF2\\": ""
+    }
+  }
+}

@@ -1,5 +1,6 @@
 <?php
 /** @var \Magento\Customer\Block\Form\Register $block */
+use Magento\Customer\Helper\Address;
 ?>
 <?= $block->getChildHtml('form_fields_before') ?>
 <?php /* Extensions placeholder */ ?>
@@ -8,6 +9,7 @@
 $_dob = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Dob');
 $_gender = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Gender');
 $_taxvat = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Taxvat');
+$helper = $this->helper('Magenest\Directory\Helper\Data');
 ?>
 <form class="form create account form-create-account" action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>" method="post" id="form-validate" enctype="multipart/form-data" autocomplete="off">
     <?= /* @noEscape */ $block->getBlockHtml('formkey'); ?>
@@ -129,8 +131,23 @@ $_taxvat = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Taxva
 
     });
 </script>
+<script type="text/x-magento-init">
+    {
+        ".form-create-account": {
+            "Magenest_Directory/js/field-updater": {
+                "form": "#form-validate",
+                "defaultCity": "",
+                "defaultDistrict": "",
+                "defaultWard": "",
+                "htmlIdPrefix" : "",
+                "dataJson": <?=  $this->helper(\Magenest\Directory\Helper\Data::class)->getDataJson() ?>
+            }
+        }
+    }
+
+</script>
 <?php if ($block->getShowAddressFields()): ?>
-    <script type="text/x-magento-init">
+<script type="text/x-magento-init">
     {
         "#country": {
             "regionUpdater": {
@@ -144,6 +161,7 @@ $_taxvat = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Taxva
                 "countriesWithOptionalZip": <?= /* @noEscape */ $this->helper(\Magento\Directory\Helper\Data::class)->getCountriesWithOptionalZip(true) ?>
             }
         }
+
     }
 </script>
 <?php endif; ?>

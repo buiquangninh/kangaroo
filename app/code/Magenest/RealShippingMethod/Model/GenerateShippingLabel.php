@@ -9,9 +9,8 @@
 
 namespace Magenest\RealShippingMethod\Model;
 
-use Magenest\API247\Model\API247Post;
-use Magenest\API247\Model\Carrier\API247;
 use Magenest\GiaoHangTietKiem\Model\Carrier\GiaoHangTietKiem;
+use Magenest\LalaMove\Model\Carrier\LalaMove;
 use Magenest\ViettelPostCarrier\Model\Carrier\ViettelPost;
 use Magento\Catalog\Model\Product\Type;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
@@ -25,7 +24,8 @@ class GenerateShippingLabel
     const ALLOWED_CARRIERS = [
         GiaoHangTietKiem::CODE,
         ViettelPost::CODE,
-        API247::CODE
+//        API247::CODE,
+        LalaMove::CODE
     ];
 
     /** @var LabelGenerator */

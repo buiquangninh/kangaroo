@@ -27,4 +27,5 @@
     <event name="affiliate_account_change_status">
         <observer name="magenest_rewardpoints_for_affiliate_account_registration_successfully" instance="Magenest\RewardPoints\Observer\AffiliateAccountApprove" />
     </event>
+
 </config>

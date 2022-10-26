@@ -54,17 +54,6 @@ class Group extends Generic implements TabInterface
         $form = $this->_formFactory->create();
         $form->setHtmlIdPrefix('group_');
         $form->setFieldNameSuffix('group');
-        $fieldset = $form->addFieldset('base_fieldset', [
-            'legend' => __('Group Information'),
-            'class' => 'fieldset-wide'
-        ]);
-
-        $fieldset->addField('name', 'text', [
-            'name' => 'name',
-            'label' => __('Name'),
-            'title' => __('Name'),
-            'required' => true,
-        ]);
 
         $form->addValues($group->getData());
         $this->setForm($form);

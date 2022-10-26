@@ -61,4 +61,6 @@ interface MembershipInterface
     const ADDED_VALUE_AMOUNT = 'added_value_amount';
 
     const CREATE_AT = 'create_at';
+
+    const COLOR_CODE = 'color_code';
 }

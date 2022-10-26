@@ -34,7 +34,7 @@ class Order extends Spending
      */
     public function getTitle()
     {
-        return 'Spend credit on order #%1';
+        return 'Chi tiêu kcoin để đặt hàng #%1';
     }
 
     /**

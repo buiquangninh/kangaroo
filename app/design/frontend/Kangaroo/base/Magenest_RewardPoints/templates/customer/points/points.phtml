@@ -1,0 +1,271 @@
+<?php
+/**
+ * Copyright © 2020 Magenest. All rights reserved.
+ * See COPYING.txt for license details.
+ * @category  Magenest
+ */
+/** @var  $block \Magenest\RewardPoints\Block\Customer\Points */
+$_data = $block->getTransactions();
+$minusTransactions = $block->getMinusTransactions();
+$plusTransactions = $block->getPlusTransactions();
+$_rule = $block->getRule();
+$customer = $block->getAccount();
+/**
+ * @var \Magenest\RewardPoints\Helper\MembershipData $membershipHelper
+ */
+$membershipHelper = $this->helper('\Magenest\RewardPoints\Helper\MembershipData');
+$customerTier = $membershipHelper->getCustomerTier($customer->getCustomerId());
+$imageHelper = $this->helper('\Magenest\RewardPoints\Helper\ImageHelper');
+?>
+<!--<div>-->
+<!--    --><?php //echo $block->getDescription(); ?>
+<!--    --><?php
+//    if (empty($block->getDescription())) {
+//        echo $block->getLandingPageLink();
+//    } else {
+//        echo '<br>' . $block->getLandingPageLink();
+//    }
+//    ?>
+<!--</div>-->
+<?php if ($_data && count($_data)): ?>
+    <?php if ($membershipHelper->isEnableMembership()) : ?>
+        <div class="customer-membership-info">
+            <div class="progress-bar">
+                <span class="progress" style="width: <?= $membershipHelper->getProgressPercent($customer) ?>%"></span>
+                <div class="milestone milestone--reached">
+                    <div class="rank"><span><?= __('Beginner') ?></span></div>
+                    <span class="rank-total">0</span>
+                </div>
+                <?php
+                foreach ($membershipHelper->getActiveTier() as $tier) {
+                    ?>
+                    <div class="milestone <?= $block->isReachTier($tier, $customerTier) ? 'milestone--reached' : '' ?>">
+                        <div
+                            class="rank rank-<?= $tier->getData(\Magenest\RewardPoints\Api\Data\MembershipInterface::GROUP_CODE) ?>">
+                            <span><?= $tier->getData(\Magenest\RewardPoints\Api\Data\MembershipInterface::GROUP_NAME) ?></span>
+                            <img
+                                src="<?php echo $imageHelper->getRewardPointsViewFileUrl($tier->getData(\Magenest\RewardPoints\Api\Data\MembershipInterface::TIER_LOGO)); ?>"
+                                alt="<?= $tier->getData(\Magenest\RewardPoints\Api\Data\MembershipInterface::GROUP_NAME) ?>"/>
+                        </div>
+                        <span class="rank-total"><?= $block->getShortCondition($tier) ?></span>
+                    </div>
+                    <?php
+                }
+                ?>
+            </div>
+            <div class="customer-reward-point">
+                <?php if ($customerTier->getId()): ?>
+                    <p>
+                        <span><?= __('Your current tier is %1', $block->escapeHtml($customerTier->getData(\Magenest\RewardPoints\Api\Data\MembershipInterface::GROUP_NAME))) ?></span>
+                    </p>
+                <?php else: ?>
+                    <p><span><?= __('You don\'t belong to any Tier') ?></span></p>
+                <?php endif; ?>
+                <p><?= $membershipHelper->getNextTierCondition($customer->getCustomerId()) ?></p>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <div class="table-wrapper gift-info" id="gift-info">
+        <div class="bg-point-customer">
+            <div class="wrapper-point-customer">
+                <p class="number-gift-point">
+                    <?php echo $customer->getPointsCurrent(); ?>
+                    <span class="desc-gift-text hiden-on-desktop"><?= __('Kpoint points are available') ?></span>
+                </p>
+                <div class="desc-gift-point">
+                    <p class="desc-gift-text hiden-on-mobile"><?= __('Kpoint points are available') ?></p>
+                    <p class="desc-gift-date">
+                        <span><?= $block->getExpiredKpoint($customer->getCustomerId())?></span>
+                        <span><?= __('Kpoints will expire on') ?></span>
+                        <span><?= $block->getExpiredKpointDate($customer->getCustomerId())?></span>
+                    </p>
+                </div>
+            </div>
+            <!--            Todo Style-->
+            <a class="button-change-point" href="/rewardpoints/customer/coupon" id="change"><?= __('Redeem points') ?></a>
+        </div>
+<!--        <h3>Bạn đang có --><?php //echo $customer->getPointsTotal(); ?><!--<span> Kpoint</span></h3>-->
+<!--        <h4>Ưu đãi</h4>-->
+    </div>
+
+
+
+<!--    <div class="table-wrapper account-info" id="account-info">-->
+<!--        <table id="account-info" class="data table table-collection-account">-->
+<!--            <thead>-->
+<!--            <tr class="headings">-->
+<!--                <th class="col-points-total"><span>--><?php ///* @escapeNotVerified */
+//                        echo __('Total Points') ?><!--</span></th>-->
+<!--                <th class="col-points-current"><span>--><?php ///* @escapeNotVerified */
+//                        echo __('Current Points') ?><!--</span></th>-->
+<!--                <th class="col-points-lost"><span>--><?php ///* @escapeNotVerified */
+//                        echo __('Spent Points') ?><!--</span></th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr>-->
+<!--                <td data-th="--><?php //echo $block->escapeHtml(__('Total Points')) ?><!--" class="col-points-total">-->
+<!--                    --><?php //echo $customer->getPointsTotal(); ?>
+<!--                </td>-->
+<!--                <td data-th="--><?php //echo $block->escapeHtml(__('Current Points')) ?><!--" class="col-points-total">-->
+<!--                    --><?php //echo $customer->getPointsCurrent(); ?>
+<!--                </td>-->
+<!--                <td data-th="--><?php //echo $block->escapeHtml(__('Spent Points')) ?><!--" class="col-points-lost">-->
+<!--                    --><?php //echo $customer->getPointsSpent(); ?>
+<!--                </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--    <h3>--><?php //echo __('Transaction History') ?><!--</h3>-->
+    <div class="table-wrapper transaction-history product data items"
+         id="transaction_history">
+        <div id="tab_element">
+            <ul class="tabs-horiz" >
+                <li class="first">
+                    <a href="#tab1_content">
+                    <span>
+                        <?php echo __("All history"); ?>
+                    </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#tab2_content">
+                    <span>
+                        <?php echo __("Received"); ?>
+                    </span>
+                    </a>
+                </li>
+                <li class="last">
+                    <a href="#tab3_content">
+                    <span>
+                        <?php echo __("Used"); ?>
+                    </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div id="tab_element_content">
+            <div id="tab1_content" >
+                <?php foreach ($_data as $data) : ?>
+                    <div class="grid-list-history-kpoint">
+                        <div class="left-grid">
+                            <?php if($data->getData('rewardpoint_img') == null):?>
+                                <img src="https://aeonmall-hadong.com.vn/wp-content/uploads/2022/01/tai-xuong.png" atl="Kangaroo"/>
+                            <?php else :?>
+                                <img src="<?= $this->getBaseUrl().'media/rewardpoint'.$block->getImg($data)?>" atl="Kangaroo"/>
+                            <?php endif;?>
+                            <div class="desc-item">
+                                <p class="name-item"><?= $block->getPrefixTitle($data->getRuleId()).''.$data->getTitle(); ?></p>
+                                <p class="congratulation-item"><?= $data->getRule() ?></p>
+                                <p class="date-success-item"><?php echo date('Y-m-d', strtotime($data->getInsertionDate())) ?></p>
+                            </div>
+                        </div>
+                        <span class="change-point">
+                        <?php if (($pointsChange = $data->getPointsChange()) > 0)
+                            echo '<span style="color:green">+' . $pointsChange . '</span>';
+                        else echo '<span style="color:red">' . $pointsChange . '</span>'; ?>
+                    </span>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <!--@Todo: get data Received and Used-->
+            <div id="tab2_content" >
+                <?php foreach ($plusTransactions as $plusTransaction) : ?>
+                    <div class="grid-list-history-kpoint">
+                        <!--@Todo: get data image item-->
+                        <div class="left-grid">
+                            <?php if($data->getData('rewardpoint_img') == null):?>
+                                <img src="https://aeonmall-hadong.com.vn/wp-content/uploads/2022/01/tai-xuong.png" atl="Kangaroo"/>
+                            <?php else :?>
+                                <img src="<?= $this->getBaseUrl().'media/rewardpoint'.$block->getImg($data)?>" atl="Kangaroo"/>
+                            <?php endif;?>
+                            <div class="desc-item">
+                                <!--@Todo: get data name item, ongratulation-->
+                                <p class="name-item"><?= $block->getPrefixTitle($plusTransaction->getRuleId()).''.$plusTransaction->getTitle(); ?></p>
+                                <p class="congratulation-item"><?= $plusTransaction->getRule() ?></p>
+                                <p class="date-success-item"><?php echo date('Y-m-d', strtotime($plusTransaction->getInsertionDate())) ?></p>
+                            </div>
+                        </div>
+                        <span class="change-point">
+                        <?php if (($pointsChange = $plusTransaction->getPointsChange()) > 0)
+                            echo '<span style="color:green">+' . $pointsChange . '</span>';
+                        else echo '<span style="color:red">' . $pointsChange . '</span>'; ?>
+                    </span>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <div id="tab3_content" >
+                <?php foreach ($minusTransactions as $minusTransaction) : ?>
+                    <div class="grid-list-history-kpoint">
+                        <!--@Todo: get data image item-->
+                        <div class="left-grid">
+                            <?php if($data->getData('rewardpoint_img') == null):?>
+                                <img src="https://aeonmall-hadong.com.vn/wp-content/uploads/2022/01/tai-xuong.png" atl="Kangaroo"/>
+                            <?php else :?>
+                                <img src="<?= $this->getBaseUrl().'media/rewardpoint'.$block->getImg($data)?>" atl="Kangaroo"/>
+                            <?php endif;?>
+                            <div class="desc-item">
+                                <!--@Todo: get data name item, ongratulation-->
+                                <p class="name-item"><?= $block->getPrefixTitle($minusTransaction->getRuleId()).''.$minusTransaction->getTitle(); ?></p>
+                                <p class="congratulation-item"><?= $minusTransaction->getRule() ?></p>
+                                <p class="date-success-item"><?php echo date('Y-m-d', strtotime($minusTransaction->getInsertionDate())) ?></p>
+                            </div>
+                        </div>
+                        <span class="change-point">
+                        <?php if (($pointsChange = $minusTransaction->getPointsChange()) > 0)
+                            echo '<span style="color:green">+' . $pointsChange . '</span>';
+                        else echo '<span style="color:red">' . $pointsChange . '</span>'; ?>
+                    </span>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+
+<?php else: ?>
+    <div class="message info empty"><span><?php /* @escapeNotVerified */
+            echo __('You have no Reward Points.'); ?></span></div>
+<?php endif ?>
+
+<script>
+    require(["jquery","mage/backend/tabs"], function($){
+        $(function() {
+            $('#tab_element').tabs({
+                active: 'tab1_content',
+                destination: '#tab_element_content',
+                shadowTabs: []
+            });
+        });
+    });
+</script>
+
+<!--<script type="text/x-magento-init">-->
+<!--    {-->
+<!--        "#getCoupon": {-->
+<!--            "Magento_Ui/js/core/app": {-->
+<!--                "components": {-->
+<!--                    "getCoupon": {-->
+<!--                        "component": "Magenest_RewardPoints/js/coupon/action"-->
+<!--                    }-->
+<!--                }-->
+<!--            }-->
+<!--        },-->
+<!--        "#claim-coupon-button": {-->
+<!--            "Magento_Ui/js/core/app": {-->
+<!--                "components": {-->
+<!--                    "claim": {-->
+<!--                        "component": "Magenest_RewardPoints/js/coupon/action"-->
+<!--                    }-->
+<!--                }-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+<!---->
+
+
+
+

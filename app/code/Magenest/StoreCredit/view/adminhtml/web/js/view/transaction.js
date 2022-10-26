@@ -63,6 +63,7 @@ define([
             $('body').delegate('#customer-grid_table tbody tr', 'click', function () {
                 $("#customer_id_form").val($(this).find('input').val().trim());
                 $("#customer_email").val($(this).find('td:nth-child(5)').text().trim());
+                $("#customer_id").val($(this).find('td:nth-child(2)').text().trim());
                 $(".action-close").trigger('click');
             });
         },

@@ -1,0 +1,285 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magenest\CustomCatalog\Helper\Helper;
+use Magento\Framework\App\Action\Action;
+
+/** @var \Magento\CatalogWidget\Block\Product\ProductsList $block */
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+/** @var Helper $helper */
+
+$blockFlashSales= $block->getLayout()->createBlock('Magenest\CustomFlashSale\Block\Flashsales\Index');
+$getFlashSalesData = $blockFlashSales->getFlashSalesData();
+$today = strtotime(date('Y-m-d H:i:s'). "+7hours");
+$flashSalesBanner = $blockFlashSales->getFlashSalesBanner();
+$getFromDateTimes = [];
+$getToDateTimes = [];
+$flashSalesIds = [];
+
+if (!empty($blockFlashSales->getFlashSalesData()->getItems())) {
+    foreach ($blockFlashSales->getFlashSalesData()->getItems() as $key => $item) {
+        $new_time = strtotime($item->getFromDate() . "+7hours");
+        $getFromDateTimes[$item->getFlashSalesId()] = strtotime($item->getFromDate() . "+7hours"); // +7 hours to GMT + 7 -> convert gmt reflect to db
+        $getToDateTimes[$item->getFlashSalesId()] = strtotime($item->getToDate()."+7hours");
+        $flashSalesIds[] = $item->getFlashSalesId();
+    }
+}
+
+$getFirstFlashSalesId = "";
+$getFirstFlashSalesIdForCountDown = "";
+
+$helper =  $this->helper(Helper::class);
+// phpcs:disable Generic.Files.LineLength.TooLong
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+?>
+<div class="page-flash-sale">
+    <?php foreach($flashSalesIds as $flashSalesId): ?>
+    <?php
+        $getFromDateTime = isset($getFromDateTimes) ? $getFromDateTimes[$flashSalesId] : "";
+        $getToDateTime = isset($getToDateTimes) ? $getToDateTimes[$flashSalesId] : "";
+
+        if ($today < $getFromDateTime) {
+            $days = abs($today - $getFromDateTime) / (60 * 60 * 24);
+        } else {
+            $days = abs($today - $getToDateTime) / (60 * 60 * 24);
+        }
+
+
+        if ($days < 1) {
+            $hours = $days * 24;
+        } else {
+            $hours = ($days - floor($days)) * 24;
+        }
+
+        if ($hours < 1) {
+            $minutes = $hours * 60;
+        } else {
+            $minutes = ($hours - floor($hours)) * 60;
+        }
+
+        if ($minutes < 1) {
+            $seconds = $minutes * 60;
+        } else {
+            $seconds = ($minutes - floor($minutes)) * 60;
+        }
+
+        if ($getFirstFlashSalesIdForCountDown == "") {
+            $getFirstFlashSalesIdForCountDown = $flashSalesId;
+        }
+    ?>
+        <div class="page-flash-sale-countdown flash-sale-id-<?= $flashSalesId ?>" style="display: <?= $getFirstFlashSalesIdForCountDown == $flashSalesId ? 'flex' : 'none' ?>">
+            <strong class="label"><?= $block->escapeHtml(__('Flash Sale')) ?></strong>
+            <div class="countdown" id="count-down-clock">
+                <?php if ($today >= $getFromDateTime): ?>
+                    <div class="countdown-label"><?= $block->escapeHtml(__('Ending in')) ?></div>
+                <?php elseif($today <= $getToDateTime): ?>
+                    <div class="countdown-label"><?= $block->escapeHtml(__('Start in')) ?></div>
+                <?php endif; ?>
+                <div class="countdown-content">
+                    <input type="hidden" value="<?= floor($days)  ?>" id="getFlashSalesDay-<?= $flashSalesId ?>">
+                    <input type="hidden" value="<?= floor($hours) ?>" id="getFlashSalesHours-<?= $flashSalesId ?>">
+                    <input type="hidden" value="<?= floor($minutes) ?>" id="getFlashSalesMinutes-<?= $flashSalesId ?>">
+                    <input type="hidden" value="<?= round($seconds) ?>" id="getFlashSalesSeconds-<?= $flashSalesId ?>">
+                    <div class="box-count" id="getFlashSalesDayBoxCount-<?= $flashSalesId ?>" style="display: <?= floor($days) == 0 ? 'none' : 'block' ?>"><?= floor($days) < 10 && floor($days) > 0 ? '0' . floor($days) : '' ?></div>
+                    <div class="box-count" id="getFlashSalesHoursBoxCount-<?= $flashSalesId ?>"><?= floor($hours) < 10 && floor($hours) > 0 ? '0' . floor($hours) : floor($hours) ?></div>
+                    <div class="box-count" id="getFlashSalesMinutesBoxCount-<?= $flashSalesId ?>"><?= floor($minutes) < 10 && floor($minutes) > 0 ? '0' . floor($minutes) : floor($minutes) ?></div>
+                    <div class="box-count" id="getFlashSalesSecondsBoxCount-<?= $flashSalesId ?>"><?= round($seconds) < 10 && floor($seconds) > 0 ? '0' . floor($seconds) : floor($seconds) ?></div>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+    <div data-content-type='row' data-appearance='contained'>
+        <div class="page-flash-sale-banner">
+            <picture>
+                <source media="(max-width: 767px)" srcset="<?= $flashSalesBanner ?>">
+                <img src="<?= $flashSalesBanner ?>" height="250px" alt="">
+            </picture>
+        </div>
+        <div class="page-flash-sale-time">
+            <?php
+            if (!empty($blockFlashSales->getFlashSalesData()->getItems())):
+                foreach ($blockFlashSales->getFlashSalesData()->getItems() as $key => $item):
+            ?>
+                <?php
+                    if ($getFirstFlashSalesId == "") {
+                        $getFirstFlashSalesId = $item->getFlashSalesId();
+                    }
+                ?>
+                <div class="item <?= $item->getFlashSalesId() == $getFirstFlashSalesId ? 'active' : '' ?> flash_sales_class" id="flash_sales_id_<?= $item->getFlashSalesId() ?>" data-id="<?= $item->getFlashSalesId() ?>">
+                    <strong><?= date("H:i", strtotime($item->getFromDate()."+7hours")) ?></strong>
+                    <?php $days = floor(abs($today - strtotime($item->getFromDate()."+7hours"))); ?>
+                    <?php if ($today >= strtotime($item->getFromDate()."+7hours")): ?>
+                        <span><?= $block->escapeHtml(__('ACTIVE')) ?></span>
+                    <?php else: ?>
+                        <span><?= $block->escapeHtml(__('UPCOMING')) ?></span>
+                    <?php endif; ?>
+                </div>
+            <?php
+                endforeach;
+                endif;
+            ?>
+        </div>
+        <?php if(!empty($flashSalesIds)): ?>
+        <?php foreach($flashSalesIds as $flashSalesId): ?>
+            <?php
+            $type = 'widget-product-grid';
+
+            $mode = 'grid';
+
+            $image = 'new_products_content_widget_grid';
+            $items = $blockFlashSales->getApplyProducts($flashSalesId)->getItems();
+
+            $showWishlist = true;
+            $showCompare = true;
+            $showCart = true;
+            $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+            $description = false;
+            ?>
+            <div class="block-products-list products-list-flash-sale  <?= /* @noEscape */ $mode ?>" style="display: <?= $flashSalesId == $getFirstFlashSalesId ? 'block' : 'none' ?>" id="products-list-flash-sale-id-<?= $flashSalesId ?>">
+                <div class="block-content">
+                    <?= /* @noEscape */ '<!-- ' . $image . '-->' ?>
+                    <div class="products-<?= /* @noEscape */ $mode ?> <?= /* @noEscape */ $mode ?>">
+                        <ol class="product-items <?= /* @noEscape */ $type ?>">
+                            <?php $iterator = 1; ?>
+                            <?php foreach ($items as $item): ?>
+                                <?php $_item = $blockFlashSales->getProductCollection($item->getProductId()); ?>
+                                <?= /* @noEscape */ ($iterator++ == 1) ? '<li class="product-item">' : '</li><li class="product-item">' ?>
+                                <div class="product-item-info">
+                                    <a href="<?= $block->escapeUrl($_item->getProductUrl()) ?>" class="product-item-photo">
+                                        <?= $blockFlashSales->getProductImage($_item->getId(), $image)->toHtml() ?>
+                                    </a>
+                                    <div class="product-item-details">
+                                        <?php if($item->getPriceType() == 1): ?>
+                                                <span class="label label-discount">
+                                                    <span class="text-sm-mi-des-wh"><?= '' . (int)$item->getDiscountAmount() . '%' ?></span>
+                                                </span>
+                                        <?php endif; ?>
+
+
+                                        <strong class="product-item-name">
+                                            <a title="<?= $block->escapeHtml($_item->getName()) ?>"
+                                               href="<?= $block->escapeUrl($_item->getProductUrl()) ?>"
+                                               class="product-item-link">
+                                                <?= $block->escapeHtml($_item->getName()) ?>
+                                            </a>
+                                        </strong>
+
+                                        <?php if($item->getFlashSalePrice() != null): ?>
+                                            <div class="price-box price-final_price" data-role="priceBox" data-product-id="<?= $item->getProductId() ?>" data-price-box="product-id-<?= $item->getProductId() ?>">
+                                                <span class="special-price">
+                                                    <span class="price-container price-final_price tax weee">
+                                                        <span id="old-price-<?= $item->getProductId() ?>-widget-product-grid" data-price-amount="<?= $item->getFlashSalePrice() ?>" data-price-type="finalPrice" class="price-wrapper ">
+                                                            <span class="price"><?= $blockFlashSales->formatPrice($item->getFlashSalePrice()) ?></span>
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                                <span class="old-price">
+                                                    <span class="price-container price-final_price tax weee">
+                                                        <span id="old-price-<?= $item->getProductId() ?>-widget-product-grid" data-price-amount="<?= $_item->getPrice() ?>" data-price-type="oldPrice" class="price-wrapper "><span class="price"><?= $blockFlashSales->formatPrice($_item->getPrice()) ?></span></span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        <?php else: ?>
+                                            <?= $block->getProductPriceHtml($blockFlashSales->getProduct($_item->getId()), $type) ?>
+                                        <?php endif; ?>
+
+                                        <div class="product-item-bottom">
+                                            <?php $soldQty = $item->getQtyOrdered() ?? 0 ?>
+                                            <div class="progress-item-buy">
+                                                <span class="item-bar" style="width: 40%;"></span>
+                                                <span class="text">
+                                                    <?= __(
+                                                        'Sold %1',
+                                                        Magenest\QuantitySold\Block\Product\SoldQuantity::numberPrefixEncode(
+                                                            (int)$soldQty
+                                                        )
+                                                    ) ?>
+                                                </span>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="product-item-inner">
+                                            <?php $postParams = $block->getAddToCartPostParams($blockFlashSales->getProduct($_item->getId())); ?>
+                                            <form data-role="tocart-form" data-product-sku="<?= $block->escapeHtml($_item->getSku()) ?>" action="<?= $block->escapeUrl($postParams['action']) ?>" method="post">
+                                                <input type="hidden" name="product" value="<?= $block->escapeHtmlAttr($postParams['data']['product']) ?>">
+                                                <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+                                                <?= $block->getBlockHtml('formkey') ?>
+                                                <button type="submit"
+                                                        title="<?= $block->escapeHtml(__('Buy now')) ?>"
+                                                        class="action tocart primary">
+                                                    <span><?= $block->escapeHtml(__('Buy now')) ?></span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?= ($iterator == count($items) + 1) ? '</li>' : '' ?>
+                            <?php endforeach ?>
+                        </ol>
+                    </div>
+                    <?= $block->getPagerHtml() ?>
+                </div>
+            </div>
+            <?php if($block->getBlockHtml('formkey')): ?>
+                <script type="text/x-magento-init">
+                    {
+                        ".block.widget [data-role=tocart-form]": {
+                            "Magento_Catalog/js/validate-product": {}
+                        }
+                    }
+                </script>
+            <?php endif;?>
+
+        <?php endforeach; ?>
+        <?php endif;?>
+    </div>
+</div>
+<script type="text/javascript">
+    require(['jquery','domReady!'], function ($) {
+        $(document).ready(function () {
+            let flashSalesId = <?= json_encode($flashSalesIds); ?>;
+            for (var i = 0; i < flashSalesId.length; i++) {
+                let flashSalesIdCountDown = flashSalesId[i];
+                $('#flash_sales_id_' + flashSalesId[i]).click(function () {
+                    let flashSalesId = $(this).data('id');
+                    $('.page-flash-sale-countdown').css('display','none');
+                    $('.flash-sale-id-' + flashSalesId).css('display', 'flex');
+                    $(".flash_sales_class").removeClass("active");
+                    $(this).addClass('active');
+                    $('.products-list-flash-sale').css('display','none');
+                    $('#products-list-flash-sale-id-'+ flashSalesId).css('display','block');
+                });
+                let days    = $('#getFlashSalesDay-'    + flashSalesIdCountDown).val();
+                let hours   = $('#getFlashSalesHours-'  + flashSalesIdCountDown).val();
+                let minutes = $('#getFlashSalesMinutes-'+ flashSalesIdCountDown).val();
+                let seconds = $('#getFlashSalesSeconds-'+ flashSalesIdCountDown).val();
+
+                setInterval(() => {
+                    if (seconds <= 0) {
+                        seconds = 59;
+                        minutes--;
+                        if (minutes <= 0) {
+                            minutes = 59;
+                            hours--;
+                            if (hours <= 0) {
+                                hours = 23;
+                                days--;
+                            }
+                        }
+                    } else {
+                        seconds--;
+                    }
+                    $('#getFlashSalesDayBoxCount-' + flashSalesIdCountDown).html(days >= 10 ? days : (days > 0 ? "0" + days : $('#getFlashSalesDayBoxCount-' + flashSalesIdCountDown).css('display', 'none')));
+                    $('#getFlashSalesHoursBoxCount-' + flashSalesIdCountDown).html(hours < 10 && hours > 0 ? "0" + hours : hours);
+                    $('#getFlashSalesMinutesBoxCount-' + flashSalesIdCountDown).html(minutes < 10 && minutes > 0 ? "0" + minutes : minutes);
+                    $('#getFlashSalesSecondsBoxCount-' + flashSalesIdCountDown).html(seconds < 10 && seconds > 0 ? "0" + seconds : seconds);
+                }, 1000);
+            }
+        });
+    });
+</script>

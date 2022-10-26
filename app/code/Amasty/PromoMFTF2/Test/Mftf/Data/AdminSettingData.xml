@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+
+    <entity name="defaultConfigurationPromoGeneral" type="configurationGeneral">
+        <data key="addAutomatically">Yes, free products only</data>
+        <data key="basedOnCart">Subtotal Before Discounts</data>
+    </entity>
+
+    <entity name="configPromoGeneralNotAddAutoGifts" extends="defaultConfigurationPromoGeneral" type="configurationGeneral">
+        <data key="addAutomatically">No</data>
+    </entity>
+
+    <entity name="configPromoGeneralAddAutoAllGifts" extends="defaultConfigurationPromoGeneral" type="configurationGeneral">
+        <data key="addAutomatically">Yes, discounted and free products</data>
+    </entity>
+
+    <entity name="configPromoGeneralNotAutoAfterDiscount" type="configurationGeneral">
+        <data key="addAutomatically">No</data>
+        <data key="basedOnCart">Subtotal After Discounts</data>
+    </entity>
+
+    <entity name="defaultConfigurationPromoMessages" type="configurationMessages">
+        <data key="selectionMethod">One By One</data>
+        <data key="openPopupAuto">No</data>
+        <data key="showOriginalPrice">No</data>
+        <data key="displayErrorMessage">Yes</data>
+        <data key="displaySuccessMessage">Yes</data>
+        <data key="displayRemaining">No</data>
+        <data key="reminderPromos">No</data>
+    </entity>
+
+    <entity name="configPromoMessagesMultipleMethod" extends="defaultConfigurationPromoMessages" type="configurationMessages">
+        <data key="selectionMethod">Multiple</data>
+    </entity>
+
+    <entity name="configPromoMessagesAutoOpenPopUp" extends="defaultConfigurationPromoMessages" type="configurationMessages">
+        <data key="openPopupAuto">Yes</data>
+    </entity>
+
+    <entity name="configPromoMessagesShowOriginalPrice" extends="defaultConfigurationPromoMessages" type="configurationMessages">
+        <data key="showOriginalPrice">Yes</data>
+    </entity>
+
+    <entity name="configPromoMessagesReminderPromos" extends="defaultConfigurationPromoMessages" type="configurationMessages">
+        <data key="reminderPromos">Yes</data>
+    </entity>
+
+</entities>

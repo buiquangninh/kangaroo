@@ -7,8 +7,9 @@ define([
     'underscore',
     'uiRegistry',
     'Magento_Ui/js/form/element/select',
-    'niceSelect'
-], function ($, _, registry, Select, niceSelect) {
+    'niceSelect',
+    'Magento_Ui/js/lib/validation/validator'
+], function ($, _, registry, Select, niceSelect, validator) {
     'use strict';
     $('.city').niceSelect();
 
@@ -57,6 +58,7 @@ define([
             $('.directory-information select[name="district_id"]').siblings('.nice-select').remove();
             $('.directory-information select[name="district_id"]').niceSelect();
             this.toggleNextElement($('.directory-information select[name="district_id"]').siblings('.nice-select'));
+            self.validate();
         },
 
         initNiceSelect: function () {
@@ -66,7 +68,27 @@ define([
         toggleNextElement: function (s) {
             $(".nice-select").not(s).removeClass("open");
             s.toggleClass("open");
-        }
+        },
+
+        validate: function () {
+            $('#directory-error').hide();
+
+            var value = this.value(),
+                result = validator(this.validation, value, this.validationParams),
+                isValid = this.disabled() || !this.visible() || result.passed;
+
+            this.error.valueHasMutated();
+            //TODO: Implement proper result propagation for form
+            if (this.source && !isValid) {
+                $('#directory-error').show();
+                this.source.set('params.invalid', true);
+            }
+
+            return {
+                valid: isValid,
+                target: this
+            };
+        },
     });
 });
 

@@ -3,12 +3,11 @@
 namespace Magenest\Customer\Block;
 
 use Magenest\CustomerAvatar\Block\Attributes\Avatar;
+use Magenest\RewardPoints\Helper\MembershipData;
 use Magento\Customer\Model\Session;
+use Magento\Framework\DataObject;
 use Magento\Framework\View\Element\Template;
 
-/**
- * Class Account Info
- */
 class AccountInfo extends Template
 {
     /**
@@ -21,13 +20,27 @@ class AccountInfo extends Template
      */
     private $avatar;
 
+    /**
+     * @var MembershipData
+     */
+    private $membershipHelper;
+
+    /**
+     * @param Template\Context $context
+     * @param MembershipData $membershipHelper
+     * @param Session $customerSession
+     * @param Avatar $avatar
+     * @param array $data
+     */
     public function __construct(
         Template\Context $context,
+        MembershipData $membershipHelper,
         Session $customerSession,
         Avatar $avatar,
         array $data = []
     ) {
         $this->customerSession = $customerSession;
+        $this->membershipHelper = $membershipHelper;
         $this->avatar = $avatar;
         parent::__construct($context, $data);
     }
@@ -67,5 +80,21 @@ class AccountInfo extends Template
     public function getUrlCustomerEdit()
     {
         return $this->getUrl('customer/account/edit');
+    }
+
+    /**
+     * @return \Magento\Framework\DataObject
+     */
+    public function getMembershipData()
+    {
+        $membershipTier = new DataObject();
+        try {
+            $customerId = $this->customerSession->getCustomerId();
+            $membershipTier = $this->membershipHelper->getCustomerTier($customerId);
+        } catch (\Exception $exception) {
+            $this->_logger->error($exception->getMessage());
+        }
+
+        return $membershipTier;
     }
 }

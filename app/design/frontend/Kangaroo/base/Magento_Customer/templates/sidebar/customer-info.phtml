@@ -2,14 +2,25 @@
 /** @var \Magenest\Customer\Block\AccountInfo $block */
 /** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
 /** @var \Magento\Framework\Escaper $escaper */
+$membershipData = $block->getMembershipData()
 ?>
 
-<?php ?>
 <div class="customer-inner">
     <img class="customer-avt" src="<?= $escaper->escapeUrl($block->getCustomerAvatarUrl()) ?>" alt="default">
     <div class="customer-info">
         <span class="customer-name"><?= $block->getCustomerFullName() ?></span>
-        <a href="<?= $block->getUrlCustomerEdit() ?>" class="customer-edit"><?= __('Edit profile') ?></a>
+        <div class="customer-info-bottom">
+            <?php if (!empty($membershipData->getId())) : ?>
+                <a href="<?= $block->getUrlCustomerEdit() ?>" class="customer-rank"
+                   style="background-color: <?= $block->escapeHtmlAttr($membershipData->getColorCode()) ?>;">
+                    <?= $block->escapeHtml(__($membershipData->getName())) ?>
+                </a>
+            <?php endif; ?>
+
+            <a href="<?= $block->getBaseUrl() ?>customer/account/logout" class="logout mobile-device">
+                <?= __('Log out') ?>
+            </a>
+        </div>
     </div>
 </div>
 
@@ -31,7 +42,7 @@ $scriptString = <<<script
         }
 
         function affiliateAccount() {
-            $('.nav.items > .nav.item:not(.affiliate)').slideUp(300);
+            $('.nav.items > .nav.item:not(.affiliate, .logout)').slideUp(300);
             $('.nav.items > .nav.item.affiliate > .nav.child').slideDown(300);
             $('.return-previous').slideDown(300);
         }

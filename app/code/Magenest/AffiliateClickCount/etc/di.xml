@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Magenest\AffiliateClickCount\Api\AffiliateRepositoryInterface" type="Magenest\AffiliateClickCount\Model\AffiliateRepository"/>
+	<preference for="Magenest\AffiliateClickCount\Api\Data\AffiliateInterface" type="Magenest\AffiliateClickCount\Model\Affiliate"/>
+	<preference for="Magenest\AffiliateClickCount\Api\Data\AffiliateSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<virtualType name="Magenest\AffiliateClickCount\Model\ResourceModel\Affiliate\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+		<arguments>
+			<argument name="mainTable" xsi:type="string">magenest_affiliateclickcount_affiliate</argument>
+			<argument name="resourceModel" xsi:type="string">Magenest\AffiliateClickCount\Model\ResourceModel\Affiliate\Collection</argument>
+		</arguments>
+	</virtualType>
+	<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+		<arguments>
+			<argument name="collections" xsi:type="array">
+				<item name="magenest_affiliateclickcount_affiliate_listing_data_source" xsi:type="string">Magenest\AffiliateClickCount\Model\ResourceModel\Affiliate\Grid\Collection</item>
+			</argument>
+		</arguments>
+	</type>
+
+    <preference for="Magenest\AffiliateClickCount\Api\AffiliateCountClickRepositoryInterface" type="Magenest\AffiliateClickCount\Model\AffiliateCountClickRepository"/>
+    <preference for="Magenest\AffiliateClickCount\Api\Data\AffiliateCountClickInterface" type="Magenest\AffiliateClickCount\Model\AffiliateCountClick"/>
+    <preference for="Magenest\AffiliateClickCount\Api\Data\AffiliateCountClickSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+</config>

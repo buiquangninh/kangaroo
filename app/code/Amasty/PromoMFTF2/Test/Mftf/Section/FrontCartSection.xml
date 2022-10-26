@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+
+    <section name="StorefrontCartSection">
+        <element name="PopUpForAddProduct" type="button" timeout="10" selector="//div[@class='columns']//a[@data-role='ampromo-popup-show']"/>
+        <element name="OpenPopUp" type="block" selector="//div[@data-role='ampromo-overlay']"/>
+        <element name="ClosePopUp" type="block" selector="//div[@class='ampromo-overlay'][@style='display: none;']"/>
+        <element name="PopUpProductsContainer" type="block" selector="//div[@class='ampromo-items-content']//div[@class='ampromo-carousel-product']"/>
+        <element name="MultiplePopUpAddButton" type="button" timeout="10" selector="//div[@data-role='ampromo-item-buttons']//button"/>
+        <element name="MultiplePopUpCheckbox" type="input" selector="//div[@class='slick-track']//input[@type='checkbox']"/>
+        <element name="OneByOnePopUpAddButton" type="button" selector="//div[@class='slick-track']/div//button"/>
+        <element name="PopUpCloseButton" type="button" timeout="10" selector="//div[@class='ampromo-items-content']/div[@class='ampromo-close']"/>
+        <element name="PromoDiscount" type="block" selector="//tr[@class='totals']/td[@data-th='Discount']/span"/>
+        <element name="PriceInPopUp" type="block" selector="//div[@class='slick-track']//div[@class='product-info-price']"/>
+        <element name="ProductInCartSameFree" type="block" parameterized="true"
+                 selector="//a[contains(string(),'{{productName}}')]/parent::*/following-sibling::div[@class='cart item message notice']"/>
+        <element name="OneByOneProductAdd" type="button" parameterized="true" timeout="10"
+                 selector="//div[@data-product-sku='{{productSKU}}']//button"/>
+        <element name="MultipleProductCheckbox" type="input" parameterized="true"
+                 selector="//div[@data-product-sku='{{productSKU}}']//input[@type='checkbox']"/>
+        <element name="MultipleProductQty" type="input" parameterized="true"
+                 selector="//div[@data-product-sku='{{productSKU}}']//div[@class='ampromo-item-qty-input']/input"/>
+        <element name="OldPriceOnPopUp" type="block" parameterized="true"
+                 selector="//div[@class='slick-track']/div[@data-product-sku='{{productSku}}']//span[@data-price-type='basePrice']/span"/>
+        <element name="NewPriceOnPopUp" type="block" parameterized="true"
+                 selector="//div[@class='slick-track']/div[@data-product-sku='{{productSKU}}']//span[@data-price-type='newPrice']/span"/>
+        <element name="ConfigurableProductOption" type="select" parameterized="true"
+                 selector="//div[@data-product-sku='{{productSKU}}']//parent::label/following-sibling::div/select"/>
+    </section>
+
+</sections>
+

@@ -203,7 +203,7 @@ class Carrier extends AbstractDb
 
     protected function getCurrentSourceByArea()
     {
-        $area = $this->sourceData->getDefaultArea();
+        $area = $this->sourceData->getCurrentArea();
         $inventorySourceCollection = $this->_inventorySourceCollectionFactory->create();
         $inventorySourceCollection
             ->addFieldToFilter('area_code', $area);

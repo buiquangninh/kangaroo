@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+
+    <section name="AdminConfigurationsPromoSection">
+        <element name="AddProductsAutomatically" type="select" selector="//tr[@id='row_ampromo_general_auto_add']//select[@id='ampromo_general_auto_add']"/>
+        <element name="BasedOnCart" type="select" selector="//tr[@id='row_ampromo_general_discount_include']//select[@id='ampromo_general_discount_include']"/>
+        <element name="GeneralTab" type="button" selector="//a[@id='ampromo_general-head']"/>
+        <element name="MessagesSettingsTab" type="button" selector="//a[@id='ampromo_messages-head']"/>
+        <element name="GiftSelectionMethod" type="select" selector="//select[@id='ampromo_messages_gift_selection_method']"/>
+        <element name="OpenPopUpAutomatically" type="select" selector="//select[@id='ampromo_messages_auto_open_popup']"/>
+        <element name="ShowOriginalPriceInThePopup" type="select" selector="//select[@id='ampromo_messages_show_price_in_popup']"/>
+        <element name="DisplayErrorMessages" type="select" selector="//select[@id='ampromo_messages_display_error_messages']"/>
+        <element name="DisplaySuccessMessages" type="select" selector="//select[@id='ampromo_messages_display_success_messages']"/>
+        <element name="DisplayRemainingGiftsCounter" type="select" selector="//select[@id='ampromo_messages_display_remaining_gifts_counter']"/>
+        <element name="ReminderAboutAvailablePromos" type="select" selector="//select[@id='ampromo_messages_display_notification']"/>
+        <element name="Save" type="button" selector="//div[@class='page-actions-buttons']/button[@id='save']" timeout="10"/>
+    </section>
+</sections>

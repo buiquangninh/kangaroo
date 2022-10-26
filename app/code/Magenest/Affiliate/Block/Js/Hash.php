@@ -15,6 +15,7 @@ use Magenest\Affiliate\Model\Config\Source\Urltype;
  */
 class Hash extends Template
 {
+    CONST CUSTOMER_GUEST = 'customer_guest';
     /**
      * @var Data
      */
@@ -92,5 +93,19 @@ class Hash extends Template
         $customCssConfig = $this->_affiliateHelper->getCustomCss();
 
         return $customCssConfig;
+    }
+
+    /**
+     * Get cookie name
+     * @return string
+     */
+    public function getCustomerGuestName()
+    {
+        return self::CUSTOMER_GUEST;
+    }
+
+    protected function getCacheLifetime()
+    {
+        return 0;
     }
 }

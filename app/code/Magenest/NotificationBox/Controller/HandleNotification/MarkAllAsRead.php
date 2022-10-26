@@ -61,7 +61,7 @@ class MarkAllAsRead extends Action
             try {
                 $allCustomer = $this->collectionFactory->create();
                 $allCustomer->addFieldToFilter('customer_id',$customerId);
-                $allCustomer->addFieldToFilter('status',CustomerNotificationModel::STATUS_READ);
+                $allCustomer->addFieldToFilter('status',CustomerNotificationModel::STATUS_UNREAD);
                 foreach ($allCustomer as $item) {
                     $item->setData('status',CustomerNotificationModel::STATUS_READ);
                     $this->customerNotification->save($item);

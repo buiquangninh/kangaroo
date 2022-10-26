@@ -84,7 +84,7 @@ class GetGeoCodesForAddress
     {
         $queryString = http_build_query([
             'address' => $this->addressToQueryString->execute($address),
-            'api_key' => $this->getApiKey->execute()
+            'api_key' => 'DIO3jeGPu3bvMALRZLjelEyIRbIZfqM6qvtSMrM2'
         ]);
 
         $this->client->get(self::GOONG_ENDPOINT . '?' . $queryString);

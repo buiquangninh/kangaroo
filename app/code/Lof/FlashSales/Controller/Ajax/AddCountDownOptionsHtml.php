@@ -86,24 +86,11 @@ class AddCountDownOptionsHtml extends Action
     {
         /** @var \Magento\Framework\Controller\Result\Json $resultJson */
         $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);
-        $resultPage = $this->resultPageFactory->create();
 
         /** @var \Magento\Framework\App\ResponseInterface $response */
         $response = $this->getResponse();
-        $productIds = $this->getRequest()->getParam('product_ids');
-        $output = [];
-        foreach ($productIds as $productId) {
-            $block = $resultPage->getLayout()
-                ->createBlock(\Lof\FlashSales\Block\FlashSales\Product\CountDownTimer::class)
-                ->setTemplate('Lof_FlashSales::flashsales/product/countdown.phtml')
-                ->setData('product_id', $productId)
-                ->toHtml();
-
-            $output[$productId] = $block;
-        }
-
         $response->setPublicHeaders($this->config->getTtl());
-        $resultJson->setData(['output' => $output]);
+        $resultJson->setData(['output' => []]);
         return $resultJson;
     }
 }

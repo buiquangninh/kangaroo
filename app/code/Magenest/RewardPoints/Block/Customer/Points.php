@@ -2,14 +2,26 @@
 
 namespace Magenest\RewardPoints\Block\Customer;
 
+use Magenest\CouponCode\Model\ClaimCouponFactory;
+use Magenest\CouponCode\Model\ResourceModel\ClaimCoupon\CollectionFactory as ClaimCouponCollection;
 use Magenest\RewardPoints\Api\Data\MembershipInterface;
 use Magenest\RewardPoints\Model\Membership;
 use Magenest\RewardPoints\Model\RuleFactory;
 use Magento\Framework\DataObject;
 use Magento\Framework\View\Element\Template;
+use Magento\SalesRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\Customer\Helper\Session\CurrentCustomer;
 use Magenest\RewardPoints\Model\AccountFactory;
 use Magento\Backend\App\ConfigInterface;
+use Magento\SalesRule\Model\ResourceModel\Coupon\CollectionFactory as CouponCollectionFactory;
+use Magento\SalesRule\Model\RuleRepository;
+use Magento\SalesRule\Model\Rule;
+use Magento\SalesRule\Model\CouponFactory;
+use Magenest\RewardPoints\Model\ResourceModel\Expired\CollectionFactory as ExpiredCollectionFactory;
+use Magento\Catalog\Helper\Image;
+use Magento\Framework\Serialize\SerializerInterface;
+use Magento\UrlRewrite\Model\UrlRewrite;
+
 
 /**
  * Class Points
@@ -97,10 +109,49 @@ class Points extends Template
      */
     protected $myReferralFactory;
 
+    /**
+     * @var RewardProgramFactory
+     */
     protected $_rewardProgramBlock;
 
     /**
-     * Points constructor.
+     * @var RuleCollectionFactory
+     */
+    protected $ruleCollectionFactory;
+
+    /**
+     * @var CouponCollectionFactory
+     */
+    protected $couponCollectionFactory;
+
+    /**
+     * @var RuleRepository
+     */
+    protected $ruleRepository;
+
+    /**
+     * @var Rule
+     */
+    protected $rule;
+    /**
+     * @var ClaimCouponFactory
+     */
+    protected $claimCouponFactory;
+    /**
+     * @var CouponFactory
+     */
+    protected $coupon;
+    /**
+     * @var ExpiredCollectionFactory
+     */
+    protected $expiredCollectionFactory;
+
+    /**
+     * @param SerializerInterface $serializer
+     * @param Image $image
+     * @param ClaimCouponCollection $claimCouponCollection
+     * @param CouponFactory $coupon
+     * @param ClaimCouponFactory $claimCouponFactory
      * @param RewardProgramFactory $rewardProgram
      * @param \Magento\Customer\Model\Session $customerSession
      * @param Template\Context $context
@@ -118,44 +169,72 @@ class Points extends Template
      * @param \Magento\Customer\Model\CustomerFactory $customerFactory
      * @param \Magenest\RewardPoints\Model\ReferralCouponFactory $referralCouponFactory
      * @param \Magenest\RewardPoints\Model\MyReferralFactory $myReferralFactory
+     * @param RuleCollectionFactory $ruleCollectionFactory
+     * @param CouponCollectionFactory $couponCollectionFactory
+     * @param RuleRepository $ruleRepository
+     * @param Rule $rule
+     * @param ExpiredCollectionFactory $expiredCollectionFactory
      * @param array $data
      */
     public function __construct(
-        RewardProgramFactory $rewardProgram,
-        \Magento\Customer\Model\Session $customerSession,
-        Template\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magenest\RewardPoints\Helper\Data $helper,
-        CurrentCustomer $currentCustomer,
-        ConfigInterface $config,
+        SerializerInterface $serializer,
+        Image             $image,
+        ClaimCouponCollection                                                    $claimCouponCollection,
+        CouponFactory                                                            $coupon,
+        ClaimCouponFactory                                                       $claimCouponFactory,
+        RewardProgramFactory                                                     $rewardProgram,
+        \Magento\Customer\Model\Session                                          $customerSession,
+        Template\Context                                                         $context,
+        \Magento\Framework\Registry                                              $registry,
+        \Magenest\RewardPoints\Helper\Data                                       $helper,
+        CurrentCustomer                                                          $currentCustomer,
+        ConfigInterface                                                          $config,
         \Magenest\RewardPoints\Model\ResourceModel\Transaction\CollectionFactory $transactionCollectionFactory,
-        \Magenest\RewardPoints\Model\ExpiredFactory $expiredFactory,
-        AccountFactory $accountFactory,
-        RuleFactory $ruleFactory,
-        \Magento\Cms\Model\Template\FilterProvider $filterProvider,
-        \Magenest\RewardPoints\Cookie\ReferralCode $referralCodeCookie,
-        \Magenest\RewardPoints\Model\ReferralFactory $referralFactory,
-        \Magento\Customer\Model\CustomerFactory $customerFactory,
-        \Magenest\RewardPoints\Model\ReferralCouponFactory $referralCouponFactory,
-        \Magenest\RewardPoints\Model\MyReferralFactory $myReferralFactory,
-        array $data = []
-    ) {
-        $this->_customerSession              = $customerSession;
-        $this->_coreRegistry                 = $registry;
-        $this->expiredFactory                = $expiredFactory;
-        $this->_config                       = $config;
-        $this->helper                        = $helper;
-        $this->_currentCustomer              = $currentCustomer;
+        \Magenest\RewardPoints\Model\ExpiredFactory                              $expiredFactory,
+        AccountFactory                                                           $accountFactory,
+        RuleFactory                                                              $ruleFactory,
+        \Magento\Cms\Model\Template\FilterProvider                               $filterProvider,
+        \Magenest\RewardPoints\Cookie\ReferralCode                               $referralCodeCookie,
+        \Magenest\RewardPoints\Model\ReferralFactory                             $referralFactory,
+        \Magento\Customer\Model\CustomerFactory                                  $customerFactory,
+        \Magenest\RewardPoints\Model\ReferralCouponFactory                       $referralCouponFactory,
+        \Magenest\RewardPoints\Model\MyReferralFactory                           $myReferralFactory,
+        RuleCollectionFactory                                                    $ruleCollectionFactory,
+        CouponCollectionFactory                                                  $couponCollectionFactory,
+        RuleRepository                                                           $ruleRepository,
+        Rule                                                                     $rule,
+        ExpiredCollectionFactory                                                 $expiredCollectionFactory,
+        UrlRewrite                                                               $urlRewrite,
+        array                                                                    $data = []
+    )
+    {
+        $this->serializer = $serializer;
+        $this->image = $image;
+        $this->claimCouponColection = $claimCouponCollection;
+        $this->coupon = $coupon;
+        $this->claimCouponFactory = $claimCouponFactory;
+        $this->_customerSession = $customerSession;
+        $this->_coreRegistry = $registry;
+        $this->expiredFactory = $expiredFactory;
+        $this->_config = $config;
+        $this->helper = $helper;
+        $this->_currentCustomer = $currentCustomer;
         $this->_transactionCollectionFactory = $transactionCollectionFactory;
-        $this->_ruleFactory                  = $ruleFactory;
-        $this->_accountFactory               = $accountFactory;
+        $this->_ruleFactory = $ruleFactory;
+        $this->_accountFactory = $accountFactory;
         $this->_filterProvider = $filterProvider;
-        $this->referralCodeCookie            = $referralCodeCookie;
+        $this->referralCodeCookie = $referralCodeCookie;
         $this->referralFactory = $referralFactory;
         $this->customerFactory = $customerFactory;
         $this->referralCouponFactory = $referralCouponFactory;
         $this->myReferralFactory = $myReferralFactory;
         $this->_rewardProgramBlock = $rewardProgram;
+        $this->ruleCollectionFactory = $ruleCollectionFactory;
+        $this->couponCollectionFactory = $couponCollectionFactory;
+        $this->ruleRepository = $ruleRepository;
+        $this->expiredCollectionFactory = $expiredCollectionFactory;
+        $this->rule = $rule;
+        $this->urlRewrite = $urlRewrite;
         parent::__construct($context, $data);
     }
 
@@ -166,6 +245,10 @@ class Points extends Template
     {
         parent::_construct();
         $this->pageConfig->getTitle()->set(__('My Reward Points'));
+    }
+
+    public function getUrlRewrite(){
+        return $this->urlRewrite->load('notification-reward','request_path')->getTargetPath();
     }
 
     /**
@@ -180,6 +263,31 @@ class Points extends Template
             )->addFieldToFilter('customer_id', $customerId)
                 ->setOrder('id', 'desc');
         }
+
+        return $this->transactions;
+    }
+
+    public function getMinusTransactions()
+    {
+        $customerId = $this->_currentCustomer->getCustomerId();
+        $this->transactions = $this->_transactionCollectionFactory->create()->addFieldToSelect(
+            '*'
+        )->addFieldToFilter('customer_id', $customerId)
+            ->addFieldToFilter('points_change', ['lt' => 0])
+            ->setOrder('id', 'desc');
+
+
+        return $this->transactions;
+    }
+
+    public function getPlusTransactions()
+    {
+        $customerId = $this->_currentCustomer->getCustomerId();
+        $this->transactions = $this->_transactionCollectionFactory->create()->addFieldToSelect(
+            '*'
+        )->addFieldToFilter('customer_id', $customerId)
+            ->addFieldToFilter('points_change', ['gteq' => 0])
+            ->setOrder('id', 'desc');
 
         return $this->transactions;
     }
@@ -229,14 +337,21 @@ class Points extends Template
 
         return $ruleModel;
     }
-
+    public function getImg($data){
+        $ruleId = $data->getRuleId();
+        $rule = $this->_ruleFactory->create()->load($ruleId,'id');
+        if ($rule->getData('rewardpoint_img')!= null) {
+            return $rule->getData('rewardpoint_img');
+        }
+        else return '';
+    }
     /**
      * @return DataObject
      */
     public function getAccount()
     {
         $customerId = $this->_currentCustomer->getCustomerId();
-        $account    = $this->_accountFactory->create()
+        $account = $this->_accountFactory->create()
             ->getCollection()
             ->addFieldToFilter('customer_id', $customerId)
             ->getFirstItem();
@@ -252,7 +367,7 @@ class Points extends Template
     public function getExpiryDate($transactionId)
     {
         $transactionCollection = $this->expiredFactory->create()->getCollection()->addFieldToFilter('transaction_id', $transactionId);
-        $transactionModel      = $transactionCollection->getFirstItem();
+        $transactionModel = $transactionCollection->getFirstItem();
 
         return $transactionModel->getData('expired_date');
     }
@@ -270,7 +385,8 @@ class Points extends Template
      *
      * @return mixed
      */
-    public function getLandingPage() {
+    public function getLandingPage()
+    {
         return $this->_scopeConfig->getValue('rewardpoints/point_config/landing_page', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
@@ -279,7 +395,8 @@ class Points extends Template
      *
      * @return string
      */
-    public function getLandingPageLink() {
+    public function getLandingPageLink()
+    {
         return '<a href="' . $this->getUrl($this->getLandingPage()) . '">' . __('View more') . '</a>';
     }
 
@@ -289,7 +406,8 @@ class Points extends Template
      * @param $id
      * @return bool|int
      */
-    public function getExpiryType($id) {
+    public function getExpiryType($id)
+    {
         return $this->helper->getExpiryType($id);
     }
 
@@ -298,7 +416,8 @@ class Points extends Template
      *
      * @return string
      */
-    public function getReferralCodeCookie() {
+    public function getReferralCodeCookie()
+    {
         $referalCode = $this->referralCodeCookie->get();
         if ($referalCode === null) return '';
         return $referalCode;
@@ -309,7 +428,7 @@ class Points extends Template
      */
     public function getApplyReferralCodeUrl($code, $customerId)
     {
-        $referrerId     = $this->referralFactory->create()->load($code, 'referral_code')->getData('customer_id');
+        $referrerId = $this->referralFactory->create()->load($code, 'referral_code')->getData('customer_id');
         $referralCode = $this->referralFactory->create()->load($customerId, 'customer_id')->getData('referral_code');
         $dataArr = [
             'customer_id' => $customerId,
@@ -320,7 +439,7 @@ class Points extends Template
         // apply referral code
         $this->_eventManager->dispatch('apply_referral_code', ['applyObj' => $applyObj]);
 
-        $this->sendCoupon($customerId,$referrerId,$code,$referralCode);
+        $this->sendCoupon($customerId, $referrerId, $code, $referralCode);
 
         //Load customer data after registration
         $customer = $this->customerFactory->create()->load($customerId);
@@ -330,11 +449,11 @@ class Points extends Template
         $referrer = $this->customerFactory->create()->load($referrerId);
         $myReferral = $this->myReferralFactory->create()
             ->getCollection()
-            ->addFieldToFilter('customer_id',$referrerId)
-            ->addFieldToFilter('email_referred',$customerEmail)->getFirstItem();
-        if($myReferral->getId()){
+            ->addFieldToFilter('customer_id', $referrerId)
+            ->addFieldToFilter('email_referred', $customerEmail)->getFirstItem();
+        if ($myReferral->getId()) {
             $myReferral->setStatus('1');
-        }else{
+        } else {
             $myReferralData = [
                 'email_referred' => $customerEmail,
                 'customer_id' => $referrer->getData('entity_id'),
@@ -355,7 +474,7 @@ class Points extends Template
      * @return array
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function sendCoupon($customerId,$referrerId,$referralCode,$code)
+    public function sendCoupon($customerId, $referrerId, $referralCode, $code)
     {
         $result = [];
         //Referral Coupon Are Awarded To (Option 2)
@@ -364,13 +483,13 @@ class Points extends Template
         $refered = $this->helper->whenReceivedCoupon(\Magenest\RewardPoints\Helper\Data::XML_PATH_REFERRAL_WHEN_COUPON_SENT_REFERED);
 
         //Coupon is sent to the presentee when the presentee has registered an account and the coupon is given to both or the presentee
-        if(($refered == 0) && ($awardTo == 1 || $awardTo == 0)){
+        if (($refered == 0) && ($awardTo == 1 || $awardTo == 0)) {
             $customer = $this->customerFactory->create()->load($customerId);
             $recipients = [
                 'name' => $customer->getName(),
                 'email' => $customer->getEmail()
             ];
-            $couponRefered = $this->helper->sendCoupon($type = 'refered',$recipients);
+            $couponRefered = $this->helper->sendCoupon($type = 'refered', $recipients);
             $result['refered'] = $couponRefered;
             $referralCouponModel = $this->referralCouponFactory->create();
             $referralCouponModel->addData([
@@ -385,13 +504,13 @@ class Points extends Template
 
         $referrer = $this->helper->whenReceivedCoupon(\Magenest\RewardPoints\Helper\Data::XML_PATH_REFERRAL_WHEN_COUPON_SENT_REFERRER);
         //Coupon is sent to the referrer when the presentee has registered an account and the coupon is given to both or the referrer
-        if(($referrer == 0) && ($awardTo == 2 || $awardTo == 0)){
+        if (($referrer == 0) && ($awardTo == 2 || $awardTo == 0)) {
             $customer = $this->customerFactory->create()->load($referrerId);
             $recipients = [
                 'name' => $customer->getName(),
                 'email' => $customer->getEmail()
             ];
-            $couponReferrer = $this->helper->sendCoupon($type = 'referrer',$recipients);
+            $couponReferrer = $this->helper->sendCoupon($type = 'referrer', $recipients);
             $result['referrer'] = $couponReferrer;
             $referralCouponModel = $this->referralCouponFactory->create();
             $referralCouponModel->addData([
@@ -432,5 +551,121 @@ class Points extends Template
         }
 
         return false;
+    }
+
+    public function getRewardPointRules()
+    {
+        $rewardPoints = $this->ruleCollectionFactory->create()->addFieldToSelect('*')
+            ->addFieldToFilter('kpoint', ['notnull' => true])
+            ->addFieldToFilter('use_auto_generation', ['eq' => 1])
+            ->getItems();
+        return $rewardPoints;
+    }
+
+    public function getRewardPointRulesIds()
+    {
+        $rewardPoints = $this->ruleCollectionFactory->create()->addFieldToSelect('*')
+            ->addFieldToFilter('is_active',1)
+            ->addFieldToFilter('kpoint', ['notnull' => true])
+            ->addFieldToFilter('use_auto_generation', ['eq' => 1])
+            ->getAllIds();
+        return $rewardPoints;
+    }
+
+    public function getRuleImg($rule_id)
+    {
+        $rule = $this->rule->load($rule_id);
+        if ($rule->getImages()) {
+            $imgData = $this->serializer->unserialize($rule->getImages());
+            return $imgData[0]['url'];
+        } else return 'https://cdn.pixabay.com/photo/2016/08/03/09/03/universe-1566159_960_720.jpg"';
+    }
+
+    public function getGenerateCoupon($rule_id)
+    {
+        $generateCoupon = $this->couponCollectionFactory->create()->addFieldToSelect('*')
+            ->addFieldToFilter('rule_id', ['eq' => $rule_id])->getFirstItem()->getCode();
+        return $generateCoupon;
+    }
+
+    public function getRuleNameById($rule_id)
+    {
+        return $this->ruleRepository->getById($rule_id)->getName();
+    }
+
+    public function getRuleKpointById($rule_id)
+    {
+        return $this->rule->load($rule_id)->getKpoint();
+    }
+
+    public function isOwn($rule_id,$current_customer_id)
+    {
+        $isOwn = $this->claimCouponColection->create()
+            ->addFieldToFilter('main_table.rule_id',$rule_id)
+            ->addFieldToFilter('customer_id',$current_customer_id);
+        $currentCustomerPoints = $this->_accountFactory->create()->load($current_customer_id,'customer_id')->getPointsCurrent();
+        $rulePoints = $this->rule->load($rule_id)->getKpoint();
+        if ($isOwn->getFirstItem()->getId()) {
+            return 'button-coupon-claimed';
+        }
+        if ($currentCustomerPoints < $rulePoints){
+            return 'button-coupon-claimed';
+        }else return 'button-coupon-claim';
+    }
+
+    public function isDisable($rule_id,$current_customer_id){
+        $isDisable = $this->claimCouponColection->create()
+            ->addFieldToFilter('main_table.rule_id', $rule_id)
+            ->addFieldToFilter('customer_id',$current_customer_id);
+        $currentCustomerPoints = $this->_accountFactory->create()->load($current_customer_id,'customer_id')->getPointsCurrent();
+        $rulePoints = $this->rule->load($rule_id)->getKpoint();
+        if ($isDisable->getFirstItem()->getId()) {
+            return 'disabled';
+        }
+        if ($currentCustomerPoints < $rulePoints){
+            return 'disabled';
+        }
+        else return '';
+    }
+    public function getRuleExpiredDate($rule_id){
+        return $this->rule->load($rule_id)->getToDate() ?? '';
+    }
+
+    public function getRuleDescription($rule_id){
+        return $this->rule->load($rule_id)->getDescription() ?? '';
+    }
+
+    public function getExpiredRule($customer_id){
+        return $this->expiredCollectionFactory->create()->addFieldToSelect('*')->addFieldToFilter('customer_id',$customer_id)
+            ->addOrder('expired_date','asc')->getFirstItem();
+    }
+    public function getPrefixTitle($rule_title_id){
+        $arr = [0,-1,-2,-4,-5];
+        if ($rule_title_id == 0) {
+            return __("Redeem points");
+        }
+        elseif($rule_title_id == -1) {
+            return __("Points from admin");
+        }
+        elseif($rule_title_id == -2) {
+            return __("Referral code points");
+        }
+        elseif($rule_title_id == -4) {
+            return __("Deduct received points");
+        }
+        elseif($rule_title_id == -5) {
+            return __("Return applied points");
+        }
+        elseif(!in_array($rule_title_id,$arr)) {
+            return $this->_ruleFactory->create()->load($rule_title_id,'id')->getTitle();
+        }
+    }
+
+    public function getExpiredKpoint($customer_id){
+            return $this->getExpiredRule($customer_id)->getPointsChange();
+    }
+
+    public function getExpiredKpointDate($customer_id){
+        return date('d/m/Y',strtotime($this->getExpiredRule($customer_id)->getExpiredDate()));
     }
 }

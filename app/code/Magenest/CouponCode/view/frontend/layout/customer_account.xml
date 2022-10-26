@@ -7,11 +7,12 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="customer-account-offer-link">
-            <block class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-coupon-claimed" after="-">
+        <referenceBlock name="customer_account_navigation">
+            <block class="Magenest\CouponCode\Block\CouponCodeNavigation" name="customer-account-coupon-claimed">
                 <arguments>
                     <argument name="path" xsi:type="string">voucher/wallet</argument>
                     <argument name="label" xsi:type="string">My Coupon</argument>
+                    <argument name="sortOrder" xsi:type="number">100</argument>
                 </arguments>
             </block>
         </referenceBlock>

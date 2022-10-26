@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="salesrule_rule_load_after">
+        <observer name="seasonal_load_after" instance="Magenest\SeasonalDiscount\Observer\UnserializeSaleDayData" />
+    </event>
+    <event name="catalogrule_rule_load_after">
+        <observer name="catalogrule_seasonal_load_after" instance="Magenest\SeasonalDiscount\Observer\CatalogUnserializeSaleDayData" />
+    </event>
+</config>

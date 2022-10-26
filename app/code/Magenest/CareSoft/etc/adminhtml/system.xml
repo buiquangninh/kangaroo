@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="caresoft" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0">
+            <class>separator-top</class>
+            <label>Caresoft Integration</label>
+            <tab>magenest</tab>
+            <resource>Magento_Backend::content</resource>
+            <group id="general" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>General</label>
+                <field id="enable" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Please enter and save the access token first before enable the module.</comment>
+                </field>
+                <field id="token" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Token</label>
+                </field>
+                <field id="group" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Group</label>
+                    <source_model>Magenest\CareSoft\Model\Config\Source\Group</source_model>
+                    <validate>required-entry</validate>
+                    <comment>If there's no group to select, please double-check if your token is correct.</comment>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+                <field id="order_custom_field" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Order ID Custom Field</label>
+                    <source_model>Magenest\CareSoft\Model\Config\Source\CustomField</source_model>
+                    <validate>required-entry</validate>
+                    <comment>If you've set this field before but the value is now empty, the field you've selected may no longer exists. Please choose another one.</comment>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

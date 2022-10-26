@@ -45,6 +45,8 @@ use Magento\Sales\Model\OrderFactory;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Mirasvit\CustomerSegment\Model\ResourceModel\Segment\Customer\CollectionFactory as CustomerGroupCollection;
+use Magenest\RewardPoints\Model\ResourceModel\MembershipCustomer\CollectionFactory as MembershipCollectionFactory;
 use Zend_Json;
 
 /**
@@ -359,6 +361,14 @@ class Data extends AbstractHelper
      * @var \Magenest\RewardPoints\Model\ResourceModel\Expired\CollectionFactory
      */
     protected $expiredCollectionFactory;
+    /**
+     * @var CustomerGroupCollection
+     */
+    private $customerGroupCollection;
+    /**
+     * @var MembershipCollectionFactory
+     */
+    private $membershipCollectionFactory;
 
     /**
      * Data constructor.
@@ -438,6 +448,8 @@ class Data extends AbstractHelper
         ProductResource $productResource,
         QuoteResource $quoteResource,
         \Magenest\RewardPoints\Model\ResourceModel\Account\CollectionFactory $accountCollectionFactory,
+        CustomerGroupCollection $customerGroupCollection,
+        MembershipCollectionFactory $membershipCollectionFactory,
         \Magenest\RewardPoints\Model\ResourceModel\Expired\CollectionFactory $expiredCollectionFactory
     ) {
         $this->_configurable = $configurable;
@@ -479,6 +491,8 @@ class Data extends AbstractHelper
         $this->quoteResource = $quoteResource;
         $this->accountCollectionFactory = $accountCollectionFactory;
         $this->expiredCollectionFactory = $expiredCollectionFactory;
+        $this->customerGroupCollection = $customerGroupCollection;
+        $this->membershipCollectionFactory = $membershipCollectionFactory;
         parent::__construct($context);
     }
 
@@ -514,9 +528,7 @@ class Data extends AbstractHelper
 
     public function getPointUnit()
     {
-        $pointUnit = $this->getConfigData(self::XML_PATH_POINT_UNIT) ?? 'P';
-
-        return __($pointUnit);
+        return $this->getConfigData(self::XML_PATH_POINT_UNIT) ?? 'P';
     }
 
     public function getEnableModule()
@@ -1162,7 +1174,7 @@ class Data extends AbstractHelper
      *
      * @return bool
      */
-    public function validateRule($rule)
+    public function validateRule($rule, $customerId = null)
     {
         $today = date('Y-m-d');
         $status = $rule->getStatus();
@@ -1173,6 +1185,34 @@ class Data extends AbstractHelper
         } else {
             $inFromDate = true;
         }
+        $checkCustomerIdInGroups = true;
+        $checkCustomerSegmentGroups = $rule->getCustomerSegmentGroupIds();
+        $checkCustomerSegmentGroups = explode(",", $checkCustomerSegmentGroups);
+        $customerId = $this->customerSession->getCustomer()->getId() ?? $customerId;
+        $customerSegment = $this->customerGroupCollection->create();
+        $customerSegment->addFieldToSelect('segment_id');
+        $customerSegment->addFieldToFilter('customer_id', array('eq' => $customerId));
+
+        $customerSegmentGroups = $customerSegment->getColumnValues('segment_id');
+
+        $c = array_intersect($customerSegmentGroups, $checkCustomerSegmentGroups);
+        if (count($c) <= 0 && !empty($checkCustomerSegmentGroups)) {
+            $checkCustomerIdInGroups = false;
+        }
+
+        $checkMembershipInGroups = true;
+        $checkMembershipGroups = $rule->getMembershipGroupIds();
+        $checkMembershipGroups = explode(",", $checkMembershipGroups);
+        $membershipGroups = $this->membershipCollectionFactory->create();
+        $membershipGroups->addFieldToSelect('membership_id');
+        $membershipGroups->addFieldToFilter('customer_id', array('eq' => $customerId));
+
+        $customerGroups = $membershipGroups->getColumnValues('membership_id');
+
+        $c = array_intersect($customerGroups, $checkMembershipGroups);
+        if (count($c) <= 0 && !empty($checkMembershipGroups)) {
+            $checkMembershipInGroups = false;
+        }
 
         if ($toDate) {
             $inToDate = strtotime($today) <= strtotime($toDate) ? true : false;
@@ -1180,7 +1220,7 @@ class Data extends AbstractHelper
             $inToDate = true;
         }
 
-        if (($status == '1') && $inFromDate && $inToDate) {
+        if (($status == '1') && $inFromDate && $inToDate && ($checkCustomerIdInGroups || $checkMembershipInGroups)) {
             return true;
         } else {
             return false;

@@ -1,0 +1,50 @@
+<?php
+/** @var $block \Magento\Catalog\Block\Product\View */
+/** @var $helper \Magenest\Cdp365\ViewModel\CatalogHelper */
+$product = $block->getProduct();
+$helper = $block->getHelper();
+$url = $product->getProductUrl();
+$mainImages = $product->getExtensionAttributes()->getMedia();
+$children = $product->getTypeInstance()->getUsedProducts($product);
+$categoryList = $helper->getCategoryList($product);
+$product = $children[0];
+
+$data = [];
+foreach ($children as $child) {
+    $images = $child->getExtensionAttributes()->getMedia();
+
+    $data[$child->getId()] = [
+        "id" => $child->getSku(),
+        "name"=> $child->getName(),
+        "original_price"=> $child->getPriceInfo()->getPrice('regular_price')->getValue(),
+        "price"=> $child->getFinalPrice(),
+        "page_url"=> $url,
+        "image_url"=> !empty($images) ? reset($images)->getUrl() : (!empty($mainImages) ? reset($mainImages)->getUrl() : ""),
+        "main_category"=>  $categoryList[0] ?? "",
+        "category_level_1"=> $categoryList[1] ?? "",
+        "category_level_2"=> $categoryList[2] ?? ""
+    ];
+}
+$images = $product->getExtensionAttributes()->getMedia();
+
+
+?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magenest_Cdp365/js/analytics/product": {
+                "brand": "KANGAROO",
+                "id": "<?= $block->escapeJs($product->getSku()) ?>",
+                "name": "<?= $block->escapeJs($product->getName()) ?>",
+                "original_price": "<?= $block->escapeJs($product->getPriceInfo()->getPrice('regular_price')->getValue()) ?>",
+                "price": "<?= $block->escapeJs($product->getFinalPrice()) ?>",
+                "page_url": "<?= $url ?>",
+                "image_url": "<?= $block->escapeJs(!empty($images) ? reset($images)->getUrl() : (!empty($mainImages) ? reset($mainImages)->getUrl() : "")) ?>"	,
+                "main_category":  "<?= $categoryList[0] ?? "" ?>",
+                "category_level_1": "<?= $categoryList[1] ?? "" ?>",
+                "category_level_2": "<?= $categoryList[2] ?? "" ?>",
+                "data": <?= json_encode($data) ?>
+            }
+        }
+    }
+</script>

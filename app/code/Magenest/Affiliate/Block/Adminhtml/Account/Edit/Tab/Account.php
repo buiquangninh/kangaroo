@@ -213,6 +213,14 @@ class Account extends Generic implements TabInterface
             'values'   => $this->customerGroup->toOptionArray()
         ]);
 
+        $fieldset->addField('is_limited', 'select', [
+            'name'     => 'is_limited',
+            'value'    => $customer->getIsLimited(),
+            'label'    => __('Is Limited'),
+            'title'    => __('Is Limited'),
+            'values'   => $this->_boolean->toOptionArray()
+        ]);
+
         $fieldset->addField('balance', 'note', [
             'label' => __('Balance'),
             'text'  => $this->priceCurrency->format(

@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="upgrade_affiliate_rank_automatically" instance="Magenest\AffiliateMultiLevelUpdate\Cron\UpgradeAffiliateRank" method="execute">
+            <schedule>0 0 * * *</schedule>
+        </job>
+    </group>
+</config>

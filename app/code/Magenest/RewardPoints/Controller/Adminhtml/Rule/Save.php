@@ -15,18 +15,23 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\Session;
 use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Filesystem;
+use Magento\Framework\Image\AdapterFactory;
 use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime\Filter\Date;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\MediaStorage\Model\File\UploaderFactory;
 use Psr\Log\LoggerInterface;
 use Zend_Filter_Input;
 use Zend_Json;
+use Magento\Framework\Serialize\SerializerInterface;
 
 /**
  * Class Save
@@ -63,6 +68,8 @@ class Save extends Rule
      */
     protected $helper;
 
+    private $serializer;
+
     /**
      * Save constructor.
      * @param Context $context
@@ -77,17 +84,24 @@ class Save extends Rule
      * @param Data $helper
      */
     public function __construct(
+        LoggerInterface $logger,
+        Filesystem  $filesystem,
+        AdapterFactory $adapterFactory,
+        UploaderFactory $uploaderFactory,
         Action\Context    $context,
         PageFactory       $pageFactory,
         RuleFactory       $ruleFactory,
         Registry          $registry,
         Date              $dateFilter,
-        LoggerInterface   $logger,
         CollectionFactory $ruleCollectionFactory,
         NotificationModel $notificationModel,
         Notification      $notificationResource,
+        SerializerInterface $serializer,
         Data              $helper
     ) {
+        $this->uploaderFactory = $uploaderFactory;
+        $this->fileSystem = $filesystem;
+        $this->adapterFactory = $adapterFactory;
         $this->_dateFilter = $dateFilter;
         $this->backendSession = $context->getSession();
         $this->logger = $logger;
@@ -95,6 +109,7 @@ class Save extends Rule
         $this->_notificationModel = $notificationModel;
         $this->_notificationResource = $notificationResource;
         $this->helper = $helper;
+        $this->serializer = $serializer;
         parent::__construct($context, $pageFactory, $ruleFactory, $registry);
     }
 
@@ -105,6 +120,7 @@ class Save extends Rule
     public function execute()
     {
         $data = $this->getRequest()->getPostValue();
+        $img = $this->getRequest()->getFiles('rewardpoint_img');
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($data) {
@@ -194,6 +210,15 @@ class Save extends Rule
 
                 return $resultRedirect->setPath('*/*/edit', ['id' => $this->getRequest()->getParam('id')]);
             }
+            if (!empty($data['membership_group_ids'])) {
+                $data['membership_group_ids'] = implode(',', $data['membership_group_ids']);
+            }
+
+            if (!empty($data['customer_segment_group_ids'])) {
+                $data['customer_segment_group_ids'] = implode(',', $data['customer_segment_group_ids']);
+            }
+            $data['rewardpoint_img'] = !empty($img['name']) ? $this->uploadImage('rewardpoint_img') : '';
+
             // end
             $model->loadPost($data);
             $this->backendSession->setPageData($model->getData());
@@ -216,7 +241,6 @@ class Save extends Rule
                     }
                     $this->_getSession()->setPageData($data);
                     $this->_redirect('*/*/edit', ['id' => $model->getId()]);
-
                     return;
                 }
                 $this->_eventManager->dispatch('save_referral_points', ['current_rule' => $model, 'referral_data' => $data]);
@@ -257,6 +281,39 @@ class Save extends Rule
         return $resultRedirect->setPath('*/*/');
     }
 
+
+    /**
+     * @param $fileId
+     *
+     * @return string|null
+     * @throws Exception
+     */
+    private function uploadImage($fileId)
+    {
+        try {
+            $uploader = $this->uploaderFactory->create(['fileId' => $fileId]);
+            $uploader->setAllowedExtensions(['jpg', 'jpeg', 'png']);
+            $imageAdapter = $this->adapterFactory->create();
+            $uploader->addValidateCallback('rewardpoint_img', $imageAdapter, 'validateUploadFile');
+            $uploader->setAllowRenameFiles(true);
+            $uploader->setFilesDispersion(true);
+            $mediaDirectory  = $this->fileSystem->getDirectoryRead(DirectoryList::MEDIA);
+            $destinationPath = $mediaDirectory->getAbsolutePath('rewardpoint');
+            $result          = $uploader->save($destinationPath);
+            if (!$result) {
+                throw new LocalizedException(__('File cannot be saved to path: $1', $destinationPath));
+            }
+
+            return $result['file'];
+        } catch (\Exception $e) {
+            $this->logger->critical(
+                $e->getMessage(),
+                ['trace' => $e->getTraceAsString(), 'path' => $destinationPath ?? ""]
+            );
+            $this->messageManager->addExceptionMessage($e);
+            return null;
+        }
+    }
     /**
      * @param $ruleId
      * @throws AlreadyExistsException

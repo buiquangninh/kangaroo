@@ -102,7 +102,7 @@ class CustomItemConverter extends ItemConverter
             $originalPrice = 0;
         }
         $extension = $itemsData->getExtensionAttributes();
-        $extension->setProductPrice($originalPrice*$itemsData->getQty());
+        $extension->setProductPrice($originalPrice);
         $itemsData->setExtensionAttributes($extension);
         return $itemsData;
     }

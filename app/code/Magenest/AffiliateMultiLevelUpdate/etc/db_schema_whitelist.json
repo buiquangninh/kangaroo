@@ -1,0 +1,12 @@
+{
+    "magenest_affiliate_group": {
+        "column": {
+            "approval_time": true,
+            "revenue_to_reach": true,
+            "revenue_to_keep": true,
+            "qty_order": true,
+            "additional_reward_by_revenue": true,
+            "reward_value": true
+        }
+    }
+}

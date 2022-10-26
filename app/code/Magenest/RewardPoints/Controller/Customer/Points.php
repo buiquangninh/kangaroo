@@ -4,6 +4,7 @@ namespace Magenest\RewardPoints\Controller\Customer;
 
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\SalesRule\Model\ResourceModel\Coupon\Collection as CouponCollection;
 
 /**
  * Class Points
@@ -34,11 +35,13 @@ class Points extends \Magento\Framework\App\Action\Action
      * @param \Magento\Customer\Model\Url $url
      */
     public function __construct(
+        CouponCollection $couponCollection,
         \Magento\Framework\App\Action\Context $context,
         \Magento\Customer\Model\Session $customerSession,
         PageFactory $resultPageFactory,
         \Magento\Customer\Model\Url $url
     ) {
+        $this->couponCollection = $couponCollection;
         $this->_customerSession   = $customerSession;
         $this->_resultPageFactory = $resultPageFactory;
         $this->url = $url;

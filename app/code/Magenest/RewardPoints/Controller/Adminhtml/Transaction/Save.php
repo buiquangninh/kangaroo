@@ -1,15 +1,10 @@
 <?php
-
 namespace Magenest\RewardPoints\Controller\Adminhtml\Transaction;
 
 use Magenest\RewardPoints\Model\ResourceModel\Transaction;
 use Magento\Backend\App\Action;
-use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Controller\ResultFactory;
 
-/**
- * Class Save
- * @package Magenest\RewardPoints\Controller\Customer
- */
 class Save extends Action
 {
 
@@ -61,8 +56,7 @@ class Save extends Action
         \Magento\Backend\Model\Auth\Session $authSession,
         \Magenest\RewardPoints\Model\TransactionFactory $transactionFactory,
         \Magento\Backend\Model\SessionFactory $sessionFactory
-    )
-    {
+    ) {
         $this->helper            = $help;
         $this->_resultJsonFactory = $resultJsonFactory;
         $this->authSession = $authSession;
@@ -78,27 +72,34 @@ class Save extends Action
      */
     public function execute()
     {
-        $success = true;
-        $resultJson = $this->_resultJsonFactory->create();
         try {
             $pointAfter = $this->addPointToCustomer(
                 $this->getRequest()->getParam('customer_id'),
                 $this->getRequest()->getParam('points_change'),
                 $this->getRequest()->getParam('comment')
             );
-
-            if ($pointAfter === 0) {
-                return $resultJson->setData([
-                    'success'=>$success,
-                    'depleted'=>true,
-                ]);
-            }
+            $this->messageManager->addSuccessMessage("New transaction is saved successfully!");
         } catch (\Exception $e) {
             $this->messageManager->addException($e);
-            $success = false;
+            $this->messageManager->addErrorMessage("Error occured: " . $e->getMessage());
+            if ($this->getRequest()->isAjax()) {
+                return $this->resultFactory->create(ResultFactory::TYPE_JSON)->setData(['success' => false]);
+            } else {
+                return $this->_redirect('*/*/new');
+            }
         }
 
-        return $resultJson->setData(['success'=>$success]);
+        if ($this->getRequest()->isAjax()) {
+            return $this->resultFactory->create(ResultFactory::TYPE_JSON)
+                ->setData(
+                    [
+                        'success' => true,
+                        'depleted' => $pointAfter == 0
+                    ]
+                );
+        }
+
+        return $this->_redirect('*/*/index');
     }
 
     /**
@@ -137,5 +138,4 @@ class Save extends Action
 
         return false;
     }
-
 }

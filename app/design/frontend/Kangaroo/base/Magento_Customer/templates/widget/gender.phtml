@@ -1,0 +1,20 @@
+<fieldset class="fieldset sex">
+    <div class="field choice">
+        <label class="label">
+            <?= __('Sex') ?>
+        </label>
+        <div class="control">
+            <?php $options = $block->getGenderOptions(); ?>
+            <?php $value = $block->getGender(); ?>
+            <?php foreach ($options as $option) : ?>
+                <?php if (!$option->getValue()) continue; ?>
+                <label>
+                    <input type="radio" value="<?= $option->getValue() ?>" name="<?= $block->escapeHtmlAttr($block->getFieldName('gender')) ?>" id="<?= $block->escapeHtmlAttr($option->getValue()) ?>" <?= ($option->getValue() == $value) ? ' checked' : '' ?>/>
+                    <span class="label custom-check radio">
+                        <?= $block->escapeHtml(__($option->getLabel())) ?>
+                    </span>
+                </label>
+            <?php endforeach;?>
+        </div>
+    </div>
+</fieldset>

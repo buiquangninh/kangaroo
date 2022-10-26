@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <actionGroup name="AdminCreatePromoCartRuleTheSameActionGroup">
+        <arguments>
+            <argument name="promoCartRule" defaultValue="defaultPromoCartRule"/>
+        </arguments>
+        <amOnPage url="{{AdminCartPriceRulePage.url}}" stepKey="navigateToCartPriceRulePage"/>
+        <waitForPageLoad stepKey="waitForPageLoadAfterOpenGrid"/>
+        <click selector="{{AdminRuleGridActionSection.ResetFilter}}" stepKey="resetFilter"/>
+        <click selector="{{AdminRuleGridActionSection.AddNewRuleButton}}" stepKey="clickOnAddNewRule"/>
+        <waitForPageLoad stepKey="waitForPageLoadAfterClickToAddNewRule"/>
+        <fillField selector="{{AdminPromoCartRuleSection.RuleName}}" userInput="{{promoCartRule.name}}" stepKey="enterRuleName"/>
+        <fillField selector="{{AdminPromoCartRuleSection.Description}}" userInput="{{promoCartRule.description}}" stepKey="enterDescription"/>
+        <selectOption selector="{{AdminPromoCartRuleSection.SelectWebsites}}" parameterArray="[{{promoCartRule.websites}}]" stepKey="selectWebsite"/>
+        <selectOption selector="{{AdminPromoCartRuleSection.SelectCustomerGroup}}" parameterArray="[{{promoCartRule.customers}}]" stepKey="selectCustomerGroup"/>
+        <conditionalClick selector="{{AdminPromoCartRuleSection.ActionTab}}" dependentSelector="{{AdminPromoCartRuleSection.SelectAction}}" visible="false" stepKey="openActionTab"/>
+        <waitForAjaxLoad stepKey="waitForLoadAfterOpenPage"/>
+        <selectOption selector="{{AdminPromoCartRuleSection.SelectAction}}" userInput="{{promoCartRule.action}}" stepKey="chooseAction"/>
+        <fillField selector="{{AdminPromoCartRuleSection.NumberOfGiftItems}}" userInput="{{promoCartRule.numberOfGiftItems}}" stepKey="enterNumberOfGift"/>
+        <fillField selector="{{AdminPromoCartRuleSection.MaxQtyDiscountIsAppliedTo}}" userInput="{{promoCartRule.maxQtyDiscount}}" stepKey="enterMaxQtyDiscount"/>
+        <fillField selector="{{AdminPromoCartRuleSection.DiscountQtyStep}}" userInput="{{promoCartRule.discountQtyStep}}" stepKey="enterDiscountStep"/>
+        <click selector="{{AdminActionsCartPriceRuleSection.SaveAndContinueEdit}}" stepKey="clickOnSaveAndContinue"/>
+        <waitForPageLoad stepKey="waitForPageLoadAfterSave"/>
+    </actionGroup>
+</actionGroups>

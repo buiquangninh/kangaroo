@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AutoAddPromoItemsWithProductsWithDiscount" extends="OneByOneNotAddProductAutomatically">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Rule Auto Add Promo Items With Products With Discount"/>
+            <description value="Check Rule Auto Add Promo Items With Products With Discount"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-21"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoFreeGifts"/>
+        </annotations>
+
+        <before>
+            <createData entity="SimpleProductByWatchClamber" stepKey="createFirstProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <createData entity="SimpleProductByBagImpulseDuffle" stepKey="createThirdProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="AdminConfigPromoGeneralActionGroup" stepKey="settingGeneralPromoConfiguration"/>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createPromoCartRule">
+                <argument name="promoCartRule" value="ruleAutoAddPromoItemsWithDiscount"/>
+                <argument name="promoItems" value="$$createSecondProduct.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminAddDiscountToPromoCartRuleActionGroup" stepKey="addDiscountSettingInSecondRule">
+                <argument name="cartRuleName" value="ruleAutoAddPromoItemsWithDiscount.name"/>
+                <argument name="promoCartRule" value="ruleAutoAddPromoItemsWithDiscount"/>
+            </actionGroup>
+        </before>
+        <after>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deleteCartPriceRule">
+                <argument name="ruleName" value="{{ruleAutoAddPromoItemsWithDiscount.name}}"/>
+            </actionGroup>
+        </after>
+
+        <remove keyForRemoval="assertNotFreeGiftInCartFirst"/>
+        <remove keyForRemoval="assertNotFreeGiftInCartSecond"/>
+        <actionGroup ref="StorefrontCheckCartDiscountAmount" after="assertAddedFreeGiftToCartFirst" stepKey="assertDiscountFirst">
+            <argument name="discountAmount" value="promoAutoAddPromoItemsWithDiscount.discountAmountOne"/>
+        </actionGroup>
+        <actionGroup ref="AddCreatedProductToCart" after="assertDiscountFirst" stepKey="addSecondProductToCart">
+            <argument name="product" value="$$createThirdProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAddFreeGiftOneByOneInCart" stepKey="addFreeGiftSecond">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedFreeGiftToCartSecond">
+            <argument name="product" value="$$createSecondProduct$$"/>
+            <argument name="productQty" value="_enterQty2"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontCheckCartDiscountAmount" after="assertAddedFreeGiftToCartSecond" stepKey="assertDiscountSecond">
+            <argument name="discountAmount" value="promoAutoAddPromoItemsWithDiscount.discountAmountTwo"/>
+        </actionGroup>
+    </test>
+</tests>

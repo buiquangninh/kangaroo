@@ -128,6 +128,9 @@ class Settingpost extends Account
                     return $this->_redirect('*/account/setting');
                 }
 
+                if ($this->getRequest()->getParam('affiliate_register') && $account->getIsLimited()) {
+                    $account->setData('request_official', true);
+                }
                 $account->addData([
                     'email_notification' => $accountData['email_notification'] ?? 0,
                     'acc_type'           => $accType,
@@ -136,11 +139,11 @@ class Settingpost extends Account
                     'account_name'       => $accountName,
                     'telephone'          => $this->getRequest()->getParam('telephone'),
                     'employee_id'        => $this->getRequest()->getParam('employee_id'),
-                    'id_number'          => $account->getIdNumber() ?? $this->getRequest()->getParam('id_number'),
+                    'id_number'          => $account->getIdNumber() ?: $this->getRequest()->getParam('id_number'),
                     'license_date'       => $account->getLicenseDate() && $account->getLicenseDate() != "0000-00-00"
                         ? $account->getLicenseDate()
                         : $this->getRequest()->getParam('license_date'),
-                    'issued_by'          => $account->getIssuedBy() ?? $this->getRequest()->getParam('issued_by'),
+                    'issued_by'          => $account->getIssuedBy() ?: $this->getRequest()->getParam('issued_by'),
                     'id_front'           => !empty($idFront['name'])
                         ? $this->uploadImage('id_front')
                         : $account->getIdFront(),

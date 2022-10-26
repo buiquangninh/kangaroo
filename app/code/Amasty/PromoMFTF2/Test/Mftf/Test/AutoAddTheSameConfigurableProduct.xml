@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AutoAddTheSameConfigurableProduct" extends="ConfigurableFreeGiftOneOfTheSKUsBelow">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Auto Add Add The Same Configurable Product"/>
+            <description value="Check Auto Add Add The Same Configurable Product"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-28"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoFreeGifts"/>
+        </annotations>
+
+        <before>
+            <remove keyForRemoval="createFirstSimpleProduct"/>
+            <actionGroup ref="AdminCreatePromoCartRuleTheSameActionGroup" stepKey="createPromoCartRule">
+                <argument name="promoCartRule" value="ruleAutoAddTheSameConfigurableProduct"/>
+            </actionGroup>
+        </before>
+        <after>
+            <remove keyForRemoval="deleteFirstSimpleProduct"/>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deleteCreatedCartPriceRule">
+                <argument name="ruleName" value="{{ruleAutoAddTheSameConfigurableProduct.name}}"/>
+            </actionGroup>
+        </after>
+
+        <remove keyForRemoval="addConfigGiftFirst"/>
+        <remove keyForRemoval="assertPopUpOnCartFirst"/>
+        <remove keyForRemoval="addSecondFreeGift"/>
+        <remove keyForRemoval="assertPopUpOnCartSecond"/>
+        <remove keyForRemoval="deleteProductFromTheCart"/>
+        <remove keyForRemoval="assertCartIsEmpty"/>
+        <actionGroup ref="StorefrontAddCreatedConfigurableProductToCart" stepKey="addProductToCart">
+            <argument name="product" value="$$createConfigProductCreateConfigurableProduct$$"/>
+            <argument name="optionValue" value="configurableProductOptions.optionTwo"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNotSameGiftProductInCartActionGroup" stepKey="assertAddedFreeGiftToCartFirst">
+            <argument name="productName" value="$$createConfigProductCreateConfigurableProduct.name$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontChangeQtyProductInCart" stepKey="changeProductQtyFirst">
+            <argument name="product" value="$$createSecondChildProdCreateConfigurableProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontChangeQtyProductInCart" stepKey="changeProductQtySecond">
+            <argument name="product" value="$$createSecondChildProdCreateConfigurableProduct$$"/>
+            <argument name="productQty" value="_enterQty4"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertConfigurableProductOnCart" stepKey="assertAddedFreeGiftToCartThird">
+            <argument name="product" value="$$createConfigProductCreateConfigurableProduct$$"/>
+            <argument name="productQty" value="_enterQty4"/>
+            <argument name="productChild" value="$$createSecondChildProdCreateConfigurableProduct$$"/>
+            <argument name="productConfigOption" value="configurableProductOptions.optionTwo"/>
+        </actionGroup>
+    </test>
+</tests>

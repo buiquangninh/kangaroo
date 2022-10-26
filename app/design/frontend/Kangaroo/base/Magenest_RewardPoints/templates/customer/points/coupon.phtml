@@ -1,0 +1,123 @@
+<?php
+/**
+ * Copyright © 2020 Magenest. All rights reserved.
+ * See COPYING.txt for license details.
+ * @category  Magenest
+ */
+/** @var  $block \Magenest\RewardPoints\Block\Customer\Points */
+$_data = $block->getTransactions();
+$minusTransactions = $block->getMinusTransactions();
+$plusTransactions = $block->getPlusTransactions();
+$_rule = $block->getRule();
+$customer = $block->getAccount();
+/**
+ * @var \Magenest\RewardPoints\Helper\MembershipData $membershipHelper
+ */
+$membershipHelper = $this->helper('\Magenest\RewardPoints\Helper\MembershipData');
+$customerTier = $membershipHelper->getCustomerTier($customer->getCustomerId());
+$imageHelper = $this->helper('\Magenest\RewardPoints\Helper\ImageHelper');
+$url = $block->getBaseUrl();
+?>
+<?php if ($_data && count($_data)): ?>
+    <a href="<?php echo $block->getBaseUrl() . $block->getUrlRewrite()?>">
+        <span class="notification-reward"><?= __('Points exchange policy') ?></span>
+    </a>
+    <div class="table-wrapper gift-info" id="gift-info">
+        <div class="bg-point-customer">
+        <div class="wrapper-point-customer">
+            <p class="number-gift-point">
+                <?php echo $customer->getPointsCurrent(); ?>
+                <span class="desc-gift-text hiden-on-desktop"><?= __('Kpoint points are available') ?></span>
+            </p>
+            <div class="desc-gift-point">
+                <p class="desc-gift-text hiden-on-mobile"><?= __('Kpoint points are available') ?></p>
+                <p class="desc-gift-date">
+                    <span><?= $block->getExpiredKpoint($customer->getCustomerId())?></span>
+                    <span><?= __('Kpoints will expire on') ?></span>
+                    <span><?= $block->getExpiredKpointDate($customer->getCustomerId())?></span>
+                </p>
+            </div>
+        </div>
+        </div>
+<!--        <h3>Bạn đang có --><?php //echo $customer->getPointsTotal(); ?><!--<span> Kpoint</span></h3>-->
+<!--        <h4>Ưu đãi</h4>-->
+    </div>
+
+    <div class="table-wrapper list-gift-point" id="list-gift-point">
+        <?php foreach ($block->getRewardPointRulesIds() as $ruleId) : ?>
+            <?php if ($block->getGenerateCoupon($ruleId)) :?>
+                <div class="box-list-gift">
+                    <img src="<?= $block->getRuleImg($ruleId)?>" alt="Kangaroo">
+                    <div class="title-list-gift">
+                        <span class="name-gift"><?php echo $block->getRuleNameById($ruleId) ?></span>
+                        <span class="date-gift">HSD: <?php echo $block->getRuleExpiredDate($ruleId)?></span>
+                    </div>
+                    <p class="desc-list-gift">
+                        <?= $block->getRuleDescription($ruleId) ?>
+                    </p>
+                    <div class="exchange-points">
+                        <p class="point"><?php echo $block->getRuleKpointById($ruleId) ?> <?= __('points') ?></p>
+                        <div id="getCoupon" data-bind="scope:'getCoupon'">
+                            <button class="<?= $block->isOwn($ruleId,$customer->getCustomerId())?>"
+                                    data-bind="click: getCoupon.bind($parent,
+                                                        '<?= $ruleId ?>',)"
+                                    id="claim<?= $block->getGenerateCoupon($ruleId) ?>" <?= $block->isDisable($ruleId,$customer->getCustomerId())?>><?= __('Redeem points') ?></button>
+                        </div>
+                    </div>
+                </div>
+            <?php endif;?>
+        <?php endforeach; ?>
+    </div>
+    <?php if ($block->getPagerHtml()): ?>
+        <div
+            class="order-products-toolbar toolbar bottom custom-pager"><?php echo $block->getPagerHtml(); ?></div>
+        <style>
+            .order-products-toolbar .limiter {
+                float: right;
+            }
+        </style>
+    <?php endif ?>
+<?php else: ?>
+    <div class="message info empty"><span><?php /* @escapeNotVerified */
+            echo __('You have no Reward Points.'); ?></span></div>
+<?php endif ?>
+
+<script>
+    require(["jquery","mage/backend/tabs"], function($){
+        $(function() {
+            $('#tab_element').tabs({
+                active: 'tab1_content',
+                destination: '#tab_element_content',
+                shadowTabs: []
+            });
+        });
+    });
+</script>
+
+<script type="text/x-magento-init">
+    {
+        "#getCoupon": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "getCoupon": {
+                        "component": "Magenest_RewardPoints/js/coupon/action"
+                    }
+                }
+            }
+        },
+        "#claim-coupon-button": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "claim": {
+                        "component": "Magenest_RewardPoints/js/coupon/action"
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+
+
+
+

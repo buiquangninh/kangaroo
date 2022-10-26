@@ -569,7 +569,7 @@
                 }
 
                 th.col {
-                    font-family: 'Clan Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                    font-family: @font-family-name__base, 'Helvetica Neue', Helvetica, Arial, sans-serif;
                 }
 
                 .options-label {
@@ -1116,7 +1116,7 @@
                     }
                 }
 
-                .block table:not(.cart):not(.totals) {
+                .block table:not(.cart):not(.totals):not(#affiliate-transactions-history) {
                     > tbody > tr {
                         border-bottom: 0;
                         border-right: 0;
@@ -1143,10 +1143,12 @@
                                     line-height: 20px;
                                     font-weight: 500;
                                     color: #fff;
-                                    padding: 2px 6px;
                                     top: 12px;
                                     left: 76px;
                                     z-index: 1;
+                                    padding: 1px 0 0 0;
+                                    align-items: center;
+                                    justify-content: center;
                                 }
                             }
                         }

@@ -44,6 +44,7 @@
             </block>
             <container name="header.panel.right" htmlTag="div" htmlClass="header-top-right" after="-">
 <!--                <block class="Magento\Framework\View\Element\Template" name="header.notification" template="Magento_Theme::html/header-notification.phtml" before="-"/>-->
+                <block ifconfig="magenest_notification_box/general/enable" class="Magenest\NotificationBox\Block\Notification\Notification" name="magenest-notification" template="Magenest_NotificationBox::notification.phtml" after="header-content-hotline"/>
 
                 <block class="Magenest\CustomSource\Block\Element\AreaPopup" name="header-area" as="header-are" ifconfig="directory/areas/enable" template="Magento_Theme::html/container-popup.phtml" />
 

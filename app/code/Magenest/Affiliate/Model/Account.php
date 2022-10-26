@@ -105,6 +105,18 @@ class Account extends AbstractModel
     }
 
     /**
+     * @return Account
+     */
+    public function beforeSave()
+    {
+        if ($this->dataHasChangedFor('is_limited') && !$this->getIsLimited()) {
+            $this->setData('request_official', false);
+        }
+
+        return parent::beforeSave();
+    }
+
+    /**
      * @return void
      * @throws LocalizedException
      * @throws MailException

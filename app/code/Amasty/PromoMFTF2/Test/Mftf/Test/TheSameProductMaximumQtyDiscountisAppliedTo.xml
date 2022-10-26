@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="TheSameProductMaximumQtyDiscountisAppliedTo" extends="AutoAddPromoItemsForTheWholeCart">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="The Same Product Maximum Qty Discount is Applied To"/>
+            <title value="The Same Product Maximum Qty Discount is Applied To"/>
+            <description value="Check Auto add the same product"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-15"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoFreeGifts"/>
+        </annotations>
+
+        <before>
+            <remove keyForRemoval="createThirdProduct"/>
+            <createData entity="SimpleProductByBagImpulseDuffle" stepKey="createFirstProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <createData entity="SimpleProductByWayfarerMessenger" stepKey="createSecondProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="AdminCreatePromoCartRuleTheSameActionGroup" stepKey="createPromoCartRuleFirst">
+                <argument name="promoCartRule" value="ruleSameProductMaxQtyDiscountApplied"/>
+            </actionGroup>
+        </before>
+        <after>
+            <remove keyForRemoval="deleteThirdProduct"/>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deletePromoCartRule">
+                <argument name="ruleName" value="{{ruleSameProductMaxQtyDiscountApplied.name}}"/>
+            </actionGroup>
+        </after>
+
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedFreeGiftToCartFirst">
+            <argument name="product" value="$$createFirstProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontChangeQtyProductInCart" after="assertAddedFreeGiftToCartFirst" stepKey="changeQtyProductFirst">
+            <argument name="product" value="$$createFirstProduct$$"/>
+            <argument name="productQty" value="_enterQty4"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCart" after="changeQtyProductFirst" stepKey="assertGiftAfterChangeFirst">
+            <argument name="product" value="$$createFirstProduct$$"/>
+            <argument name="productQty" value="_enterQty3"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedFreeGiftToCartSecond">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontChangeQtyProductInCart" stepKey="changeQtyProductSecond">
+            <argument name="product" value="$$createSecondProduct$$"/>
+            <argument name="productQty" value="_enterQty5"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedFreeGiftToCartThird">
+            <argument name="product" value="$$createSecondProduct$$"/>
+            <argument name="productQty" value="_enterQty3"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedFreeGiftToCartFour">
+            <argument name="product" value="$$createFirstProduct$$"/>
+            <argument name="productQty" value="_enterQty3"/>
+        </actionGroup>
+    </test>
+</tests>

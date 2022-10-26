@@ -1,0 +1,32 @@
+<?php
+/**
+ *@var \Amasty\BannersLite\Block\ProductBanner $block
+ */
+
+$mainSku = $block->getProductById($block->getProductId());
+$skus = $block->getFreeProductsSkus() ?: [];
+?>
+
+<div class="free-products-layout" style="display: flex; flex-direction: row">
+    <div class="main-item">
+        <div class="main-item-img">
+            <img src="<?= $block->getProductImg($mainSku); ?>" alt="">
+        </div>
+        <div class="main-item-description">
+            <p></span><?= $block->getProductName($mainSku); ?></p>
+        </div>
+    </div>
+    <?php foreach ($skus as $sku) :?>
+    <div class="free-item">
+        <div class="free-item-img">
+            <img src="<?= $block->getProductImg($sku); ?>">
+        </div>
+        <div class="free-item-name">
+            <p><span>Quà tặng </span><?= $block->getProductName($sku); ?></p>
+        </div>
+        <div class="free-item-price">
+            <p><?= $block->getProductPrice($sku);?></p>
+        </div>
+    </div>
+    <?php endforeach;?>
+</div>

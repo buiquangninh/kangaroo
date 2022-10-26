@@ -103,6 +103,14 @@
                 </item>
             </argument>
         </field>
+        <colorPicker name="color_code" class="Magento\Ui\Component\Form\Element\ColorPicker" component="Magento_Ui/js/form/element/color-picker">
+            <settings>
+                <label translate="true">Color Code</label>
+                <elementTmpl>ui/form/element/color-picker</elementTmpl>
+                <colorFormat>hex</colorFormat>
+                <colorPickerMode>full</colorPickerMode>
+            </settings>
+        </colorPicker>
         <field name="description" formElement="wysiwyg">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -211,6 +219,18 @@
                     <enabled>true</enabled>
                 </switcherConfig>
             </settings>
+        </field>
+        <field name="customer_group_ids">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magenest\RewardPoints\Model\Membership\CustomerGroups</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Customer Groups</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">membership</item>
+                    <item name="dataScope" xsi:type="string">customer_group_ids</item>
+                </item>
+            </argument>
         </field>
         <field name="condition_reach_tier_value">
             <argument name="data" xsi:type="array">

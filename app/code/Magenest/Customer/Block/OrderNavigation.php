@@ -11,7 +11,7 @@ class OrderNavigation extends AbstractNavigation
     /**
      * Search redundant /index and / in url
      */
-    const REGEX_URL_PATTERN = '/order|review|wishlist/';
+    const REGEX_URL_PATTERN = '/history|review|wishlist/';
 
     /**
      * @inheritDoc

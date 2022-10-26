@@ -160,7 +160,7 @@
                 </item>
             </argument>
         </selectionsColumn>
-        <column name="group_id">
+        <column name="group_id" sortOrder="20">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
@@ -169,7 +169,7 @@
                 </item>
             </argument>
         </column>
-        <column name="name">
+        <column name="name" sortOrder="30">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -183,7 +183,7 @@
                 </item>
             </argument>
         </column>
-        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date">
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date" sortOrder="40">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">dateRange</item>
@@ -193,5 +193,88 @@
                 </item>
             </argument>
         </column>
+        <column name="approval_time" sortOrder="50">
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <filter>text</filter>
+                <label translate="true">Approval Time (Days)</label>
+                <editor>
+                    <editorType>text</editorType>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">false</rule>
+                    </validation>
+                </editor>
+            </settings>
+        </column>
+        <column name="revenue_to_reach" class="Magenest\AffiliateMultiLevelUpdate\Ui\Component\Listing\Column\PriceCurrency" sortOrder="60">
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <filter>text</filter>
+                <label translate="true">Revenue To Reach</label>
+                <editor>
+                    <editorType>currency</editorType>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">false</rule>
+                    </validation>
+                </editor>
+            </settings>
+        </column>
+        <column name="revenue_to_keep" class="Magenest\AffiliateMultiLevelUpdate\Ui\Component\Listing\Column\PriceCurrency" sortOrder="70">
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <filter>text</filter>
+                <label translate="true">Revenue To Keep</label>
+                <editor>
+                    <editorType>currency</editorType>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">false</rule>
+                    </validation>
+                </editor>
+            </settings>
+        </column>
+        <column name="qty_order" sortOrder="71">
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <filter>text</filter>
+                <label translate="true">Qty Order</label>
+                <editor>
+                    <editorType>text</editorType>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">false</rule>
+                    </validation>
+                </editor>
+            </settings>
+        </column>
+        <column name="additional_reward_by_revenue" component="Magento_Ui/js/grid/columns/select" sortOrder="80">
+            <settings>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Additional Reward By Revenue</label>
+            </settings>
+        </column>
+        <column name="reward_value" sortOrder="90">
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <filter>text</filter>
+                <label translate="true">Reward Value (%)</label>
+                <editor>
+                    <editorType>currency</editorType>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">false</rule>
+                    </validation>
+                </editor>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Magenest\AffiliateMultiLevelUpdate\Ui\Component\Listing\Column\GroupActions" sortOrder="9999">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">107</item>
+                    <item name="indexField" xsi:type="string">group_id</item>
+                    <item name="editorType" xsi:type="string">text</item>
+                </item>
+            </argument>
+        </actionsColumn>
     </columns>
 </listing>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+
+    <entity name="promoAddAllProductsAutomatically" type="promoData">
+        <data key="discountAmount">106.00</data>
+    </entity>
+
+    <entity name="promoAddGiftBeforeDiscount" type="promoData">
+        <data key="discountAmount">10.00</data>
+    </entity>
+
+    <entity name="promoAddGiftAfterDiscount" type="promoData">
+        <data key="discountAmount">10.00</data>
+    </entity>
+
+    <entity name="promoShowOriginalPrice" type="promoData">
+        <data key="discountPriceFirstGift">$0.00</data>
+        <data key="discountPriceSecondGift">$13.60</data>
+    </entity>
+
+    <entity name="promoAutoAddPromoItemsForXSpentApplyShip" type="promoData">
+        <data key="shippingPriceFirst">15.00</data>
+        <data key="shippingPriceSecond">30.00</data>
+    </entity>
+
+    <entity name="promoAddGiftEachNApplyTax" type="promoData">
+        <data key="subtotalFirst">54.00</data>
+        <data key="orderTotalFirst">59.40</data>
+        <data key="subtotalSecond">108.00</data>
+        <data key="orderTotalSecond">122.00</data>
+    </entity>
+
+    <entity name="promoAutoAddPromoItemsWithDiscount" type="promoData">
+        <data key="discountAmountOne">7.00</data>
+        <data key="discountAmountTwo">14.00</data>
+    </entity>
+
+    <entity name="promoAutoAddPromoMinimalPriceAndDiscount" type="promoData">
+        <data key="discountAmountOne">15.00</data>
+        <data key="discountAmountTwo">21.00</data>
+        <data key="discountAmountThree">6.00</data>
+    </entity>
+
+    <entity name="promoAutoAddPromoDiscountMultiCurrency" type="promoData">
+        <data key="rateUSDAndEUR">0.8</data>
+        <data key="discountAmountOne">-€5.60</data>
+    </entity>
+
+    <entity name="promoAddGiftWithEachNWithDiscount" type="promoData">
+        <data key="discountAmountOne">16.00</data>
+        <data key="discountAmountTwo">32.00</data>
+    </entity>
+
+</entities>

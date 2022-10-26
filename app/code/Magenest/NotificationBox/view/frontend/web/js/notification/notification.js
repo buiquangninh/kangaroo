@@ -66,6 +66,12 @@ define(
                            else{
                                self.allNotification(result['allNotification']);
                            }
+
+                           if (result['unreadNotification'] > 0) {
+                               $('.notification-dots').show();
+                           } else {
+                               $('.notification-dots').hide();
+                           }
                        }
                     }
                 });
@@ -81,7 +87,9 @@ define(
                     ){
                         $(".magenest-notification-box").hide();
                     } else {
-                        $(".magenest-notification-box").show();
+                        if (self.visibleNotificationBox()) {
+                            $(".magenest-notification-box").show();
+                        }
                     }
                 });
             }

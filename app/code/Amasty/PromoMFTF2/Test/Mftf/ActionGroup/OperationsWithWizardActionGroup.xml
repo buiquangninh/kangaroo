@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <!-- For Open Wizard and Filling First Step -->
+    <actionGroup name="AdminWizardStepOneActionGroup">
+        <arguments>
+            <argument name="promoCartRuleWizard"/>
+        </arguments>
+        <amOnPage url="{{AdminSalesRuleWizard.url}}" stepKey="navigateToSalesRuleWizard"/>
+        <waitForPageLoad stepKey="waitForPageLoadAfterOpenWizard"/>
+        <click selector="{{AdminSalesRuleWizardSection.Scenario(promoCartRuleWizard.scenario)}}" stepKey="chooseScenario"/>
+        <click selector="{{AdminSalesRuleWizardSection.ButtonNext}}" stepKey="clickButtonNextStep"/>
+    </actionGroup>
+
+    <!-- For Filling Wizard Second Step -->
+    <actionGroup name="AdminWizardStepTwoActionGroup">
+        <arguments>
+            <argument name="promoCartRuleWizard"/>
+        </arguments>
+        <fillField selector="{{AdminSalesRuleWizardSection.CustomerAddsHowManyProducts}}"
+                   userInput="{{promoCartRuleWizard.discountQtyStep}}" stepKey="inputQtyStep"/>
+        <fillField selector="{{AdminSalesRuleWizardSection.CustomerAddsHowManyFree}}"
+                   userInput="{{promoCartRuleWizard.numberOfGiftItems}}" stepKey="inputQtyFreeGift"/>
+        <selectOption selector="{{AdminSalesRuleWizardSection.CustomerAddsWhichProductsGifted}}"
+                      userInput="{{promoCartRuleWizard.actionWizard}}" stepKey="selectTheSameProduct"/>
+        <click selector="{{AdminSalesRuleWizardSection.ButtonNext}}" stepKey="clickButtonNextStep"/>
+    </actionGroup>
+
+    <!-- For Filling Wizard Third Step -->
+    <actionGroup name="AdminWizardStepThreeActionGroup">
+        <arguments>
+            <argument name="promoCartRuleWizard"/>
+        </arguments>
+        <selectOption selector="{{AdminSalesRuleWizardSection.DoesCouponCode}}"
+                      userInput="{{promoCartRuleWizard.doesCouponCode}}" stepKey="selectDoesCoupon"/>
+        <selectOption selector="{{AdminSalesRuleWizardSection.CustomerGroupsSelect}}"
+                      parameterArray="[{{promoCartRuleWizard.customers}}]" stepKey="selectCustomerGroup"/>
+        <selectOption selector="{{AdminSalesRuleWizardSection.HowManyTriggered}}"
+                      userInput="{{promoCartRuleWizard.howManyTimes}}" stepKey="selectHowManyTimesTriggered"/>
+        <selectOption selector="{{AdminSalesRuleWizardSection.ExtraCriteria}}"
+                      userInput="{{promoCartRuleWizard.extraCriteria}}" stepKey="selectExtraCriteria"/>
+        <click selector="{{AdminSalesRuleWizardSection.ButtonNext}}" stepKey="clickButtonNextStep"/>
+    </actionGroup>
+
+    <!-- For Filling Wizard Four Step -->
+    <actionGroup name="AdminWizardStepFourActionGroup">
+        <click selector="{{AdminSalesRuleWizardSection.ButtonNext}}" stepKey="clickSaveRule"/>
+    </actionGroup>
+
+</actionGroups>

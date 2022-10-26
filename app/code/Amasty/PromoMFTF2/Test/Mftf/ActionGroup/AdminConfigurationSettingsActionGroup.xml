@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <!-- For Configuration Free Gift General Setting -->
+    <actionGroup name="AdminConfigPromoGeneralActionGroup">
+        <arguments>
+            <argument name="configurationGeneral" defaultValue="defaultConfigurationPromoGeneral"/>
+        </arguments>
+        <amOnPage url="{{AdminPromoConfigurationPage.url}}" stepKey="navigateToPromoConfiguration"/>
+        <conditionalClick selector="{{AdminConfigurationsPromoSection.GeneralTab}}"
+                          dependentSelector="{{AdminConfigurationsPromoSection.AddProductsAutomatically}}"
+                          visible="false" stepKey="openGeneralTab"/>
+        <selectOption selector="{{AdminConfigurationsPromoSection.AddProductsAutomatically}}"
+                      userInput="{{configurationGeneral.addAutomatically}}" stepKey="selectAddAutomaticallyValue"/>
+        <selectOption selector="{{AdminConfigurationsPromoSection.BasedOnCart}}"
+                      userInput="{{configurationGeneral.basedOnCart}}" stepKey="selectBasedOnCartValue"/>
+        <click selector="{{AdminConfigurationsPromoSection.Save}}" stepKey="saveConfiguration"/>
+        <waitForPageLoad stepKey="waitForPageLoadAfterSaveConfig"/>
+    </actionGroup>
+
+    <!-- For Configuration Free Gift Messages Setting -->
+    <actionGroup name="AdminConfigPromoMessagesActionGroup">
+        <arguments>
+            <argument name="configurationMessages" defaultValue="defaultConfigurationPromoMessages"/>
+        </arguments>
+        <amOnPage url="{{AdminPromoConfigurationPage.url}}" stepKey="navigateToPromoConfiguration"/>
+        <conditionalClick selector="{{AdminConfigurationsPromoSection.MessagesSettingsTab}}"
+                          dependentSelector="{{AdminConfigurationsPromoSection.GiftSelectionMethod}}"
+                          visible="false" stepKey="openMessageTab"/>
+        <selectOption selector="{{AdminConfigurationsPromoSection.GiftSelectionMethod}}"
+                      userInput="{{configurationMessages.selectionMethod}}" stepKey="selectGiftSelectionMethod"/>
+        <selectOption selector="{{AdminConfigurationsPromoSection.OpenPopUpAutomatically}}"
+                      userInput="{{configurationMessages.openPopupAuto}}" stepKey="selectOpenPopupAutoValue"/>
+        <selectOption selector="{{AdminConfigurationsPromoSection.ShowOriginalPriceInThePopup}}"
+                      userInput="{{configurationMessages.showOriginalPrice}}" stepKey="selectShowOriginalPriceValue"/>
+        <selectOption selector="{{AdminConfigurationsPromoSection.DisplayErrorMessages}}"
+                      userInput="{{configurationMessages.displayErrorMessage}}" stepKey="selectDisplayErrorValue"/>
+        <selectOption selector="{{AdminConfigurationsPromoSection.DisplaySuccessMessages}}"
+                      userInput="{{configurationMessages.displaySuccessMessage}}" stepKey="selectSuccessMessageValue"/>
+        <selectOption selector="{{AdminConfigurationsPromoSection.DisplayRemainingGiftsCounter}}"
+                      userInput="{{configurationMessages.displayRemaining}}" stepKey="selectDisplayRemainingValue"/>
+        <selectOption selector="{{AdminConfigurationsPromoSection.ReminderAboutAvailablePromos}}"
+                      userInput="{{configurationMessages.reminderPromos}}" stepKey="selectReminderAboutPromosValue"/>
+        <click selector="{{AdminConfigurationsPromoSection.Save}}" stepKey="saveConfiguration"/>
+        <waitForPageLoad stepKey="waitForPageLoadAfterSaveConfig"/>
+    </actionGroup>
+
+</actionGroups>

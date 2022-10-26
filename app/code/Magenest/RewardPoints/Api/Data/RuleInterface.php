@@ -57,4 +57,8 @@ interface RuleInterface
     const STEPS = 'steps';
 
     const RULE_CONFIGS = 'rule_configs';
+
+    const RULE_STOP_RULES_PROCESSING = '1';
+
+    CONST RULE_NOT_STOP_RULES_PROCESSING = '0';
 }

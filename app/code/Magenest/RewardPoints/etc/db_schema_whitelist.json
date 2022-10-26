@@ -1,0 +1,16 @@
+{
+    "salesrule": {
+        "column": {
+            "kpoint": true,
+            "is_reward_point": true
+        }
+    },
+    "magenest_rewardpoints_rule": {
+        "column": {
+            "customer_segment_group_ids": true,
+            "membership_group_ids": true,
+            "sort_order": true,
+            "stop_rules_processing": true
+        }
+    }
+}

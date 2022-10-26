@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Magenest\Affiliate\Block;
 
 use Magenest\Affiliate\Helper\Data;
@@ -9,7 +8,6 @@ use Magenest\Affiliate\Model\Account\Status;
 use Magenest\AffiliateCatalogRule\Helper\Constant;
 use Magenest\Customer\Block\AbstractNavigation;
 use Magento\Framework\App\Http\Context as HttpContext;
-use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\Element\Html\Links;
 use Magento\Framework\View\Element\Template\Context;
 
@@ -36,6 +34,8 @@ class AffiliateNavigation extends AbstractNavigation
      */
     protected $dataHelper;
 
+    protected $excludeAffiliateMenuItem = ['refer', 'wallet', 'setting'];
+
     public function __construct(
         Context $context,
         Data $helper,
@@ -43,7 +43,7 @@ class AffiliateNavigation extends AbstractNavigation
         HttpContext $httpContext,
         array $data = []
     ) {
-        $this->dataHelper = $dataHelper;
+        $this->dataHelper  = $dataHelper;
         $this->httpContext = $httpContext;
         parent::__construct($context, $helper, $data);
     }
@@ -62,14 +62,18 @@ class AffiliateNavigation extends AbstractNavigation
     public function getLinks()
     {
         $affiliateContext = $this->httpContext->getValue(Constant::IS_AFFILIATE_CONTEXT);
-        $links = parent::getLinks();
+        $links            = parent::getLinks();
         $affiliateAccount = $this->dataHelper->getCurrentAffiliate();
         foreach ($links as $index => $link) {
+            if ($affiliateContext && $affiliateAccount->getData('is_limited') && in_array($link->getCode(), ['welcome','groups', 'collaborator'])) {
+                unset($links[$index]);
+            }
+
             if ($link->getActive() === self::ALLOW_GUEST && $affiliateContext) {
                 unset($links[$index]);
             }
 
-            if ($link->getActive() === self::ALLOW_LOGIN && $link->getCode() != 'refer' && !$affiliateContext) {
+            if ($link->getActive() === self::ALLOW_LOGIN && !in_array($link->getCode(), $this->excludeAffiliateMenuItem) && !$affiliateContext) {
                 unset($links[$index]);
             }
 
@@ -91,16 +95,16 @@ class AffiliateNavigation extends AbstractNavigation
 
         $result = '<li class="nav item ' . $this->additionalClass();
         if ($this->_request->getModuleName() == "affiliate") {
-            $result = '<li class="nav item return-previous"><a class="return" href="' . $this->getUrl('customer/account') . '" >'. __('Back to profile') .'</a></li>'. $result;
+            $result = '<li class="nav item return-previous"><a class="return" href="' . $this->getUrl('customer/account') . '" >' . __('Back to profile') . '</a></li>' . $result;
         }
         if ($this->isCurrent()) {
-            $result .=  ' current';
+            $result .= ' current';
         }
         if (empty($html) || $this->_request->getModuleName() != "affiliate") {
-            $result .= '"><a href="' . $this->getUrl($this->getPath()) . '" >'. __($this->getLabel()) .'</a>';
-            $html = "";
+            $result .= '"><a href="' . $this->getUrl($this->getPath()) . '" >' . __($this->getLabel()) . '</a>';
+            $html   = "";
         } else {
-            $result .= '"><a>'. __($this->getLabel()) .'</a>';
+            $result .= '"><a>' . __($this->getLabel()) . '</a>';
         }
         $result .= $html;
         return $result;

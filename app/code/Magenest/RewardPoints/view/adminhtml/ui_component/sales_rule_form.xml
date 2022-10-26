@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="rule_information" sortOrder="5">
+        <field name="is_reward_point" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Is Reward Point</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="kpoint" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="fit" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <settings>
+                <imports>
+                    <link name="visible">sales_rule_form.sales_rule_form.rule_information.is_reward_point:checked</link>
+                </imports>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="validate-number" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label>K Point</label>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="manage_coupon_codes" sortOrder="50" component="Magento_SalesRule/js/form/element/manage-coupon-codes">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Manage Coupon Codes</label>
+        </settings>
+        <htmlContent name="html_content">
+            <block class="Magento\SalesRule\Block\Adminhtml\Promo\Quote\Edit\Tab\Coupons" name="promo_sales_rule_edit_tab_coupons" as="promo_sales_rule_edit_tab_coupons" template="Magento_SalesRule::tab/coupons.phtml">
+                <block class="Magento\SalesRule\Block\Adminhtml\Promo\Quote\Edit\Tab\Coupons\Form" name="promo_quote_edit_tab_coupons_form"/>
+                <block class="Magenest\RewardPoints\Block\Promo\Grid" name="promo_quote_edit_tab_coupons_grid"/>
+            </block>
+        </htmlContent>
+    </fieldset>
+</form>

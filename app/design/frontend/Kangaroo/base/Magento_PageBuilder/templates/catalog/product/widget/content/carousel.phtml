@@ -34,7 +34,7 @@ $helper =  $this->helper(Helper::class);
             <div class="product-item-info">
                 <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>" class="product-item-photo">
                     <?= $block->getImage($_item, $image)->toHtml() ?>
-                    <?php if ($helper->isSalableInArea($_item->getSku())): ?>
+                    <?php if ($helper->isSalableInArea($_item)): ?>
                         <p class="label-out-of-stock"><?= __("Out of Stock") ?></p>
                     <?php endif; ?>
                 </a>

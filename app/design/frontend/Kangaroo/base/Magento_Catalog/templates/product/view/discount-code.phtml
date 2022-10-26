@@ -1,0 +1,49 @@
+<?php
+$couponCodes = $block->collectCoupon();
+?>
+<?php if ($couponCodes): ?>
+<div class="discount-code-block">
+	<div class="block-title">
+		<h5><?= $block->escapeHtml(__('Discount Code')) ?></h5>
+	</div>
+	<div class="block-content" data-mage-init='{"dropdown":{}}'
+        data-toggle="dropdown">
+		<div class="coupon-content">
+			<h5><?= $block->escapeHtml(__('Discount Code')) ?></h5>
+            <?php foreach ($couponCodes as $code): ?>
+                <span class="coupon-value"><?= $code->getStoreLabel() ?: $code->getName() ?></span>
+            <?php endforeach; ?>
+        </div>
+	</div>
+	<div data-target="dropdown" class="coupon-dropdown-content">
+		<div class="label"><?= $block->escapeHtml(__('Coupon code')) ?></div>
+		<div class="des"><p><?= $block->escapeHtml(__('Save more when applying discount code. Please contact the call center if there is a problem with the discount code from Kangaroo.')) ?></p></div>
+		<div class="coupon-item-list">
+            <?php foreach ($couponCodes as $code): ?>
+                <div class="coupon-item">
+                    <div class="coupon-item-label"><?= $code->getCode() ?: $code->getName() ?></div>
+                    <div class="coupon-item-detail">
+                        <div class="coupon-item-title"><?= $code->getStoreLabel() ?: $code->getName() ?></div>
+                        <div class="coupon-item-text"><?= $code->getDescription() ?></div>
+                        <div class="coupon-item-date"><?= $block->escapeHtml(__('HSD:')) ?> <?= \DateTime::createFromFormat('Y-m-d', $code->getToDate())->format('d.m.Y') ?></div>
+                    </div>
+                    <div class="coupon-item-button">
+                        <button type="button" class="coupon-save-action action" data-coupon-code="<?= $code->getCode() ?>"><?= $block->escapeHtml(__('Save')) ?></button>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+	</div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Catalog/js/customer/claim-coupon": {
+                "url": "<?= $block->getUrl("voucher/coupon/claimcoupon") ?>",
+                "loginUrl": "<?= $block->getUrl("customer/account/login") ?>",
+                "savedLabel": "<?= __("Saved") ?>"
+            }
+        }
+    }
+</script>
+<?php endif; ?>

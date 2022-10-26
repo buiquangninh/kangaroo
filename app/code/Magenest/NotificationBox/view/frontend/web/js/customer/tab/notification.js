@@ -250,6 +250,8 @@ define(
                 });
             });
             $("#mark-all-as-read").on("click", function () {
+                event.preventDefault();
+                event.stopImmediatePropagation();
                 $.ajax({
                     method: "GET",
                     dataType: 'json',
@@ -260,6 +262,7 @@ define(
                         location.reload();
                     })
                 });
+                return false;
             });
 
             //handle when select notification #d8e9ff

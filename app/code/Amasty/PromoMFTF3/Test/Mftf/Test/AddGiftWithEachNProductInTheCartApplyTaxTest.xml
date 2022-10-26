@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="AddGiftWithEachNProductInTheCartApplyTaxTest" extends="AutoAddPromoItemsForEveryXSpentTest">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Rule Add Gift With Each N Product In The Cart With Apply Tax On Original Price"/>
+            <description value="Check Rule Add Gift With Each N Product In The Cart With Apply Tax On Original Price"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-20"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoFreeGifts"/>
+        </annotations>
+
+        <before>
+            <remove keyForRemoval="createSecondProduct"/>
+            <createData entity="CommonCustomerArizona" before="createCategory" stepKey="createCustomer"/>
+            <createData entity="taxRateForArizona" after="createCustomer" stepKey="createTaxRate"/>
+            <createData entity="SimpleProductByWatchClamber" stepKey="createFirstProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="AdminCreateTaxRuleActionGroup" before="createPromoCartRuleFirst" stepKey="createTaxRule">
+                <argument name="taxRule" value="taxRuleWithArizona"/>
+                <argument name="taxRate" value="$$createTaxRate$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createPromoCartRuleFirst">
+                <argument name="promoCartRule" value="ruleAddGiftEachNApplyTax"/>
+                <argument name="promoItems" value="$$createThirdProduct.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminChangeApplyTaxForGiftPromoCartRuleActionGroup" stepKey="enableTaxForFreeProduct">
+                <argument name="cartRuleName" value="ruleAddGiftEachNApplyTax.name"/>
+            </actionGroup>
+        </before>
+        <after>
+            <remove keyForRemoval="deleteSecondProduct"/>
+            <deleteData createDataKey="createCustomer" after="deleteCategory" stepKey="deleteCustomer"/>
+            <actionGroup ref="AdminDeleteTaxRule" before="deletePromoCartRule" stepKey="deleteTaxRule">
+                <argument name="taxRuleCode" value="{{taxRuleWithArizona.code}}"/>
+            </actionGroup>
+            <deleteData createDataKey="createTaxRate" after="deleteTaxRule" stepKey="deleteTaxRate"/>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deletePromoCartRule">
+                <argument name="ruleName" value="{{ruleAddGiftEachNApplyTax.name}}"/>
+            </actionGroup>
+        </after>
+
+        <remove keyForRemoval="addProductToCartSecond"/>
+        <remove keyForRemoval="assertAddedFreeGiftToCartThird"/>
+        <remove keyForRemoval="changeQtyProductSecond"/>
+        <remove keyForRemoval="assertAddedFreeGiftToCartFour"/>
+        <actionGroup ref="LoginToStorefrontActionGroup" before="addProductToCartFirst" stepKey="loginAsCustomer">
+            <argument name="Customer" value="$$createCustomer$$"/>
+        </actionGroup>
+        <actionGroup ref="AssertStorefrontShoppingCartSummaryItemsActionGroup" after="assertAddedFreeGiftToCartFirst" stepKey="assertCartSummaryFirst">
+            <argument name="subtotal" value="{{promoAddGiftEachNApplyTax.subtotalFirst}}"/>
+            <argument name="total" value="{{promoAddGiftEachNApplyTax.orderTotalFirst}}"/>
+        </actionGroup>
+        <actionGroup ref="AssertStorefrontShoppingCartSummaryItemsActionGroup" after="assertAddedFreeGiftToCartSecond" stepKey="assertCartSummarySecond">
+            <argument name="subtotal" value="{{promoAddGiftEachNApplyTax.subtotalSecond}}"/>
+            <argument name="total" value="{{promoAddGiftEachNApplyTax.orderTotalSecond}}"/>
+        </actionGroup>
+    </test>
+</tests>

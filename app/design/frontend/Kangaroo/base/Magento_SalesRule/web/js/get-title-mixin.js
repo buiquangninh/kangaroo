@@ -19,7 +19,7 @@ define([
 
                 var titleArray = title.split(", ");
 
-                return titleArray.join("<br class='show'/>");
+                return titleArray.join(",<br class='show'/>");
             }
         });
     };

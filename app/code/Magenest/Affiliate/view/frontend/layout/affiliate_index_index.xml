@@ -6,7 +6,7 @@
     <update handle="customer_account"/>
     <body>
         <referenceContainer name="content">
-            <block class="Magenest\Affiliate\Block\Dashboard" name="mp.affiliate.account.dashboard" template="Magenest_Affiliate::dashboard-origin.phtml" cacheable="false" ifconfig="affiliate/general/enabled"/>
+            <block class="Magenest\Affiliate\Block\Dashboard" name="mp.affiliate.account.dashboard" template="Magenest_Affiliate::dashboard.phtml" cacheable="false" ifconfig="affiliate/general/enabled"/>
         </referenceContainer>
         <referenceBlock name="page.main.title">
             <action method="setPageTitle">

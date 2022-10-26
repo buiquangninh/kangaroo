@@ -424,7 +424,6 @@
  .old-price .price-loffs_price .price{
     color: rgba(76, 76, 76, 0.69);
     padding: 5px;
-    text-decoration: line-through;
 }
 
 .price-loffs_price .old-price .price-label{

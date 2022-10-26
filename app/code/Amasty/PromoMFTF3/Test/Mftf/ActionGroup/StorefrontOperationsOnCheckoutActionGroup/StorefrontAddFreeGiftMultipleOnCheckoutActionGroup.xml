@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <actionGroup name="StorefrontAddFreeGiftMultipleOnCheckoutActionGroup" extends="StorefrontOpenPopUpOnCheckoutActionGroup">
+        <arguments>
+            <argument name="product"/>
+            <argument name="productQty" defaultValue="_enterQty1"/>
+        </arguments>
+        <click selector="{{StorefrontCartSection.MultipleProductCheckbox(product.sku)}}" stepKey="chooseAddFreeGift"/>
+        <fillField selector="{{StorefrontCartSection.MultipleProductQty(product.sku)}}" userInput="{{productQty.qty}}" stepKey="enterQtyAddFreeGift"/>
+        <waitForPageLoad stepKey="waitWhileActivateAddButton"/>
+        <click selector="{{StorefrontCartSection.MultiplePopUpAddButton}}" stepKey="addFreeGift"/>
+    </actionGroup>
+</actionGroups>

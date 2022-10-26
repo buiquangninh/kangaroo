@@ -13,6 +13,7 @@
 namespace Magenest\CustomCatalog\Helper;
 
 use Magenest\CustomInventoryReservation\Rewrite\Magento\InventorySales\Model\Frontend\GetProductSalableQty;
+use Magento\Bundle\Api\ProductLinkManagementInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\LocalizedException;
@@ -50,25 +51,32 @@ class Helper extends AbstractHelper
     private $getAssignedStockIdForWebsite;
 
     /**
+     * @var ProductLinkManagementInterface
+     */
+    private $productLinkManagement;
+
+    /**
      * Helper constructor.
-     *
      * @param Context $context
      * @param StoreManagerInterface $storeManager
      * @param GetProductSalableQty $getProductSalableQty
      * @param LoggerInterface $logger
      * @param GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite
+     * @param ProductLinkManagementInterface $productLinkManagement
      */
     public function __construct(
         Context      $context,
         StoreManagerInterface $storeManager,
         GetProductSalableQty $getProductSalableQty,
         LoggerInterface $logger,
-        GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite
+        GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite,
+        ProductLinkManagementInterface $productLinkManagement
     ) {
         $this->_storeManager = $storeManager;
         $this->getProductSalableQty = $getProductSalableQty;
         $this->logger = $logger;
         $this->getAssignedStockIdForWebsite = $getAssignedStockIdForWebsite;
+        $this->productLinkManagement = $productLinkManagement;
         parent::__construct($context);
     }
 
@@ -119,19 +127,33 @@ class Helper extends AbstractHelper
     /**
      * @return bool
      */
-    public function isSalableInArea($sku)
+    public function isSalableInArea($product)
     {
-        try {
+        if ($product->getTypeId() == "configurable") {
+            $childrenProduct = $product->getTypeInstance()->getUsedProducts($product);
+        } elseif ($product->getTypeId() == 'grouped') {
+            $childrenProduct = $product->getTypeInstance()->getAssociatedProducts($product);
+        } elseif ($product->getTypeId() == 'bundle') {
+            $childrenProduct = $this->productLinkManagement->getChildren($product->getData('sku'));
+            return !$product->isSalable();
+        }
+        if (isset($childrenProduct) && $childrenProduct) {
+            $salableQtyInArea = 0;
+            foreach ($childrenProduct as $childProduct) {
+                $salableQtyInArea += $this->getProductSalableQty->execute(
+                    $childProduct->getSku(),
+                    $this->getStockIdForWebsite()
+                );
+            }
+        } else {
             $salableQtyInArea = $this->getProductSalableQty->execute(
-                $sku,
+                $product->getSku(),
                 $this->getStockIdForWebsite()
             );
+        }
 
-            if ($salableQtyInArea > 0) {
-                return false;
-            }
-        } catch (\Exception $exception) {
-            $this->logger->error($exception->getMessage());
+        if (is_numeric($salableQtyInArea) && $salableQtyInArea > 0) {
+            return false;
         }
 
         return true;

@@ -60,7 +60,7 @@ class Commission extends Calculation
             }
         }
         $account             = $this->registry->registry('mp_affiliate_account');
-        $quote->setAffiliateKey($this->getAffiliateKey() ?? $account->getId());
+        $quote->setAffiliateKey($this->getAffiliateKey() ?? (!$account->getData('is_limited') ? $account->getId() : ""));
         $itemFields = ['affiliate_commission'];
         $this->resetAffiliateData(
             $items,

@@ -571,6 +571,24 @@
             <resource ref="anonymous"/>
         </resources>
     </route>
+    <route url="/V1/mobileapi/getVNDistrictByDistrictId" method="GET">
+        <service class="Magenest\MobileApi\Api\UserManagementInterface" method="getVNDistrictByDistrictId"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/mobileapi/getVNWardByWardId" method="GET">
+        <service class="Magenest\MobileApi\Api\UserManagementInterface" method="getVNWardByWardId"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/mobileapi/getVNCityByCityId" method="GET">
+        <service class="Magenest\MobileApi\Api\UserManagementInterface" method="getVNCityByCityId"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
     <!--  Product Review  -->
     <route url="/V1/mobileapi/reviews" method="POST">
         <service class="Magenest\MobileApi\Api\ReviewRepositoryInterface" method="save"/>

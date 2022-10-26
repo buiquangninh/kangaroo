@@ -372,12 +372,15 @@ class GiaoHangTietKiem extends AbstractCarrierOnline implements CarrierInterface
      */
     private function getApiToken($area)
     {
-        $tokens = $this->serializer->unserialize($this->getConfigData('api_token'));
-        if (empty($tokens[$area]) || empty($tokens[$area]['api_token'])) {
-            throw new LocalizedException(__("GHTK API Token hasn't been configured for this region."));
+        try {
+            $tokens = $this->serializer->unserialize($this->getConfigData('api_token'));
+            if (empty($tokens[$area]) || empty($tokens[$area]['api_token'])) {
+                throw new LocalizedException(__("GHTK API Token hasn't been configured for this region."));
+            }
+            return $tokens[$area]['api_token'];
+        } catch (\Exception $exception) {
+            return $this->getConfigData('api_token');
         }
-
-        return $tokens[$area]['api_token'];
     }
 
     /**
@@ -541,11 +544,11 @@ class GiaoHangTietKiem extends AbstractCarrierOnline implements CarrierInterface
         $id = $request->getIsReturn() ? sprintf('RMA-%09d', $request->getRmaId()) : $order->getLsOrderWebId();
 
         try {
-            /** Get config value */
-            $token = $this->getApiToken($order->getAreaCode() . "_" . self::CODE);
             /** get District */
             $sourceItem = $this->sourceFactory->create();
             $this->inventoryResource->load($sourceItem, $order->getSourceCode(), 'source_code');
+            /** Get config value */
+            $token = $this->getApiToken($sourceItem->getAreaCode() . "_" . self::CODE);
             $params = $request->getIsReturn()
                 ?
                 $this->getReturnOrderParams($order, $sourceItem, $packagesWeight, $token, $request->getRmaId())
@@ -637,7 +640,7 @@ class GiaoHangTietKiem extends AbstractCarrierOnline implements CarrierInterface
         $ward = $order->getShippingAddress()->getWard();
 
         $hamlet = in_array($order->getShippingAddress()->getCityId(), [7, 13, 56])
-            ? $this->getLevel4Address($province, $district, $ward, $order->getShippingAddress()->getStreet(), $order->getAreaCode())
+            ? $this->getLevel4Address($province, $district, $ward, $order->getShippingAddress()->getStreet(), $sourceItem->getAreaCode())
             : "Khác";
 
         return [
@@ -764,7 +767,7 @@ class GiaoHangTietKiem extends AbstractCarrierOnline implements CarrierInterface
         $pickMoney = (int)$order->getGrandTotal();
 
         $hamlet = in_array($order->getShippingAddress()->getCityId(), [7, 13, 56])
-            ? $this->getLevel4Address($province, $district, $ward, $order->getShippingAddress()->getStreet(), $order->getAreaCode())
+            ? $this->getLevel4Address($province, $district, $ward, $order->getShippingAddress()->getStreet(), $sourceItem->getAreaCode())
             : "Khác";
 
         $params = [

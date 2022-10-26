@@ -2,6 +2,8 @@
 
 namespace Magenest\MobileApi\Api;
 
+use Magenest\MobileApi\Api\Data\WardInterface;
+
 interface UserManagementInterface
 {
     /**
@@ -37,4 +39,28 @@ interface UserManagementInterface
      * @return string[]
      */
     public function getVNWardsByDistrict($districtId);
+
+    /**
+     * Get VN district by district id
+     *
+     * @param int $districtId
+     * @return \Magenest\MobileApi\Api\Data\DistrictInterface
+     */
+    public function getVNDistrictByDistrictId($districtId);
+
+    /**
+     * Get VN ward by ward id
+     *
+     * @param  int $wardId
+     * @return \Magenest\MobileApi\Api\Data\WardInterface
+     */
+    public function getVNWardByWardId($wardId);
+
+    /**
+     * Get VN city by city id
+     *
+     * @param int $cityId
+     * @return \Magenest\MobileApi\Api\Data\CityInterface
+     */
+    public function getVNCityByCityId($cityId);
 }

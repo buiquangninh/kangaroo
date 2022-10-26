@@ -56,6 +56,9 @@
             }),
             e(document).off(".nice_select"),
             e(document).on("click.nice_select", ".nice-select", function(t) {
+                if (!event) {
+                    return false;
+                }
                 if (e(event.srcElement).prop('nodeName') == "DIV" || e(event.srcElement).prop('nodeName') == "SPAN" ) {
                     var s = e(this);
                     e(".nice-select").not(s).removeClass("open"),

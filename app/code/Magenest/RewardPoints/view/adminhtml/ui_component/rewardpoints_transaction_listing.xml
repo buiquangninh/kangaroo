@@ -7,14 +7,14 @@
             <item name="deps" xsi:type="string">rewardpoints_transaction_listing.rewardpoints_transaction_listing_data_source</item>
         </item>
         <item name="spinner" xsi:type="string">rewardpoints_transaction_columns</item>
-        <!--<item name="buttons" xsi:type="array">-->
-            <!--<item name="add" xsi:type="array">-->
-                <!--<item name="name" xsi:type="string">add</item>-->
-                <!--<item name="label" xsi:type="string" translate="true">Add New</item>-->
-                <!--<item name="class" xsi:type="string">primary</item>-->
-                <!--<item name="url" xsi:type="string">*/*/new</item>-->
-            <!--</item>-->
-        <!--</item>-->
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string" translate="true">Add New Transaction</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/new</item>
+            </item>
+        </item>
     </argument>
     <dataSource name="rewardpoints_transaction_listing_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
@@ -70,18 +70,18 @@
                 </item>
             </argument>
         </exportButton>
-        <!--<filterSearch name="fulltext">-->
-        <!--<argument name="data" xsi:type="array">-->
-        <!--<item name="config" xsi:type="array">-->
-        <!--<item name="provider" xsi:type="string">rewardpoints_transaction_listing.rewardpoints_transaction_listing_data_source</item>-->
-        <!--<item name="chipsProvider" xsi:type="string">rewardpoints_transaction_listing.rewardpoints_transaction_listing.listing_top.listing_filters_chips</item>-->
-        <!--<item name="storageConfig" xsi:type="array">-->
-        <!--<item name="provider" xsi:type="string">rewardpoints_transaction_listing.rewardpoints_transaction_listing.listing_top.bookmarks</item>-->
-        <!--<item name="namespace" xsi:type="string">current.search</item>-->
-        <!--</item>-->
-        <!--</item>-->
-        <!--</argument>-->
-        <!--</filterSearch>-->
+        <filterSearch name="fulltext">
+        <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+        <item name="provider" xsi:type="string">rewardpoints_transaction_listing.rewardpoints_transaction_listing_data_source</item>
+        <item name="chipsProvider" xsi:type="string">rewardpoints_transaction_listing.rewardpoints_transaction_listing.listing_top.listing_filters_chips</item>
+        <item name="storageConfig" xsi:type="array">
+        <item name="provider" xsi:type="string">rewardpoints_transaction_listing.rewardpoints_transaction_listing.listing_top.bookmarks</item>
+        <item name="namespace" xsi:type="string">current.search</item>
+        </item>
+        </item>
+        </argument>
+        </filterSearch>
         <filters name="listing_filters">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">

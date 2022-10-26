@@ -1,0 +1,41 @@
+<?php
+/**
+ * Copyright © 2020 Magenest. All rights reserved.
+ * See COPYING.txt for license details.
+ * @category  Magenest
+ */
+/** @var  $block \Magenest\RewardPoints\Block\Customer\Points */
+$_data = $block->getTransactions();
+$_rule = $block->getRule();
+$customer = $block->getAccount();
+/**
+ * @var \Magenest\RewardPoints\Helper\MembershipData $membershipHelper
+ */
+$membershipHelper = $this->helper('\Magenest\RewardPoints\Helper\MembershipData');
+$customerTier = $membershipHelper->getCustomerTier($customer->getCustomerId());
+$imageHelper = $this->helper('\Magenest\RewardPoints\Helper\ImageHelper');
+?>
+
+<div class="table-wrapper list-gift-point" id="list-gift-point">
+    <?php foreach ($block->getRewardPointRulesIds() as $ruleId) : ?>
+        <?php if ($block->getGenerateCoupon($ruleId)) :?>
+            <div class="box-list-gift">
+                <!--@Todo: get data name item -->
+                <img src="https://cdn.pixabay.com/photo/2016/08/03/09/03/universe-1566159_960_720.jpg" alt="Kangaroo">
+                <div class="title-list-gift">
+                    <span class="name-gift"><?php echo $block->getRuleNameById($ruleId) ?></span>
+                    <span class="date-gift">HSD: <?php echo $block->getRuleExpiredDate($ruleId)?></span>
+                </div>
+                <p class="desc-list-gift">
+                    <?= $block->getRuleDescription($ruleId) ?>
+                </p>
+                <div class="exchange-points">
+                    <p class="point"><?php echo $block->getRuleKpointById($ruleId) ?> <?= __('points') ?></p>
+                    <button class="button-coupon-claim"
+                            data-bind="click: getCoupon.bind($parent,'<?= $ruleId ?>')"
+                            id="claim<?= $block->escapeHtml($ruleId) ?>" <?= $block->isOwn($ruleId)?>><?= __('Redeem points') ?></button>
+                </div>
+            </div>
+        <?php endif;?>
+    <?php endforeach; ?>
+</div>

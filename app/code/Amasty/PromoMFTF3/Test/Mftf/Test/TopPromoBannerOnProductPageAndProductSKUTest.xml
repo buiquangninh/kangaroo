@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="TopPromoBannerOnProductPageAndProductSKUTest">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Top Banner On Product Page And Product SKU"/>
+            <description value="Check Top Banner On Product Page And Product SKU"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-25"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoBannersLite"/>
+        </annotations>
+
+        <before>
+            <createData entity="_defaultCategory" stepKey="createCategory"/>
+            <createData entity="SimpleProductByFusionBackpack" stepKey="createFirstProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <createData entity="SimpleProductByStriveShoulderPack" stepKey="createSecondProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <createData entity="SimpleProductByDrivenBackpack" stepKey="createThirdProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createPromoCartRule">
+                <argument name="promoItems" value="$$createFirstProduct.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminEditRuleShowBannerForProductSKUActionGroup" stepKey="editCartRuleBannerFirst">
+                <argument name="cartRuleName" value="defaultPromoCartRule.name"/>
+                <argument name="productSKU" value="$$createFirstProduct.sku$$,$$createThirdProduct.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminEditRuleAddTopBannerActionGroup" stepKey="editCartRuleBannerSecond">
+                <argument name="cartRuleName" value="defaultPromoCartRule.name"/>
+            </actionGroup>
+        </before>
+        <after>
+            <deleteData createDataKey="createCategory" stepKey="deleteCategory"/>
+            <deleteData createDataKey="createFirstProduct" stepKey="deleteFirstProduct"/>
+            <deleteData createDataKey="createSecondProduct" stepKey="deleteSecondProduct"/>
+            <deleteData createDataKey="createThirdProduct" stepKey="deleteThirdProduct"/>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deletePromoCartRule">
+                <argument name="ruleName" value="{{defaultPromoCartRule.name}}"/>
+            </actionGroup>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="amOnLogoutPage"/>
+        </after>
+
+        <actionGroup ref="StorefrontAssertTopBannerOnProductPageActionGroup" stepKey="assertTopOnProductFirst">
+            <argument name="product" value="$$createFirstProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNoAfterBannerOnProductPageActionGroup" stepKey="assertAfterOnProductFirst">
+            <argument name="product" value="$$createFirstProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNoAllBannersOnProductPageActionGroup" stepKey="assertAllBannersOnProductFirst">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertTopBannerOnProductPageActionGroup" stepKey="assertTopOnProductSecond">
+            <argument name="product" value="$$createThirdProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNoLabelBannerOnProductPageActionGroup" stepKey="assertLabelOnProductFirst">
+            <argument name="product" value="$$createThirdProduct$$"/>
+        </actionGroup>
+    </test>
+</tests>

@@ -8,16 +8,19 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="customer_account_navigation">
-            <block class="Magenest\RewardPoints\Block\RewardPointNavigation" name="customer-account-offer-link" ifconfig="rewardpoints/reward_points_display/reward_points_enable">
+            <block class="Magenest\RewardPoints\Block\RewardPointNavigation" name="customer-account-rewardpoints" ifconfig="rewardpoints/reward_points_display/reward_points_enable">
                 <arguments>
                     <argument name="css_class" xsi:type="string">nav child</argument>
-                    <argument name="path" xsi:type="string">rewardpoints/</argument>
+                    <argument name="path" xsi:type="string">rewardpoints/customer/points</argument>
                     <argument name="label" xsi:type="string">Discount And Point</argument>
                     <argument name="sortOrder" xsi:type="number">700</argument>
                 </arguments>
+<!--                <action method="setTemplate">-->
+<!--                    <argument name="template" xsi:type="string">Magenest_RewardPoints::customer/link.phtml</argument>-->
+<!--                </action>-->
                 <block class="Magenest\RewardPoints\Block\Link" template="link.phtml" cacheable="false" name="customer-account-navigation-rewardpoints" before="customer-account-navigation-referral">
                     <arguments>
-                        <argument name="path" xsi:type="string">rewardpoints/customer/points/</argument>
+                        <argument name="path" xsi:type="string">rewardpoints/customer/transactions/</argument>
                         <argument name="label" xsi:type="string">My Reward Points</argument>
                     </arguments>
                 </block>

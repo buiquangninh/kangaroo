@@ -96,4 +96,7 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Sales\Model\Order\Payment\State\CaptureCommand">
+        <plugin name="set_status_storecredit" type="Magenest\StoreCredit\Plugin\Order\StateCommand"/>
+    </type>
 </config>

@@ -3,6 +3,8 @@
 
 /** @var Magenest\Affiliate\Block\Account\Withdraw $block */
 
+$getCurrentAccount = $block->getCurrentAccount();
+
 if ($block->isAllowWithdraw()) : ?>
     <form action="<?= $block->escapeUrl($block->getWithdrawPostUrl()) ?>" method="post" id="form-validate"
           class="form form-edit-account form-affiliate form-affiliate-withdraw">
@@ -17,15 +19,15 @@ if ($block->isAllowWithdraw()) : ?>
                 <!--@Todo-->
                 <div class="bank-info-item">
                     <label class="label"><?= __('Account number:') ?></label>
-                    <span class="value">00000000000000000</span>
+                    <span class="value"><?= $getCurrentAccount->getData('acc_no') ?></span>
                 </div>
                 <div class="bank-info-item">
                     <label class="label"><?= __('Account name:') ?></label>
-                    <span class="value">00000000000000000</span>
+                    <span class="value"><?= $getCurrentAccount->getData('account_name') ?></span>
                 </div>
                 <div class="bank-info-item">
                     <label class="label"><?= __('Bank name:') ?></label>
-                    <span class="value">00000000000000000</span>
+                    <span class="value"><?= $block->getBankInfo($getCurrentAccount->getData('bank_no')) ?></span>
                 </div>
             </div>
             <div class="form-withdraw">

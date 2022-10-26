@@ -45,10 +45,18 @@ $getLists = $block->getInstallmentPaymentList($amount);
             <select class="form-select" id="select-installment-amount">
                 <option selected value="<?= $amount ?>" id="installment-amount-option"><?= __("Fully Installment") ?></option>
                 <?php
-                $amountOptions = $block->getInstallmentOptions();
+                $amountOptions = $block->getInstallmentOptions() ?: [];
                 ?>
                 <?php foreach ($amountOptions as $option): ?>
-                    <option value="<?= $option['rate'] ?>" id="installment-amount-option"><?= $block->formatPrice($option['rate']) ?></option>
+                    <?php if(isset($option['rate'])):?>
+                        <option value="<?= $option['rate'] ?>" id="installment-amount-option">
+                            <?=  $block->escapeHtml(number_format( $option['rate'] / $amount * 100, 2 )) . "%" ?> - <?= $block->formatPrice($option['rate']) ?>
+                        </option>
+                    <?php else:?>
+                        <option value="<?= $amount * $option['percentage_value'] / 100 ?>" id="installment-amount-option">
+                            <?=  $block->escapeHtml($option['percentage_value']) . "%" ?> - <?= $block->formatPrice($amount * $option['percentage_value'] / 100) ?>
+                        </option>
+                    <?php endif;?>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -81,7 +89,7 @@ $getLists = $block->getInstallmentPaymentList($amount);
                                     <span class="col-head-mobile mobile-device">
                                         <?= $block->escapeHtml(__('Installment purchase price')) ?>
                                     </span>
-                                    <?= $amount . " VND" ?>
+                                    <?= $block->formatPrice($amount) ?>
                                 </td>
                             <?php endforeach; ?>
                         </tr>
@@ -94,7 +102,7 @@ $getLists = $block->getInstallmentPaymentList($amount);
                                     <span class="col-head-mobile mobile-device">
                                         <?= $block->escapeHtml(__('Installment payment per month')) ?>
                                     </span>
-                                    <?= $one["firstAmount"] . " VND" ?>
+                                    <?= $one["firstAmount"] ?>
                                 </td>
                             <?php endforeach; ?>
                         </tr>
@@ -107,7 +115,7 @@ $getLists = $block->getInstallmentPaymentList($amount);
                                     <span class="col-head-mobile mobile-device">
                                         <?= $block->escapeHtml(__('Total amount payable')) ?>
                                     </span>
-                                    <?= $one["amountIs"] . " VND" ?>
+                                    <?= $one["amountIs"] ?>
                                 </td>
                             <?php endforeach; ?>
                         </tr>
@@ -120,7 +128,7 @@ $getLists = $block->getInstallmentPaymentList($amount);
                                     <span class="col-head-mobile mobile-device">
                                         <?= $block->escapeHtml(__('Policy with direct payment')) ?>
                                     </span>
-                                    <?= $one["userFeeIs"] . " VND" ?>
+                                    <?= $one["userFeeIs"] ?>
                                 </td>
                             <?php endforeach; ?>
                         </tr>
@@ -130,11 +138,11 @@ $getLists = $block->getInstallmentPaymentList($amount);
                                 <td class="col-choose-buy">
                                     <label class="choose-buy">
                                         <input type="radio" name="termIs" value="<?= $one['termIs'] ?>" required="required"/>
-                                        <input type="hidden" name="firstAmount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>" id="firstAmount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>"  value="<?= $one['firstAmount'] ?>"/>
-                                        <input type="hidden" name="userFeeIs_<?= $getList['bankId'] ?>_<?= $one['termIs']?>" id="userFeeIs_<?= $getList['bankId'] ?>_<?= $one['termIs']?>"  value="<?= $one['userFeeIs'] ?>"/>
-                                        <input type="hidden" name="amount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>" id="amount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>"  value="<?= $amount ?>"/>
-                                        <input type="hidden" name="nextAmount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>" id="nextAmount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>"  value="<?= $one['nextAmount'] ?>"/>
-                                        <input type="hidden" name="amountIs_<?= $getList['bankId'] ?>_<?= $one['termIs']?>" id="amountIs_<?= $getList['bankId'] ?>_<?= $one['termIs']?>"  value="<?= $one['amountIs'] ?>"/>
+                                        <input type="hidden" name="firstAmount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>" id="firstAmount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>"  value='<?= $one['firstAmountVal'] ?>'/>
+                                        <input type="hidden" name="userFeeIs_<?= $getList['bankId'] ?>_<?= $one['termIs']?>" id="userFeeIs_<?= $getList['bankId'] ?>_<?= $one['termIs']?>"  value='<?= $one['userFeeIsVal'] ?>'/>
+                                        <input type="hidden" name="amount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>" id="amount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>"  value='<?= $amount ?>'/>
+                                        <input type="hidden" name="nextAmount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>" id="nextAmount_<?= $getList['bankId'] ?>_<?= $one['termIs']?>"  value='<?= $one['nextAmountVal'] ?>'/>
+                                        <input type="hidden" name="amountIs_<?= $getList['bankId'] ?>_<?= $one['termIs']?>" id="amountIs_<?= $getList['bankId'] ?>_<?= $one['termIs']?>"  value='<?= $one['amountIsVal'] ?>'/>
                                         <?= __('Choose buy') ?>
                                     </label>
                                 </td>
@@ -171,18 +179,19 @@ $getLists = $block->getInstallmentPaymentList($amount);
                 success: function (response) {
                     for (const [key, value] of Object.entries(response)) {
                         for (const [key1, value1] of Object.entries(value.listDuration)) {
-                            $('#user-fee-is-' + key + '-' + key1).html(value1.userFeeIs + " VND");
-                            $('#amount-' + key + '-' + key1).html(amount + " VND");
-                            $('#amountIs-' + key + '-' + key1).html(value1.amountIs + " VND");
-                            $('#firstAmount-' + key + '-' + key1).html(value1.firstAmount + " VND");
-                            $('#nextAmount-' + key + '-' + key1).html(value1.nextAmount + " VND");
+                            $('#user-fee-is-' + key + '-' + key1).html(value1.userFeeIs);
+                            $('#amount-' + key + '-' + key1).find('.price').remove();
+                            $('#amount-' + key + '-' + key1).html(value1.amount);
+                            $('#amountIs-' + key + '-' + key1).html(value1.amountIs);
+                            $('#firstAmount-' + key + '-' + key1).html(value1.firstAmount);
+                            $('#nextAmount-' + key + '-' + key1).html(value1.nextAmount);
 
 
-                            $('#firstAmount_' + value.bankId + '_' + value1.termIs).val(value1.firstAmount);
-                            $('#userFeeIs_' + value.bankId + '_' + value1.termIs).val(value1.userFeeIs);
-                            $('#amount_' + value.bankId + '_' + value1.termIs).val(amount);
-                            $('#nextAmount_' + value.bankId + '_' + value1.termIs).val(value1.nextAmount);
-                            $('#amountIs_' + value.bankId + '_' + value1.termIs).val(value1.amountIs);
+                            $('#firstAmount_' + value.bankId + '_' + value1.termIs).val(value1.firstAmountVal);
+                            $('#userFeeIs_' + value.bankId + '_' + value1.termIs).val(value1.userFeeIsVal);
+                            $('#amount_' + value.bankId + '_' + value1.termIs).val(value1.amountVal);
+                            $('#nextAmount_' + value.bankId + '_' + value1.termIs).val(value1.nextAmountVal);
+                            $('#amountIs_' + value.bankId + '_' + value1.termIs).val(value1.amountIsVal);
                         }
                     }
                 },

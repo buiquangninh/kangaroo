@@ -19,4 +19,8 @@
     <event name="sales_order_status_history_save_after">
         <observer name="create_order_notification_for_each_customer" instance="Magenest\NotificationBox\Observer\CreateOrderNotificationForEachCustomer"/>
     </event>
+
+    <event name="sales_order_save_commit_after">
+        <observer name="review_reminder" instance="Magenest\NotificationBox\Observer\ReviewReminder"/>
+    </event>
 </config>

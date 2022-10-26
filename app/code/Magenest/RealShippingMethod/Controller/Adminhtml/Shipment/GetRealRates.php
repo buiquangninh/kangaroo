@@ -1,10 +1,12 @@
 <?php
 namespace Magenest\RealShippingMethod\Controller\Adminhtml\Shipment;
 
-use Magenest\API247\Model\API247Post;
-use Magenest\API247\Model\Carrier\API247;
 use Magenest\GiaoHangTietKiem\Model\Carrier\GiaoHangTietKiem;
 use Magenest\ViettelPostCarrier\Model\Carrier\ViettelPost;
+use Magenest\LalaMove\Model\Carrier\LalaMove;
+use Magenest\API247\Model\Carrier\API247;
+use Magenest\API247\Model\API247Post;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\Redirect;
@@ -15,7 +17,6 @@ use Magento\InventoryApi\Api\SourceRepositoryInterface;
 use Magento\OfflinePayments\Model\Cashondelivery;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Psr\Log\LoggerInterface;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class GetRealRates extends Action
 {
@@ -43,7 +44,9 @@ class GetRealRates extends Action
     /**
      * @var API247
      */
-    private $API247;
+
+    /** @var LalaMove */
+    private $lalamoveCarrier;
 
     /**
      * @param Context $context
@@ -57,6 +60,7 @@ class GetRealRates extends Action
         Context                   $context,
         ViettelPost               $viettelPostCarrier,
         GiaoHangTietKiem          $ghtkCarrier,
+        LalaMove                  $lalamoveCarrier,
         SourceRepositoryInterface $sourceRepository,
         OrderRepositoryInterface  $orderRepository,
         API247Post                $API247Post,
@@ -66,6 +70,7 @@ class GetRealRates extends Action
     ) {
         $this->logger             = $logger;
         $this->ghtkCarrier        = $ghtkCarrier;
+        $this->lalamoveCarrier    = $lalamoveCarrier;
         $this->viettelPostCarrier = $viettelPostCarrier;
         $this->orderRepository    = $orderRepository;
         $this->sourceRepository   = $sourceRepository;
@@ -108,7 +113,26 @@ class GetRealRates extends Action
                 ]);
 
                 $response = $this->API247->getRates($request);
-            } else {
+            }
+            if ($params['method'] === LalaMove::CODE ){
+                $request = new \Magento\Framework\DataObject([
+                    'city' => $source->getCity(),
+                    'district' => $source->getDistrict(),
+                    'ward' => $source->getWard(),
+                    'country' => $source->getCountryId(),
+                    'street' => $source->getStreet(),
+                    'lat' => $source->getLatitude(),
+                    'lng' => $source->getLongitude(),
+                    'cusStreet' => $order->getShippingAddress()->getStreet(),
+                    'cusWard' => $order->getShippingAddress()->getWard(),
+                    'cusDistrict' => $order->getShippingAddress()->getDistrict(),
+                    'cusCity' => $order->getShippingAddress()->getCity(),
+                    'cusCountry' => $order->getShippingAddress()->getCountryId(),
+                    'order' => $order
+                ]);
+                $response = $this->lalamoveCarrier->getRates($request);
+            }
+            else {
                 $request = new \Magento\Framework\DataObject([
                     'source_city'        => $source->getCity(),
                     'source_city_id'     => $source->getCityId(),
@@ -121,7 +145,7 @@ class GetRealRates extends Action
                     'dest_district_id'   => $order->getShippingAddress()->getDistrictId(),
                     'weight'             => $order->getWeight(),
                     'package_value'      => $order->getGrandTotal(),
-                    'area_code'          => $order->getAreaCode(),
+                    'area_code'          => $source->getAreaCode(),
                     'cod'                => $order->getPayment()->getMethod()
                         == Cashondelivery::PAYMENT_METHOD_CASHONDELIVERY_CODE
                 ]);

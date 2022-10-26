@@ -7,6 +7,7 @@ use Magento\Bundle\Api\ProductLinkManagementInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\CatalogInventory\Model\Stock\StockItemRepository;
+use Magento\Framework\Registry;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -43,23 +44,31 @@ class IsSalableProductInArea
      */
     protected $logger;
 
+    protected $registry;
+
     /**
+     * IsSalableProductInArea constructor.
      * @param HttpContext $httpContext
      * @param Data $dataHelper
      * @param ProductLinkManagementInterface $productLinkManagement
+     * @param StockItemRepository $stockItemRepository
+     * @param LoggerInterface $logger
+     * @param Registry $registry
      */
     public function __construct(
         HttpContext $httpContext,
         Data $dataHelper,
         ProductLinkManagementInterface $productLinkManagement,
         StockItemRepository $stockItemRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Registry $registry
     ) {
         $this->httpContext = $httpContext;
         $this->dataHelper = $dataHelper;
         $this->productLinkManagement = $productLinkManagement;
         $this->stockItemRepository = $stockItemRepository;
         $this->logger = $logger;
+        $this->registry = $registry;
     }
 
     /**
@@ -72,11 +81,11 @@ class IsSalableProductInArea
     public function afterIsSalable(Product $subject, $result)
     {
         if ($result) {
-            if (isset($this->cacheByProductId[$subject->getEntityId()])) {
-                return $this->cacheByProductId[$subject->getEntityId()];
+            $areaCode = $this->registry->registry('current_area') ?? $this->dataHelper->getCurrentArea();
+            if (isset($this->cacheByProductId[$subject->getEntityId()][$areaCode])) {
+                return $this->cacheByProductId[$subject->getEntityId()][$areaCode];
             } else {
                 try {
-                    $areaCode = $this->dataHelper->getCurrentArea();
                     if ($areaCode) {
                         $skus = [];
                         if ($subject->getTypeId() == "configurable") {
@@ -86,8 +95,9 @@ class IsSalableProductInArea
                             $childProduct = $subject->getTypeInstance()->getAssociatedProducts($subject);
                             $this->getSkuFromChild($childProduct, $skus);
                         } elseif ($subject->getTypeId() == 'bundle') {
-                            $childProduct = $this->productLinkManagement->getChildren($subject->getData('sku'));
-                            $this->getSkuFromChild($childProduct, $skus);
+                            return $result;
+//                            $childProduct = $this->productLinkManagement->getChildren($subject->getData('sku'));
+//                            $this->getSkuFromChild($childProduct, $skus);
                         } else {
                             $skus[] = $subject->getSku();
                         }
@@ -115,11 +125,11 @@ class IsSalableProductInArea
                                     $isAllowAddToCart = false;
                                 }
 
-                                $this->cacheByProductId[$subject->getEntityId()] = $isAllowAddToCart;
+                                $this->cacheByProductId[$subject->getEntityId()][$areaCode] = $isAllowAddToCart;
                                 return $isAllowAddToCart;
                             }
                         }
-                        $this->cacheByProductId[$subject->getEntityId()] = false;
+                        $this->cacheByProductId[$subject->getEntityId()][$areaCode] = false;
                         return false;
                     }
                 } catch (\Exception $exception) {

@@ -1,0 +1,198 @@
+& when (@media-common = true) {
+
+	.block-search {
+
+		.searchsuite-autocomplete {
+		    border: none;
+		    box-shadow: 0px 3px 6px #00000029;
+		    left: 0;
+		    margin-top: 0;
+		    width: auto;
+		    border-radius: 4px;
+		    overflow: hidden;
+		    left: 5px;
+			right: 5px;
+
+		    .title {
+		    	background-color: #E2E8ED;
+		    	color: #383E4F;
+		    	font-weight: 500;
+		    	font-size: 12px;
+		    	padding: 9px 12px 7px;
+		    	line-height: 16px;
+
+		    	.see-all {
+		    		display: none;
+		    	}
+		    }
+
+		    ul {
+		    	margin: 0;
+		    	padding: 0;
+
+		    	li {
+		    		margin: 0;
+		    		display: -webkit-flex; 
+					display: flex;
+					border-bottom: 1px solid #E2E8ED;
+
+					&:last-child {
+						border-bottom: none;
+					}
+
+					&:before,
+					&:after {
+						content: none;
+					}
+
+					> a {
+						color: #383E4F;
+						display: block;
+						font-size: 12px;
+				    	padding: 10px 12px;
+				    	line-height: 16px;
+					}
+
+					.qs-option-image {
+				    	padding: 14px 12px;
+				    	width: 89px;
+				    	float: none;
+				    	max-width: none;
+
+				    	a,
+				    	img {
+				    		display: block;
+				    	}
+				    }
+				    .qs-option-info {
+				    	padding: 14px 6px;
+				    	float: none;	
+				    	width: calc(~"100% - "89px);
+						width: -moz-calc(~"100% - "89px);
+						width: -webkit-calc(~"100% - "89px);
+						width: -o-calc(~"100% - "89px);
+						margin: 0;
+
+				    	.qs-option-reviews,
+				    	.qs-option-sku,
+				    	.qs-option-description,
+				    	.qs-option-shortdescription,
+				    	.qs-option-addtocart {
+					    	display: none;
+					    }
+
+					    .qs-option-price {
+					    	margin: 0;
+					    	display: block;
+					    }
+				    }
+
+				    .qs-option-title {
+				    	color: #383E4F;
+				    	font-size: 12px;
+				    	font-weight: 500;
+				    	line-height: 20px;
+				    	display: block;
+				    	margin-bottom: 12px;
+
+				    	a {
+				    		color: #383E4F;
+				    	}
+				    }
+
+				    .qs-option-price {
+				    	.price-box  {
+				    		margin: 0;
+				    		float: none;
+				    		display: -webkit-flex; 
+							display: flex;
+							flex-wrap: wrap;
+							-webkit-flex-wrap: wrap;
+							-webkit-align-items: center;
+							align-items: center;
+				    	}
+
+				    	.price {
+				    		color: #44BA46;
+				    		font-size: 14px;
+				    		font-weight: 500;
+				    		line-height: 27px;
+				    	}
+
+				    	.old-price {
+				    		order: 3;
+				    		.price {
+				    			color: #697180;
+				    			font-size: 12px;
+				    			font-weight: normal;
+				    			text-decoration: line-through;
+				    		}
+				    	}
+
+				    	.special-price {
+				    		margin-right: 12px;
+				    	}
+				    }
+		    	}
+		    }
+
+		    .product ul li {
+		    	border-bottom: 1px solid #E2E8ED;
+		    }
+		}
+	}
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+	.block-search {
+
+		.form.minisearch {
+			position: static;
+
+			.actions {
+				display: none;
+			}
+
+			.input-text {
+				background-position: left 8px center;
+			    background-repeat: no-repeat;
+			    background-image: url(data:image/svg+xml;base64,PHN2ZyBpZD0iaWNvbnNfc2VhcmNoIiBkYXRhLW5hbWU9Imljb25zL3NlYXJjaCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCI+DQogIDxwYXRoIGlkPSJWZWN0b3JfU3Ryb2tlXyIgZGF0YS1uYW1lPSJWZWN0b3IgKFN0cm9rZSkiIGQ9Ik04LjA1NiwyLjVhNS41NTYsNS41NTYsMCwxLDAsMy45MjgsMS42MjdBNS41NTYsNS41NTYsMCwwLDAsOC4wNTYsMi41Wm0tNS43LS4xNDFBOC4wNTYsOC4wNTYsMCwwLDEsMTQuNTY3LDEyLjhsNS4wNjcsNS4wNjdhMS4yNSwxLjI1LDAsMSwxLTEuNzY4LDEuNzY4TDEyLjgsMTQuNTY3QTguMDU2LDguMDU2LDAsMCwxLDIuMzU5LDIuMzU5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAwKSIgZmlsbD0iIzQ0YmE0NiIvPg0KPC9zdmc+DQo=);
+			   	background-size: 14px 14px;
+			}
+		}
+	}
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+	.block-search {
+
+		.searchsuite-autocomplete {
+			left: 0;
+			right: 0;
+			
+		    ul {
+
+		    	li {
+
+					> a {
+
+				    	&:hover {
+				    		color: #44BA46;
+				    	}
+					}
+
+				    .qs-option-title {
+				    	font-size: 14px;
+				    }
+
+				    .qs-option-price {
+				    	
+				    	.price {
+				    		font-size: 16px;
+				    	}
+				    }
+		    	}
+		    }
+		}
+	}
+}

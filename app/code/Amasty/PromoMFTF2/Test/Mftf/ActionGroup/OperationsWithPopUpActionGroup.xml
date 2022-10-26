@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <!-- For Open PopUp on Cart -->
+    <actionGroup name="StorefrontOpenPopUpInCartActionGroup">
+        <amOnPage url="{{FrontCartPage.url}}" stepKey="navigateToStorefrontCartPage"/>
+        <waitForPageLoad stepKey="waitForPageLoadForShipping"/>
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappear"/>
+        <waitForElementVisible selector="{{StorefrontCartSection.PopUpForAddProduct}}" stepKey="checkPopUpForAddInCart"/>
+        <click selector="{{StorefrontCartSection.PopUpForAddProduct}}" stepKey="openPopUp"/>
+        <waitForElementVisible selector="{{StorefrontCartSection.OpenPopUp}}" stepKey="waitWhenOpenPopUp"/>
+        <waitForPageLoad stepKey="waitAfterOpenPopUp"/>
+        <seeElement selector="{{StorefrontCartSection.PopUpProductsContainer}}" stepKey="assertProductsInPopup"/>
+    </actionGroup>
+
+    <!-- For Add Free Gift From One by One PopUp -->
+    <actionGroup name="StorefrontAddFreeGiftOneByOneInCart" extends="StorefrontOpenPopUpInCartActionGroup">
+        <arguments>
+            <argument name="product"/>
+        </arguments>
+        <click selector="{{StorefrontCartSection.OneByOneProductAdd(product.sku)}}" stepKey="addFreeGift"/>
+    </actionGroup>
+
+    <!-- For Add Free Gift From Multiple PopUp -->
+    <actionGroup name="StorefrontAddFreeGiftMultipleInCart" extends="StorefrontOpenPopUpInCartActionGroup">
+        <arguments>
+            <argument name="product"/>
+            <argument name="productQty"/>
+        </arguments>
+        <click selector="{{StorefrontCartSection.MultipleProductCheckbox(product.sku)}}" stepKey="chooseAddFreeGift"/>
+        <fillField selector="{{StorefrontCartSection.MultipleProductQty(product.sku)}}"
+                   userInput="{{productQty.qty}}" stepKey="enterQtyAddFreeGift"/>
+        <waitForPageLoad stepKey="waitWhileActivateAddButton"/>
+        <click selector="{{StorefrontCartSection.MultiplePopUpAddButton}}" stepKey="AddFreeGift"/>
+    </actionGroup>
+
+    <!-- For Add Configurable Free Gift From One by One PopUp -->
+    <actionGroup name="StorefrontAddConfigurableGiftOneByOnePopUp" extends="StorefrontOpenPopUpInCartActionGroup">
+        <arguments>
+            <argument name="product"/>
+            <argument name="configOption"/>
+        </arguments>
+        <selectOption selector="{{StorefrontCartSection.ConfigurableProductOption(product.sku)}}"
+                      userInput="{{configOption}}" stepKey="selectConfigurableOption"/>
+        <click selector="{{StorefrontCartSection.OneByOneProductAdd(product.sku)}}" stepKey="addFreeGift"/>
+    </actionGroup>
+
+    <!-- For Assert Not PopUp on Cart -->
+    <actionGroup name="StorefrontAssertNotPopUpOnCart">
+        <amOnPage url="{{FrontCartPage.url}}" stepKey="navigateToStorefrontCartPage"/>
+        <waitForPageLoad stepKey="waitForLoadAfterOpenPage"/>
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappear"/>
+        <wait time="5" stepKey="waitLoadAllRequestBeforeAssert"/>
+        <dontSeeElement selector="{{StorefrontCartSection.PopUpForAddProduct}}" stepKey="checkPopUpForAddInCart"/>
+    </actionGroup>
+
+    <!-- For Assert Auto Open PopUp on Cart -->
+    <actionGroup name="StorefrontAssertAutoOpenPopUpActionGroup">
+        <amOnPage url="{{FrontCartPage.url}}" stepKey="navigateToStorefrontCartPage"/>
+        <waitForPageLoad stepKey="waitForLoadAfterOpenPage"/>
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappear"/>
+        <waitForElementVisible selector="{{StorefrontCartSection.OpenPopUp}}" stepKey="waitWhenOpenPopUp"/>
+        <waitForPageLoad stepKey="waitForPageLoadBeforeAssertResult"/>
+        <seeElement selector="{{StorefrontCartSection.PopUpProductsContainer}}" stepKey="seeHaveProducts"/>
+    </actionGroup>
+
+    <!-- For Add Free Gift From Auto Open One by One PopUp -->
+    <actionGroup name="StorefrontAddFreeGiftFromAutoOneByOneActionGroup" extends="StorefrontAssertAutoOpenPopUpActionGroup">
+        <arguments>
+            <argument name="product"/>
+        </arguments>
+        <click selector="{{StorefrontCartSection.OneByOneProductAdd(product.sku)}}" stepKey="addFreeGift"/>
+    </actionGroup>
+
+    <!-- For Assert Old and New Price on Product Page -->
+    <actionGroup name="StorefrontAssertOldAndNewPriceInPopUpActionGroup" extends="StorefrontOpenPopUpInCartActionGroup">
+        <arguments>
+            <argument name="product"/>
+            <argument name="newPrice"/>
+        </arguments>
+        <see selector="{{StorefrontCartSection.OldPriceOnPopUp(product.sku)}}" userInput="{{product.price}}" stepKey="checkOriginalPrice"/>
+        <see selector="{{StorefrontCartSection.NewPriceOnPopUp(product.sku)}}" userInput="{{newPrice}}" stepKey="checkDiscountPrice"/>
+    </actionGroup>
+
+    <!-- For Assert Not Price on PopUp -->
+    <actionGroup name="StorefrontAssertPriceInPopUpActionGroup" extends="StorefrontOpenPopUpInCartActionGroup">
+        <seeElement selector="{{StorefrontCartSection.PriceInPopUp}}" stepKey="assertNotPriceInPopUp"/>
+    </actionGroup>
+
+    <!-- For Open PopUp on Checkout -->
+    <actionGroup name="StorefrontOpenPopUpOnCheckoutActionGroup">
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappear"/>
+        <waitForElementVisible selector="{{StorefrontCheckoutSection.PopUpForAddProductOnCheckout}}" stepKey="checkPopUpForAddOnCheckout"/>
+        <click selector="{{StorefrontCheckoutSection.PopUpForAddProductOnCheckout}}" stepKey="openPopUpOnCheckout"/>
+        <waitForElementVisible selector="{{StorefrontCheckoutSection.OpenPopUpOnCheckout}}" stepKey="waitWhenOpenPopUpOnCheckout"/>
+        <waitForPageLoad stepKey="waitWhileOpenPopUp"/>
+        <seeElement selector="{{StorefrontCheckoutSection.PopUpProductsContainerOnCheckout}}" stepKey="seeHaveProducts"/>
+    </actionGroup>
+
+    <!-- For Add Free Gift From Multiple PopUp on Checkout -->
+    <actionGroup name="StorefrontAddFreeGiftMultipleOnCheckoutActionGroup" extends="StorefrontOpenPopUpOnCheckoutActionGroup">
+        <arguments>
+            <argument name="product"/>
+            <argument name="productQty" defaultValue="_enterQty1"/>
+        </arguments>
+        <click selector="{{StorefrontCartSection.MultipleProductCheckbox(product.sku)}}" stepKey="chooseAddFreeGift"/>
+        <fillField selector="{{StorefrontCartSection.MultipleProductQty(product.sku)}}"
+                   userInput="{{productQty.qty}}" stepKey="enterQtyAddFreeGift"/>
+        <waitForPageLoad stepKey="waitWhileActivateAddButton"/>
+        <click selector="{{StorefrontCartSection.MultiplePopUpAddButton}}" stepKey="addFreeGift"/>
+    </actionGroup>
+
+    <!-- For Assert Not PopUp on Checkout -->
+    <actionGroup name="StorefrontAssertNotPopUpOnCheckoutActionGroup">
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappear"/>
+        <wait time="5" stepKey="waitLoadAllRequestBeforeAssert"/>
+        <dontSeeElement selector="{{StorefrontCheckoutSection.PopUpForAddProductOnCheckout}}" stepKey="checkPopUpForAddOnCheckout"/>
+    </actionGroup>
+
+    <!-- For Assert Auto Open PopUp on Checkout -->
+    <actionGroup name="StorefrontAssertAutoPopUpOnCheckoutActionGroup">
+        <amOnPage url="{{CheckoutShippingPage.url}}" stepKey="navigateToStorefrontCheckoutShippingPage"/>
+        <waitForPageLoad stepKey="waitForLoadAfterOpenPage"/>
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappear"/>
+        <waitForElementVisible selector="{{StorefrontCheckoutSection.OpenPopUpOnCheckout}}" stepKey="waitWhenOpenPopUpOnCheckout"/>
+        <waitForPageLoad stepKey="waitWhileOpenPopUp"/>
+        <seeElement selector="{{StorefrontCheckoutSection.PopUpProductsContainerOnCheckout}}" stepKey="seeHaveProducts"/>
+    </actionGroup>
+
+    <!-- For Add Free Gift From Auto Open One by One PopUp on Checkout -->
+    <actionGroup name="StorefrontAddGiftFromAutoPopUpOnCheckoutActionGroup" extends="StorefrontAssertAutoPopUpOnCheckoutActionGroup">
+        <arguments>
+            <argument name="product"/>
+        </arguments>
+        <click selector="{{StorefrontCheckoutSection.OneByOneProduct(product.sku)}}" stepKey="addFreeGift"/>
+    </actionGroup>
+
+</actionGroups>

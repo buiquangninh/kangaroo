@@ -6,6 +6,9 @@ var config = {
             },
             'Magento_Catalog/js/catalog-add-to-cart': {
                 'Magento_Catalog/js/show-area-popup': true
+            },
+            'mage/gallery/gallery': {
+                'Magento_Catalog/js/start-video-from-first-item': true
             }
         }
     }

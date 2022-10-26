@@ -139,4 +139,10 @@
     <type name="Magento\Checkout\Api\ShippingInformationManagementInterface">
         <plugin name="fullname_shipping_information_management" type="Magenest\Customer\Plugin\ShippingInformationManagement" sortOrder="3"/>
     </type>
+
+    <preference for="Magenest\Customer\Api\CrmCustomerInterface" type="Magenest\Customer\Model\CrmCustomer" />
+    <type name="Magento\Customer\Controller\Account\LoginPost">
+        <plugin name="login_via_app"
+                type="Magenest\Customer\Plugin\LoginViaApp" sortOrder="10"/>
+    </type>
 </config>

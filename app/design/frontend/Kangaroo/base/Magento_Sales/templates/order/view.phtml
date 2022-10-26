@@ -10,8 +10,16 @@ use Magenest\CustomFrontend\ViewModel\ProgressOrderDate;
 ?>
 <?php /** @var  $block \Magento\Sales\Block\Order\View */ ?>
 <?php
+$photoPreviewBlock= $block->getLayout()->createBlock('Magenest\PhotoReview\Block\Review\Form');
+$number_photo = $photoPreviewBlock->maxPhotoNumber();
+$isRequired = $photoPreviewBlock->isRequiredPhoto();
+$maxUploadSize = $photoPreviewBlock->getMaxUploadSize();
+$isRequiredVideo = $photoPreviewBlock->isRequiredVideo();
+$number_video = $photoPreviewBlock->maxVideoNumber();
+$maxUploadVideoSize = $photoPreviewBlock->getMaxUploadVideoSize();
 $helper = $this->helper("Magenest\RePaymentVNPTEpay\Helper\RePaymentHelper");
 $configHelper = $this->helper('Magenest\CustomCheckout\Helper\ConfigHelper');
+$helperImport = $configHelper->getImageHelper();
 $_order      = $block->getOrder();
 $isMultiItemOrder = count($_order->getAllItems()) > 1 ? 1 : 0;
 if ($block->getReview()) {
@@ -85,6 +93,7 @@ if ($customerSession->isLoggedIn()) {
     <div class="order-detail-contact">
         <div class="order-detail-contact-item">
             <span><?= __('Thank you for shopping at KangarooShopping') ?></span>
+            <a href="#" class="action action-review" data-trigger="trigger-order-review"><?= $block->escapeHtml(__('Reviews')) ?></a>
             <?php if ($this->helper(\Magento\Sales\Helper\Reorder::class)->canReorder($_order->getEntityId())) : ?>
                 <a href="#" data-post='<?= /* @noEscape */
                 $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
@@ -229,4 +238,207 @@ if ($customerSession->isLoggedIn()) {
         }
     }
 
+</script>
+<div id="popup-modal-review-product-sales-order">
+    <form action="#" method="post" enctype="multipart/form-data" id="form-validate-product-review" data-mage-init='{"validation": {}}'>
+    <input type="hidden" name="nickname" value="<?= $_order->getCustomerName() ?>">
+    <div class="content">
+        <?php $countRatings = 1; ?>
+        <?php foreach($_order->getAllVisibleItems() as $item) :?>
+
+       <?php $product = $configHelper->getProductRepositoryFactory()->create()->getById($item->getProductId());
+             $imageUrl = $helperImport->init($product, 'product_page_image_small')
+                ->setImageFile($product->getSmallImage()) // image,small_image,thumbnail
+                ->resize(750)
+                ->getUrl();
+       ?>
+        <input type="hidden" name="product_id_<?= $countRatings ?>" value="<?= $product->getId() ?>">
+        <input type="hidden" name="count_ratings" value="<?= $countRatings ?>">
+        <div class="order-review-item">
+                <div class="order-review-info">
+                    <img src='<?= $imageUrl ?>'/>
+                    <h3><?= $item->getName() ?></h3>
+                </div>
+                <div class="review-field-rating">
+                    <div class="control review-control-vote">
+                        <input type="radio" name="ratings[<?= $countRatings ?>]" id="quality_<?= $countRatings ?>_1" value="6" class="radio" data-validate='{"required":true}'>
+                        <label class="rating-1" for="quality_<?= $countRatings ?>_1" >
+                            <span><?= __('1 star') ?></span>
+                        </label>
+                        <input type="radio" name="ratings[<?= $countRatings ?>]" id="quality_<?= $countRatings ?>_2" value="7" class="radio" >
+                        <label class="rating-2" for="quality_<?= $countRatings ?>_2" >
+                            <span><?= __('2 star') ?></span>
+                        </label>
+                        <input type="radio" name="ratings[<?= $countRatings ?>]" id="quality_<?= $countRatings ?>_3" value="8" class="radio" >
+                        <label class="rating-3" for="quality_<?= $countRatings ?>_3" >
+                            <span><?= __('3 star') ?></span>
+                        </label>
+                        <input type="radio" name="ratings[<?= $countRatings ?>]" id="quality_<?= $countRatings ?>_4" value="9" class="radio" >
+                        <label class="rating-4" for="quality_<?= $countRatings ?>_4" >
+                            <span><?= __('4 star') ?></span>
+                        </label>
+                        <input type="radio" name="ratings[<?= $countRatings ?>]" id="quality_<?= $countRatings ?>_5" value="10" class="radio" >
+                        <label class="rating-5" for="quality_<?= $countRatings ?>_5" >
+                            <span><?= __('5 star') ?></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="review-field-comment-note"><?= $block->escapeHtml(__('Up to 200 characters')) ?></div>
+                <div class="review-field-suggest">
+                    <label>
+                        <input type="checkbox" name="title_<?= $countRatings ?>[good_quality]">
+                        <span><?= $block->escapeHtml(__('Great product quality')) ?></span>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="title_<?= $countRatings ?>[good_package]">
+                        <span><?= $block->escapeHtml(__('Product packaging is very nice and secure')) ?></span>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="title_<?= $countRatings ?>[good_price]">
+                        <span><?= $block->escapeHtml(__('Very worth the money')) ?></span>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="title_<?= $countRatings ?>[good_time]">
+                        <span><?= $block->escapeHtml(__('Very fast delivery time')) ?></span>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="title_<?= $countRatings ?>[good_service]">
+                        <span><?= $block->escapeHtml(__('Very good installation service')) ?></span>
+                    </label>
+                </div>
+                <div class="review-field-box">
+                    <div class="review-field-comment">
+                        <textarea placeholder="<?= $block->escapeHtml(__('Review of your product')) ?>" name="details_<?= $countRatings ?>" data-validate='{"required":true}'></textarea>
+                    </div>
+
+                    <div class="note"><?= $block->escapeHtml(__('Up to 200 characters')) ?></div>
+                </div>
+                <div class="review-field-photo">
+                    <img id="photo_preview_<?= $countRatings ?>" src="" width="165" height="110" style="display: none">
+                </div>
+                <div class="review-field-video">
+                    <video width="230" height="250" id="video_preview_<?= $countRatings ?>" controls="controls" preload="metadata" style="display: none" src=""></video>
+                </div>
+                <div class="review-field-photo-video">
+                    <label class="upload-btn upload-photo">
+                        <input type="file" id="photo_<?= $countRatings ?>" name="photo_<?= $countRatings ?>" <?= $isRequired ? 'data-validate=\'{"required":true}\'' : '' ?>>
+                        <span><?= $block->escapeHtml(__('More photos')) ?></span>
+                    </label>
+                    <label class="upload-btn upload-videos">
+                        <input type="file" id="video_<?= $countRatings ?>" name="video_<?= $countRatings ?>" <?= $isRequiredVideo ? 'data-validate=\'{"required":true}\'' : '' ?>>
+                        <span><?= $block->escapeHtml(__('More videos')) ?></span>
+                    </label>
+                </div>
+            </div>
+            <?php
+                $countRatings++;
+                endforeach;
+            ?>
+        </div>
+</form>
+</div>
+<script>
+    require(['jquery','Magento_Ui/js/modal/modal','mage/validation'], function($,modal){
+        $(document).ready( function() {
+            var countRatingsTotal = <?= $countRatings; ?>;
+            var options = {
+                'type': 'popup',
+                'title': '<?= $block->escapeHtml(__('Product reviews')) ?>',
+                'trigger': '[data-trigger=trigger-order-review]',
+                'responsive': true,
+                'modalClass':'popup-order-review',
+                'buttons': [
+                    {
+                        text: $.mage.__('Back'),
+                        class: 'action action-back',
+                        click: function () {
+                            this.closeModal();
+                        }
+                    },
+                    {
+                        text: $.mage.__('Complete'),
+                        class: 'action action-complete submit-product-review-form',
+                        click: function () {
+                            var data = new FormData();
+                            //Form data
+                            var form_data = $('#form-validate-product-review').serializeArray();
+                            $.each(form_data, function (key, input) {
+                                data.append(input.name, input.value);
+                            });
+
+                            for (let countRatings = 1; countRatings <= countRatingsTotal; countRatings++) {
+                                //File data
+                                var file_image_data = $('#photo_' + countRatings)[0];
+                                if (typeof file_image_data != 'undefined' && typeof file_image_data.files.length != 'undefined' && file_image_data.files.length > 0) {
+                                    for (let i = 0; i < file_image_data.files.length; i++) {
+                                        data.append('photo_' + countRatings + '[]', file_image_data.files[i]);
+                                    }
+                                }
+
+                                //video data
+                                var file_video_data = $('#video_' + countRatings)[0];
+                                if (typeof file_video_data != 'undefined' && typeof file_video_data.files.length != 'undefined' && file_video_data.files.length > 0) {
+                                    for (let j = 0; j < file_video_data.files.length; j++) {
+                                        data.append('video_' + countRatings + '[]', file_video_data.files[j]);
+                                    }
+                                }
+                            }
+                            if($('#form-validate-product-review').valid()) {
+                                $.ajax({
+                                    url: '<?= $block->getUrl('photoreview/product/ajaxpost') ?>',
+                                    type:'POST',
+                                    showLoader: true,
+                                    dataType:'json',
+                                    data: data,
+                                    contentType: false,
+                                    processData: false,
+                                    complete: function() {
+                                        $("#popup-modal-review-product-sales-order").modal("closeModal");
+                                    },
+                                    error: function (xhr, status, errorThrown) {}
+                                });
+                            }
+                        }
+                    }
+                ]
+            };
+
+            modal(options, $('#popup-modal-review-product-sales-order'));
+            $('#action-review').click(function (){
+                $('#popup-modal-review-product-sales-order').modal('openModal');
+            });
+            for (let countRatings = 1; countRatings <= countRatingsTotal; countRatings++) {
+                $('#photo_' + countRatings).change(function () {
+                    var photoReviewId = '#photo_preview_' + countRatings;
+                    var input = this;
+                    var url = $(this).val();
+                    var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+                    if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
+                        var reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            $(photoReviewId).css('display', 'block');
+                            $(photoReviewId).attr('src', e.target.result);
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                });
+                $('#video_' + countRatings).change(function () {
+                    var videoReviewId = '#video_preview_' + countRatings;
+                    var input = this;
+                    var url = $(this).val();
+                    var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+                    if (input.files && input.files[0] && (ext == "mp4")) {
+                        var reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            $(videoReviewId).css('display', 'block');
+                            $(videoReviewId).attr('src', e.target.result);
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                });
+            }
+        });
+    });
 </script>

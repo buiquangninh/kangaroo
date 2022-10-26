@@ -80,7 +80,7 @@ class Cron
     /** @var Helper */
     protected $helper;
 
-    /** @var Collection */
+    /** @var CollectionFactory */
     protected $customerTokenCollection;
 
     /** @var CustomerNotification */
@@ -142,7 +142,6 @@ class Cron
      */
     private $isProductHavePromotion;
 
-
     /**
      * @var \Mirasvit\CustomerSegment\Api\Repository\Segment\CustomerRepositoryInterface
      */
@@ -202,8 +201,7 @@ class Cron
         CartRepositoryInterface $cartRepository,
         OrderRepositoryInterface $orderRepository,
         CustomerRepositoryInterface $customerSegmentRepository
-    )
-    {
+    ) {
         $this->storeRepositoryInterface     = $storeRepositoryInterface;
         $this->managerInterface             = $managerInterface;
         $this->notificationQueue            = $notificationQueue;
@@ -300,11 +298,13 @@ class Cron
                     $listCustomerGroup   = $this->serialize->unserialize($notification['customer_group']);
                     $listCustomerSegment = $this->serialize->unserialize($notification['customer_segment']);
                     if (!in_array('0', $listStoreView) && !in_array($storeId, $listStoreView) ||
-                        !in_array('0', $listCustomerGroup) && !in_array($customerGroupId, $listCustomerGroup) && !array_intersect($currentCustomerSegments, $listCustomerSegment)) {
+                        !in_array('0', $listCustomerGroup) && !in_array($customerGroupId, $listCustomerGroup) &&
+                        !array_intersect($currentCustomerSegments, $listCustomerSegment)) {
                         continue;
                     }
                     //sent notification via firebase
-                    $customerToken = $this->customerTokenCollection->create()->addFieldToFilter('customer_id', $customerId)
+                    $customerToken = $this->customerTokenCollection->create()
+                        ->addFieldToFilter('customer_id', $customerId)
                         ->addFieldToFilter('is_active', NotificationModel::ACTIVE)
                         ->addFieldToFilter('status', CustomerTokenModel::STATUS_SUBSCRIBED);
                     if ($customerToken) {
@@ -378,7 +378,7 @@ class Cron
 
         // Get all the notices to send
         $listNotification = $this->notificationCollection->create()
-            ->addFieldToFilter('notification_type', array('nin' => self::LIST_NOTIFICATION_TYPE))
+            ->addFieldToFilter('notification_type', ['nin' => self::LIST_NOTIFICATION_TYPE])
             ->addFieldToFilter('is_active', NotificationModel::ACTIVE)
             ->addFieldToFilter('is_sent', NotificationModel::IS_NOT_SENT)
             ->addFieldToFilter('send_time', ['neq' => 'send_immediately'])
@@ -456,7 +456,7 @@ class Cron
                     //send notice via magento
                     $this->saveCustomerNotification($notification, $notification['customer_id']);
                     //send notice via firebase
-                    $tokens    = ($notification['token']) ? $notification['token'] : $this->helper->getToken($notification);
+                    $tokens    = $notification['token'] ?: $this->helper->getToken($notification);
                     $tokenSent = [];
                     foreach ($tokens as $token) {
                         $currentToken = ['token' => $token->getToken(), 'id' => $token->getGuestId()];
@@ -534,7 +534,7 @@ class Cron
         }
 
         $listNotification = $this->notificationCollection->create()
-            ->addFieldToFilter('notification_type', array('nin' => self::LIST_NOTIFICATION_TYPE))
+            ->addFieldToFilter('notification_type', ['nin' => self::LIST_NOTIFICATION_TYPE])
             ->addFieldToFilter('is_active', NotificationModel::ACTIVE)
             ->addFieldToFilter('is_sent', NotificationModel::IS_NOT_SENT)
             ->addFieldToFilter('send_time', ['eq' => 'send_immediately']);

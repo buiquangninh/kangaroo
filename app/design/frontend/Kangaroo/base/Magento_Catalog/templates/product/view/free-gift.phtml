@@ -1,0 +1,163 @@
+<?php
+/**
+ *@var \Amasty\BannersLite\Block\ProductBanner $block
+ */
+$mainSku = $block->getProductById($block->getCurrentProduct()->getId());
+$skus = $block->getFreeProductSkus();
+if (count($skus) > 3){
+    $lefts = array_slice($skus,3);
+}
+
+
+$leftSize = count($skus) - 3;
+
+?>
+<div class="block-free-gift">
+	<div class="block-title">
+		<h2><?= $block->escapeHtml(__('Gifts when purchased with the device')) ?></h2>
+		<?php if(count($skus) > 3): ?>
+            <a href="javascript:void(0)" id="show-popup-link" class="viewall"><?= $block->escapeHtml(__('View All')) ?></a>
+        <?php endif;?>
+	</div>
+	<div class="block-content">
+		<div class="product-item-base">
+			<div class="product-item">
+				<div class="product-item-info">
+					<p class="product-item-photo">
+					    <span class="product-image-container">
+					        <span class="product-image-wrapper" style="padding-bottom: 100%;">
+					            <img class="product-image-photo" src="<?= $block->getProductImg($mainSku); ?>"  alt="#">
+					        </span>
+					    </span>
+
+					    <span class="product-item-plus"></span>
+					</p>
+					<div class="product-item-details">
+						<strong class="product-item-name">
+							<p class="product-item-link"><?= $block->getProductName($mainSku); ?></p>
+						</strong>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="product-item-list">
+            <?php foreach ($skus as $sku): ?>
+			<div class="product-item">
+				<div class="product-item-info">
+					<p class="product-item-photo">
+					    <span class="product-image-container">
+					        <span class="product-image-wrapper" style="padding-bottom: 100%;">
+					            <img class="product-image-photo" src="<?= $block->getProductImg($sku); ?>"  alt="#">
+					        </span>
+					    </span>
+					</p>
+					<div class="product-item-details">
+						<strong class="product-item-name">
+                            <?php if ($block->getStatus() == 0):?>
+                                <span class="label"><?= $block->escapeHtml(__('Gift')) ?></span>
+                            <?php else: ?>
+                                <span class="label1"><?= $block->escapeHtml(__('Deal Shock')) ?></span>
+                            <?php endif;?>
+							<span class="product-item-link"><?= $block->getProductName($sku); ?></span>
+						</strong>
+						<div class="price-box price-final_price discount-item" >
+                            <span class="price-container price-final_price tax weee discount-item-left">
+						        <span class="price-wrapper">
+                                    <span class="price"><?= $block->getProductPriceAfter($sku);?>&nbsp</span>
+                                </span>
+						    </span>
+                            <span class="price-container price-old_price tax weee discount-item-left">
+						        <span class="price-wrapper">
+                                    <span class="price"><?= $block->getProductPrice($sku);?>&nbsp</span>
+                                </span>
+						    </span>
+						</div>
+					</div>
+				</div>
+			</div>
+            <?php endforeach;?>
+
+            <?php if (count($skus) > 3):?>
+                <div class="product-item-viewall product-item">
+                        <div class="product-item-info">
+                            <p id="show-popup" class="product-item-photo">
+                            <span class="product-image-container">
+                                <span class="product-image-wrapper" style="padding-bottom: 100%;">
+                                    <img class="product-image-photo" src="<?= $block->getProductImg($lefts[0]); ?>"  alt="#">
+                                </span>
+                            </span>
+                                <span class="viewall"><?= $block->escapeHtml(__('+ %1 Gift',$leftSize)) ?></span>
+                            </p>
+                        </div>
+                </div>
+            <?php endif;?>
+		</div>
+
+        <?php if (count($skus) > 3):?>
+            <div class="product-item-viewall hiden-on-desktop">
+                    <div class="product-item">
+                        <div class="product-item-info">
+                            <a href="#" id="show-popup-mobile"  class="product-item-photo">
+					    <span class="product-image-container">
+					        <span class="product-image-wrapper" style="padding-bottom: 100%;">
+					            <img class="product-image-photo" src="<?= $block->getProductImg($skus[0]); ?>"  alt="#">
+					        </span>
+					    </span>
+                                <span class="viewall"><?= $block->escapeHtml(__('+ %1 Gift',count($skus))) ?></span>
+                            </a>
+                        </div>
+                    </div>
+            </div>
+        <?php endif;?>
+	</div>
+</div>
+
+<div class="modal" id="modalFreeItem" style="display: none">
+    <div class="content" data-role="content" aria-labelledby="block-discount-heading">
+            <?php foreach ($skus as $sku): ?>
+                <div class="product-item">
+                    <div class="product-item-info">
+                        <p class="product-item-photo">
+					    <span class="product-image-container">
+					        <span class="product-image-wrapper" style="padding-bottom: 100%;">
+					            <img class="product-image-photo" src="<?= $block->getProductImg($sku); ?>"  alt="#">
+					        </span>
+					    </span>
+                        </p>
+                        <div class="product-item-details">
+                            <strong class="product-item-name">
+                                <?php if ($block->getStatus() == 0):?>
+                                    <span class="label"><?= $block->escapeHtml(__('Gift')) ?></span>
+                                <?php else: ?>
+                                    <span class="label1"><?= $block->escapeHtml(__('Deal Shock')) ?></span>
+                                <?php endif;?>
+                                <span class="product-item-link"><?= $block->getProductName($sku); ?></span>
+                            </strong>
+                            <div class="price-box price-final_price" >
+                                <span class="price-container price-final_price tax weee discount-item-left">
+                                    <span class="price-wrapper">
+                                        <span class="price"><?= $block->getProductPriceAfter($sku);?>&nbsp</span>
+                                    </span>
+                                </span>
+                                <span class="price-container price-old_price tax weee discount-item-left">
+                                    <span class="price-wrapper">
+                                        <span class="price"><?= $block->getProductPrice($sku);?>&nbsp</span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach;?>
+    </div>
+</div>
+
+<script>
+    require([
+        'jquery',
+        'Magento_Catalog/js/show-popup-free-item'
+    ], function ($) {
+        'use strict';
+    });
+</script>

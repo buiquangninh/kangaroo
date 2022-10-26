@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <magenest_preorder>
+            <general>
+                <add_to_cart_label>Pre-Order</add_to_cart_label>
+                <stock_status_label>Available Soon.</stock_status_label>
+            </general>
+        </magenest_preorder>
+    </default>
+</config>

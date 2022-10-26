@@ -39,6 +39,9 @@
     <preference for="Magenest\MobileApi\Api\SaleManagementInterface" type="Magenest\MobileApi\Model\SaleManagement"/>
 
     <preference for="Magenest\MobileApi\Api\UserManagementInterface" type="Magenest\MobileApi\Model\UserManagement"/>
+    <preference for="Magenest\MobileApi\Api\Data\CityInterface" type="Magenest\MobileApi\Model\City"/>
+    <preference for="Magenest\MobileApi\Api\Data\WardInterface" type="Magenest\MobileApi\Model\Ward"/>
+    <preference for="Magenest\MobileApi\Api\Data\DistrictInterface" type="Magenest\MobileApi\Model\District"/>
     <preference for="Magenest\MobileApi\Api\Data\AddressInterface" type="Magenest\MobileApi\Model\Address"/>
     <preference for="Magenest\MobileApi\Api\ProductReviewsInterface" type="Magenest\MobileApi\Model\ProductReviewsRepository"/>
     <preference for="Magenest\MobileApi\Api\ResetPasswordInterface" type="Magenest\MobileApi\Model\ResetPassword"/>

@@ -38,8 +38,6 @@ class Edit extends FormContainer
      */
     protected function _construct()
     {
-        $templates = $this->_coreRegistry->registry('rewardpoints_transaction');
-
         $this->_objectId   = 'id';
         $this->_blockGroup = 'Magenest_RewardPoints';
         $this->_controller = 'adminhtml_transaction';

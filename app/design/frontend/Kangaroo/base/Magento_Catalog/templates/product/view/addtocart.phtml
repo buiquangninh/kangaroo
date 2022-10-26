@@ -8,11 +8,13 @@
 /** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
 ?>
 <?php $_product = $block->getProduct();
-$buttonTitle = __('Add to Cart');
+$buttonTitle = $_product->getData('add_to_cart_frontend_label') ?? __('Add to Carts');
 $stockHelper = $this->helper(\Magenest\ViewStock\Helper\Data::class);
 $stockHelper->setProduct($block->getProduct());
+$outOfStockHelper = $block->getLayout()->getBlock('out-of-stock-area');
+$isOutOfStockInArea = $outOfStockHelper->isOutOfStockInArea();
 ?>
-<?php if ($_product->isSaleable()) :?>
+<?php if (!$isOutOfStockInArea) :?>
 <div class="box-tocart">
     <div class="fieldset">
         <?php if ($block->shouldRenderQuantity()) :?>
@@ -25,6 +27,7 @@ $stockHelper->setProduct($block->getProduct());
                        id="qty"
                        min="0"
                        minlength= "0"
+                       <?= $_product->getData('is_preorder') ? 'max ="1"' : '' ?>
                        value="<?= $block->getProductDefaultQty() * 1 ?>"
                        title="<?= $block->escapeHtmlAttr(__('Qty')) ?>"
                        class="input-text qty"

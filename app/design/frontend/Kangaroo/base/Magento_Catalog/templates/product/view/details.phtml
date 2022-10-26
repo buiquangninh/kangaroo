@@ -19,6 +19,13 @@
                 $alias = $layout->getElementAlias($name);
                 $label = $block->getChildData($alias, 'title');
                 ?>
+                <script>
+                    require(['jquery'], function($){
+                        $('#tab-label-<?= $block->escapeHtmlAttr($alias) ?>-title').on('click', function () {
+                            window.history.pushState('obj', 'newtitle', $(this).attr('href'));
+                        })
+                    });
+                </script>
                 <div class="data item title"
                      data-role="collapsible" id="tab-label-<?= $block->escapeHtmlAttr($alias) ?>">
                     <a class="data switch"

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Elasticsearch\Model\Adapter\FieldMapper\ProductFieldMapper">
+        <plugin sortOrder="10" name="Magenest_OutOfStockAtLast::add_more_field"
+                type="Magenest\OutOfStockAtLast\Plugin\Model\Adapter\AdditionalFieldMapperPlugin"/>
+    </type>
+    <type name="Magento\Elasticsearch\Elasticsearch5\Model\Adapter\FieldMapper\ProductFieldMapperProxy">
+        <plugin sortOrder="10" name="Magenest_OutOfStockAtLast::add_more_field_deprecated"
+                type="Magenest\OutOfStockAtLast\Plugin\Model\Adapter\AdditionalFieldMapperPlugin"/>
+    </type>
+
+    <type name="Magento\Elasticsearch\Model\Adapter\BatchDataMapper\ProductDataMapper">
+        <plugin sortOrder="10" name="Magenest_OutOfStockAtLast::add_data_to_mappers_result"
+                type="Magenest\OutOfStockAtLast\Plugin\Model\Adapter\BatchDataMapper\ProductDataMapperPlugin"/>
+    </type>
+    <type name="Smile\ElasticsuiteCatalog\Model\Product\Indexer\Fulltext\Datasource\AttributeData">
+        <plugin sortOrder="10" name="Magenest_OutOfStockAtLast::smile_add_data_to_mappers_result"
+                type="Magenest\OutOfStockAtLast\Plugin\Model\Product\Indexer\Fulltext\Datasource\AttributeDataPlugin"/>
+    </type>
+
+    <type name="Magento\Catalog\Model\ResourceModel\Product\Collection\ProductLimitation">
+        <plugin sortOrder="10" name="Magenest_OutOfStockAtLast::ignore_limitation_filter_using_price"
+                type="Magenest\OutOfStockAtLast\Plugin\Model\ResourceModel\Product\Collection\ProductLimitationPlugin"/>
+    </type>
+
+    <type name="Magento\Elasticsearch\Model\ResourceModel\Fulltext\Collection\SearchResultApplier">
+        <plugin sortOrder="10" name="Magenest_OutOfStockAtLast::mark_apply_flag"
+                type="Magenest\OutOfStockAtLast\Plugin\Model\ResourceModel\Fulltext\Collection\SearchResultApplierPlugin"/>
+    </type>
+    <!-- Run this command to update stock data of product -->
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="outofstockatlast_updatedata" xsi:type="object">Magenest\OutOfStockAtLast\Console\Command\UpdateOutOfStockAtLast</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

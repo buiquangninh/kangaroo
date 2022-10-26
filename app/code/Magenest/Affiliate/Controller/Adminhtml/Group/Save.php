@@ -23,7 +23,7 @@ class Save extends Group
     public function execute()
     {
         $resultRedirect = $this->resultRedirectFactory->create();
-        if ($data = $this->getRequest()->getPost('group')) {
+        if ($data = $this->getRequest()->getParams()) {
 
             $group = $this->_initGroup();
             $group->setData($data);

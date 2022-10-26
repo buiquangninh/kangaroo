@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <actionGroup name="AdminWizardStepThreeActionGroup">
+        <arguments>
+            <argument name="promoCartRuleWizard"/>
+        </arguments>
+        <selectOption selector="{{AdminSalesRuleWizardSection.DoesCouponCode}}" userInput="{{promoCartRuleWizard.doesCouponCode}}" stepKey="selectDoesCoupon"/>
+        <selectOption selector="{{AdminSalesRuleWizardSection.CustomerGroupsSelect}}" parameterArray="[{{promoCartRuleWizard.customers}}]" stepKey="selectCustomerGroup"/>
+        <selectOption selector="{{AdminSalesRuleWizardSection.HowManyTriggered}}" userInput="{{promoCartRuleWizard.howManyTimes}}" stepKey="selectHowManyTimesTriggered"/>
+        <selectOption selector="{{AdminSalesRuleWizardSection.ExtraCriteria}}" userInput="{{promoCartRuleWizard.extraCriteria}}" stepKey="selectExtraCriteria"/>
+        <click selector="{{AdminSalesRuleWizardSection.ButtonNext}}" stepKey="clickButtonNextStep"/>
+    </actionGroup>
+</actionGroups>

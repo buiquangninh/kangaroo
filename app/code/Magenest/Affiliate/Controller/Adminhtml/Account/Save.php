@@ -150,6 +150,9 @@ class Save extends Account
             $idBackFile = $this->getRequest()->getFiles('id_back');
             $data['id_front'] = !empty($idFrontFile['name']) ? $this->uploadImage('id_front') : $account->getIdFront();
             $data['id_back'] = !empty($idBackFile['name']) ? $this->uploadImage('id_back') : $account->getIdBack();
+            if (isset($data['group_id']) && $data['group_id'] != $account->getOrigData()['group_id']) {
+                $data['created_at'] = date("Y-m-d H:i:s");
+            }
             $account->addData($data);
 
             $this->_eventManager->dispatch(

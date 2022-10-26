@@ -9,6 +9,8 @@
                 <item name="signup" xsi:type="string">signup</item>
                 <item name="signuppost" xsi:type="string">signuppost</item>
                 <item name="refer" xsi:type="string">refer</item>
+                <item name="index" xsi:type="string">index</item>
+                <item name="setting" xsi:type="string">setting</item>
             </argument>
         </arguments>
     </type>

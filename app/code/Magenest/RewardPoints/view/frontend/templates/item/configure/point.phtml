@@ -79,7 +79,7 @@ if ($block->getEnableModule()):
         ], function ($) {
             'use strict';
             var productType = '<?= $productType ?>';
-            var priceDiv = $('.product-info-main').find('.price-box .price-final_price');
+            var priceDiv = $('.product-info-main').find('.block-shipping');
             var pointmin = '<?= $point['min']?>';
             var pointmax = '<?= $point['max']?>';
             if (pointmin > 0)
@@ -87,17 +87,25 @@ if ($block->getEnableModule()):
                     if (productType !== 'bundle') {
                         if (productType !== 'grouped') {
                             if (productType == 'configurable') {
-                                $('.product-info-main').find('.price-box > .normal-price > .price-final_price').append('<span id="point-show1"><strong><p style="color: <?=$block->getPointColor()?>; font-size: <?= $block->getPointSize()?>px"><?php echo '+From ' . $point['min'] . ' ' . htmlspecialchars($block->getPointUnit(),ENT_QUOTES); ?></p></strong></span');
+                                $('.product-info-main').find('.block-shipping')
+                                    .append('<div class="field kpoint" style="display:flex;justify-content:space-between;">' +
+                                        '<h5>Tích điểm</h5>' +
+                                        '<span id="point-show1" style="width:85%;"><h3 style="display:inline-block;color: <?=$block->getPointColor()?>; font-size: <?= $block->getPointSize()?>px"><?php echo 'From ' .number_format($point['min'], 0, ' ', '.') . ' ' . htmlspecialchars($block->getPointUnit(),ENT_QUOTES). "  "; ?></h3> cộng thêm</span>' +
+                                        '</div>');
                             } else {
-                                $(priceDiv).append('<span id="point-show1"><strong><p style="color: <?=$block->getPointColor()?>; font-size: <?= $block->getPointSize()?>px"><?php echo '+' . $point['min'] . ' ' . htmlspecialchars($block->getPointUnit(),ENT_QUOTES); ?></p></strong></span');
+                                $(priceDiv)
+                                    .append('<div class="field kpoint" style="display:flex;justify-content:space-between;">' +
+                                        '<h5>Tích điểm</h5>' +
+                                        '<span id="point-show1" style="width:85%;"><h3 style="display:inline-block;color: <?=$block->getPointColor()?>; font-size: <?= $block->getPointSize()?>px"><?php echo number_format($point['min'], 0, ' ', '.') . ' ' . htmlspecialchars($block->getPointUnit(),ENT_QUOTES). "  "; ?></h3> cộng thêm</span>' +
+                                        '</div>');
                             }
                         }
                     } else {
                         if ('<?= ($point['min'] == $point['max']) ?>')
-                            $(priceDiv).append('<span id="point-show1"><strong><p style="color: <?=$block->getPointColor()?>; font-size: <?= $block->getPointSize()?>px"><?php echo '+' . $point['min'] . ' ' . htmlspecialchars($block->getPointUnit(),
-                                    ENT_QUOTES); ?></p></strong></span');
+                            $(priceDiv).append('<span id="point-show1"><h3 style="color: <?=$block->getPointColor()?>; font-size: <?= $block->getPointSize()?>px"><?php echo number_format($point['min'], 0, ' ', '.') . ' ' . htmlspecialchars($block->getPointUnit(),
+                                    ENT_QUOTES); ?></h3></span');
                         else
-                            $(priceDiv).append('<span id="point-show1"><strong><p style="color: <?=$block->getPointColor()?>; font-size: <?= $block->getPointSize()?>px"><?php echo '+' . $point['min'] . ' to +' . $point['max']; ?></p></strong></span');
+                            $(priceDiv).append('<span id="point-show1"><h3 style="color: <?=$block->getPointColor()?>; font-size: <?= $block->getPointSize()?>px"><?php echo number_format($point['min'], 0, ' ', '.') . ' to +' . number_format($point['max'], 0, ' ', '.'); ?></h3></span');
                     }
                 }
             else

@@ -100,22 +100,16 @@ class GetStockItemData
         int                     $stockId
     ) {
         $connection = $this->resourceConnection->getConnection();
-        $selectCatalogInventory = $connection->select();
-        $selectInventoryStock = $connection->select();
+        $selectCatalogInventory = $connection->select()->distinct(true);
+        $selectInventoryStock = $connection->select()->distinct(true);
         $selectInventoryStock->from(
             ["main_table" => $this->stockIndexTableNameResolver->execute($stockId)],
             [
-                GetStockItemDataInterface::QUANTITY => 'isi.quantity',
-                GetStockItemDataInterface::IS_SALABLE => IndexStructure::IS_SALABLE,
+                GetStockItemDataInterface::QUANTITY,
+                GetStockItemDataInterface::IS_SALABLE,
+                'area_code',
+                'sku'
             ]
-        )->join(
-            ['isi' => $connection->getTableName('inventory_source_item')],
-            '`main_table`.`sku` = `isi`.`sku`',
-            ["source_code"]
-        )->join(
-            ['is' => $connection->getTableName('inventory_source')],
-            '`isi`.`source_code` = `is`.`source_code`',
-            ["area_code"]
         );
         $selectCatalogInventory->from(
             ["main_table" => $this->resourceConnection->getTableName('cataloginventory_stock_status')],
@@ -156,14 +150,8 @@ class GetStockItemData
                 $qty = $connection->fetchAll($selectCatalogInventory);
             } else {
                 $selectInventoryStock->where(
-                    'isi.sku IN (?)',
+                    'main_table.sku IN (?)',
                     $sku
-                )->where(
-                    'isi.status = ?',
-                    1
-                )->where(
-                    'isi.source_code IN (?)',
-                    $sourceCodes
                 );
                 $qty = $connection->fetchAll($selectInventoryStock);
             }

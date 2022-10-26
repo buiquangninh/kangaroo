@@ -161,6 +161,17 @@ $getReferredAccounts = $block->getReferredAccount();
                 btnCopyUrl.parent().addClass('input-read-only');
                 $(this).hide();
                 btnClear.show();
+                var customurl = "<?= $block->getUrl('affiliateclickcount/referalurl/save') ?>";
+                $.ajax({
+                    url: customurl,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        referalUrl: referUrl.val()
+                    },
+                    showLoader: false,
+                    success: function (response) {}
+                });
             } else {
                 form[0].reportValidity()
             }

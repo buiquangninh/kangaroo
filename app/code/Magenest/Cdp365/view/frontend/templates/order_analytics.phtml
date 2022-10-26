@@ -1,0 +1,57 @@
+<?php
+/** @var $block Magento\Sales\Block\Order\View */
+$order    = $block->getOrder();
+
+$itemData    = [];
+$helperImage = $this->helper('\Magento\Catalog\Helper\Image');
+
+
+foreach ($order->getItems() as $item) {
+    $categoriesIds = $item->getProduct()->getCategoryIds();
+    $categories = $item->getProduct()->getCategoryCollection()->addAttributeToSelect('name');
+    $firstCategory = $categories->getItemById($categoriesIds[0]) ?: false;
+    $secondCategory = $categories->getItemById($categoriesIds[1] ?? $categoriesIds[0]) ?: false;
+    $thirdCategory = $categories->getItemById($categoriesIds[2] ?? $categoriesIds[0]) ?: false;
+
+    $itemData[] = [
+        "item_type" => "product",
+        "brand" => "KANGAROO",
+        "id" => $item->getSku(),
+        "name" => $item->getName(),
+        "orginal_price" => (float)$item->getProduct()->getPrice(),
+        "price" => (float)$item->getPriceInclTax(),
+        "quantity" => (int)$item->getQtyOrdered(),
+        "page_url" => $item->getProduct()->getProductUrl(),
+        "image_url" => $helperImage->init($item, 'product_base_image')
+            ->setImageFile($item->getProduct()->getImage())
+            ->getUrl(),
+        "main_category" => $firstCategory ? $firstCategory->getName() : "",
+        "category_level_1" => $secondCategory ? $secondCategory->getName() : "",
+        "category_level_2" => $thirdCategory ? $thirdCategory->getName() : ""
+    ];
+}
+
+$customerData = [
+    'login_id' => $order->getCustomerId(),
+    'user_name' => $order->getCustomerName(),
+    'phone' => $order->getShippingAddress()->getTelephone(),
+    'email' => $order->getCustomerEmail()
+];
+
+$orderData = [
+    'order_id' => $order->getIncrementId(),
+    'revenue' => $order->getGrandTotal(),
+    'discount_amount' => $order->getDiscountAmount(),
+    'promotion_code' => $order->getCouponCode()
+];
+
+?>
+<script>
+    if (typeof (_cdp365Analytics) === 'undefined') {
+        _cdp365Analytics = {};
+    }
+    _cdp365Analytics.items = <?= json_encode($itemData) ?>;
+    _cdp365Analytics.user_identify = <?= json_encode($customerData) ?>;
+    _cdp365Analytics.order = <?= json_encode($orderData) ?>;
+    console.log(_cdp365Analytics);
+</script>

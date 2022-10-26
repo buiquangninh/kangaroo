@@ -99,8 +99,8 @@ class MasOffer extends AbstractHelper
                         ];
                     }
                     $data = [
-                        "offer_id" => "kangaroo",
-                        "signature" => "K1s4SQ6HD71cDiQ7",
+                        "offer_id" => $this->scopeConfig->getValue('mas_offer/general/offer_id'),
+                        "signature" => $this->scopeConfig->getValue('mas_offer/general/signature'),
                         "transaction_id" => $order->getIncrementId(),
                         "transaction_time" => strtotime($item->getCreatedAt()) * 1000,
                         "traffic_id" => $affId,

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="catalog_product_entity">
+        <column xsi:type="int" name="out_of_stock_at_last_mien_bac" nullable="true" comment="Out of stock at last mien bac"/>
+        <column xsi:type="int" name="out_of_stock_at_last_mien_trung" nullable="true"  comment="Out of stock at last mien trung"/>
+        <column xsi:type="int" name="out_of_stock_at_last_mien_nam" nullable="true"  comment="Out of stock at last mien nam"/>
+    </table>
+</schema>

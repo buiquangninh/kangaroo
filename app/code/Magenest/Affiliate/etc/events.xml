@@ -29,4 +29,7 @@
     <event name="magenest_store_credit_transaction_created">
         <observer name="magenest_affiliate_transaction_create_from_store_credit" instance="Magenest\Affiliate\Observer\CreateAffiliateTransactionFromStoreCredit"/>
     </event>
+    <event name="customer_register_success" >
+        <observer name="create_limited_affiliate_account" instance="Magenest\Affiliate\Observer\CreateLimitedAffiliateAccount"/>
+    </event>
 </config>

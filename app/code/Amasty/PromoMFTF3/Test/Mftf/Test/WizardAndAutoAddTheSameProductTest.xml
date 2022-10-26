@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="WizardAndAutoAddTheSameProductTest">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Wizard And Auto Add The Same Product"/>
+            <description value="Check Wizard And Auto Add The Same Product"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-30"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoWizard"/>
+        </annotations>
+
+        <before>
+            <!-- Configuration and Create Data Before Test -->
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+            <actionGroup ref="AdminConfigPromoGeneralActionGroup" stepKey="settingGeneralPromoConfiguration"/>
+            <actionGroup ref="AdminConfigPromoMessagesActionGroup" stepKey="settingMessagePromoConfiguration"/>
+        </before>
+        <after>
+            <!--Delete Created Data After Test -->
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deleteCreatedCartPriceRule">
+                <argument name="ruleName" value="{{wizardAndAutoAddTheSameProduct.name}}"/>
+            </actionGroup>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="amOnLogoutPage"/>
+        </after>
+
+        <!-- Filling Wizard from First to Third Steps -->
+        <actionGroup ref="AdminWizardStepOneActionGroup" stepKey="fillWizardStepOne">
+            <argument name="promoCartRuleWizard" value="wizardAndAutoAddTheSameProduct"/>
+        </actionGroup>
+        <actionGroup ref="AdminWizardStepTwoActionGroup" stepKey="fillWizardStepTwo">
+            <argument name="promoCartRuleWizard" value="wizardAndAutoAddTheSameProduct"/>
+        </actionGroup>
+        <actionGroup ref="AdminWizardStepThreeActionGroup" stepKey="fillWizardStepThree">
+            <argument name="promoCartRuleWizard" value="wizardAndAutoAddTheSameProduct"/>
+        </actionGroup>
+        <!-- Assert Wizard Four Step Data and Save Wizard Rule -->
+        <actionGroup ref="AdminAssertWizardStepFourActionGroup" stepKey="assertAutoName">
+            <argument name="autoName" value="wizardAndAutoAddTheSameProduct.ruleAutoName"/>
+        </actionGroup>
+        <actionGroup ref="AdminWizardStepFourActionGroup" stepKey="saveRule"/>
+        <!-- Open Created Rule and Assert Data -->
+        <actionGroup ref="AdminAssertCreatedCartRuleAfterWizardActionGroup" stepKey="assertResultCreatedRule">
+            <argument name="cartRuleName" value="wizardAndAutoAddTheSameProduct.name"/>
+            <argument name="promoRuleValues" value="wizardAndAutoAddTheSameProduct"/>
+            <argument name="customerGroupNotSelect" value="wizardAndAutoAddTheSameProduct.customerGroupNotSelect"/>
+        </actionGroup>
+    </test>
+</tests>

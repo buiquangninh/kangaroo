@@ -14,7 +14,6 @@ $customer = $block->getAccount();
 $membershipHelper = $this->helper('\Magenest\RewardPoints\Helper\MembershipData');
 $customerTier = $membershipHelper->getCustomerTier($customer->getCustomerId());
 $imageHelper = $this->helper('\Magenest\RewardPoints\Helper\ImageHelper');
-
 ?>
 <div>
     <?php echo $block->getDescription(); ?>
@@ -29,38 +28,79 @@ $imageHelper = $this->helper('\Magenest\RewardPoints\Helper\ImageHelper');
 <?php if ($_data && count($_data)): ?>
     <h3><?php echo __('Points Summary') ?></h3>
     <?php if ($membershipHelper->isEnableMembership()) : ?>
-    <div class="customer-membership-info">
-        <div class="progress-bar">
-            <span class="progress" style="width: <?= $membershipHelper->getProgressPercent($customer) ?>%"></span>
-            <div class="milestone milestone--reached">
-                <div class="rank"><span><?= __('Beginner') ?></span></div>
-                <span class="rank-total">0</span>
-            </div>
-            <?php
-            foreach ($membershipHelper->getActiveTier() as $tier) {
-                ?>
-                <div class="milestone <?= $block->isReachTier($tier, $customerTier) ? 'milestone--reached' : '' ?>">
-                    <div class="rank rank-<?= $tier->getData(\Magenest\RewardPoints\Api\Data\MembershipInterface::GROUP_CODE) ?>">
-                        <span><?= $tier->getData(\Magenest\RewardPoints\Api\Data\MembershipInterface::GROUP_NAME) ?></span>
-                        <img src="<?php echo $imageHelper->getRewardPointsViewFileUrl($tier->getData(\Magenest\RewardPoints\Api\Data\MembershipInterface::TIER_LOGO)); ?>"
-                             alt="<?= $tier->getData(\Magenest\RewardPoints\Api\Data\MembershipInterface::GROUP_NAME) ?>"/>
-                    </div>
-                    <span class="rank-total"><?= $block->getShortCondition($tier) ?></span>
+        <div class="customer-membership-info">
+            <div class="progress-bar">
+                <span class="progress" style="width: <?= $membershipHelper->getProgressPercent($customer) ?>%"></span>
+                <div class="milestone milestone--reached">
+                    <div class="rank"><span><?= __('Beginner') ?></span></div>
+                    <span class="rank-total">0</span>
                 </div>
                 <?php
-            }
-            ?>
+                foreach ($membershipHelper->getActiveTier() as $tier) {
+                    ?>
+                    <div class="milestone <?= $block->isReachTier($tier, $customerTier) ? 'milestone--reached' : '' ?>">
+                        <div
+                            class="rank rank-<?= $tier->getData(\Magenest\RewardPoints\Api\Data\MembershipInterface::GROUP_CODE) ?>">
+                            <span><?= $tier->getData(\Magenest\RewardPoints\Api\Data\MembershipInterface::GROUP_NAME) ?></span>
+                            <img
+                                src="<?php echo $imageHelper->getRewardPointsViewFileUrl($tier->getData(\Magenest\RewardPoints\Api\Data\MembershipInterface::TIER_LOGO)); ?>"
+                                alt="<?= $tier->getData(\Magenest\RewardPoints\Api\Data\MembershipInterface::GROUP_NAME) ?>"/>
+                        </div>
+                        <span class="rank-total"><?= $block->getShortCondition($tier) ?></span>
+                    </div>
+                    <?php
+                }
+                ?>
+            </div>
+            <div class="customer-reward-point">
+                <?php if ($customerTier->getId()): ?>
+                    <p>
+                        <span><?= __('Your current tier is %1', $block->escapeHtml($customerTier->getData(\Magenest\RewardPoints\Api\Data\MembershipInterface::GROUP_NAME))) ?></span>
+                    </p>
+                <?php else: ?>
+                    <p><span><?= __('You don\'t belong to any Tier') ?></span></p>
+                <?php endif; ?>
+                <p><?= $membershipHelper->getNextTierCondition($customer->getCustomerId()) ?></p>
+            </div>
         </div>
-        <div class="customer-reward-point">
-            <?php if ($customerTier->getId()): ?>
-                <p><span><?= __('Your current tier is %1', $block->escapeHtml($customerTier->getData(\Magenest\RewardPoints\Api\Data\MembershipInterface::GROUP_NAME)))?></span></p>
-            <?php else: ?>
-                <p><span><?= __('You don\'t belong to any Tier') ?></span></p>
-            <?php endif; ?>
-            <p><?= $membershipHelper->getNextTierCondition($customer->getCustomerId()) ?></p>
-        </div>
-    </div>
     <?php endif; ?>
+
+    <div class="table-wrapper gift-info" id="gift-info">
+        <h3>Bạn đang có <?php echo $customer->getPointsTotal(); ?><span> Kpoint</span></h3>
+        <h4>Ưu đãi</h4>
+        <table id="gift-info" class="data table table-collection-gift">
+            <thead>
+            <tr class="headings">
+                <?php foreach ($block->getRewardPointRulesIds() as $ruleId) : ?>
+            <tr>
+                <th class="col-gift-current">
+                    <span><?php echo $block->getRuleNameById($ruleId) ?></span>
+                </th>
+                <th class="col-kpoint-current">
+                    <span><?php echo $block->getRuleKpointById($ruleId) ?></span>
+                </th>
+                <th class="col-button-submit action primary">
+                    <div id="getCoupon"
+                         data-bind="scope:'getCoupon'">
+                        <span >
+                                    <!-- ko template: getTemplate() --><!-- /ko -->
+                                    <button class="button-coupon-claim"
+                                            data-bind="click: getCoupon.bind($parent,
+                                                        '<?= $ruleId ?>',
+                                                        '<?= $block->getGenerateCoupon($ruleId) ?>',
+                                                        '<?= $block->getRuleKpointById($ruleId)?>',
+                                                        '<?= $block->escapeHtml($customer->getPointsCurrent()) ?>',
+                                                        '<?= $block->escapeHtml($customer->getCustomerId()) ?>')"
+                                            id="claim<?= $block->escapeHtml($ruleId) ?>" <?= $block->isOwn($ruleId)?>>GET</button>
+                                </span>
+                    </div>
+                </th>
+            </tr>
+            <?php endforeach; ?>
+            </tr>
+            </thead>
+        </table>
+    </div>
 
     <div class="table-wrapper account-info" id="account-info">
         <table id="account-info" class="data table table-collection-account">
@@ -118,7 +158,7 @@ $imageHelper = $this->helper('\Magenest\RewardPoints\Helper\ImageHelper');
                     </td>
                     <td data-th="<?php echo $block->escapeHtml(__('Event')) ?>" class="col-rule-id">
                         <?php if ($data->getRuleId() == 0)
-                            echo __('Redeem points');
+                            echo __('Redeem points').$data->getTitle();
                         elseif ($data->getRuleId() == -1)
                             echo __('Points from admin');
                         elseif ($data->getRuleId() == -2)
@@ -182,6 +222,28 @@ $imageHelper = $this->helper('\Magenest\RewardPoints\Helper\ImageHelper');
     <div class="message info empty"><span><?php /* @escapeNotVerified */
             echo __('You have no Reward Points.'); ?></span></div>
 <?php endif ?>
+<script type="text/x-magento-init">
+    {
+        "#getCoupon": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "getCoupon": {
+                        "component": "Magenest_RewardPoints/js/coupon/action"
+                    }
+                }
+            }
+        },
+        "#claim-coupon-button": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "claim": {
+                        "component": "Magenest_RewardPoints/js/coupon/action"
+                    }
+                }
+            }
+        }
+    }
+</script>
 
 
 

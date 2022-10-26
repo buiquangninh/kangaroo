@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="ProductLabelPromoBannerAndAllProductTest" extends="TopPromoBannerOnProductPageAndProductSKUTest">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Product Label Banner And All Product"/>
+            <description value="Check Product Label Banner And All Product"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-27"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoBannersLite"/>
+        </annotations>
+
+        <before>
+            <remove keyForRemoval="editCartRuleBannerFirst"/>
+            <createData entity="_defaultCategory" after="createCategory" stepKey="createSecondCategory"/>
+            <createData entity="SimpleProductByWatchClamber" stepKey="createThirdProduct">
+                <requiredEntity createDataKey="createSecondCategory"/>
+            </createData>
+            <actionGroup ref="AdminEditRuleAddLabelBannerActionGroup" stepKey="editCartRuleBannerSecond">
+                <argument name="cartRuleName" value="defaultPromoCartRule.name"/>
+            </actionGroup>
+        </before>
+        <after>
+            <deleteData createDataKey="createSecondCategory" after="deleteCategory" stepKey="deleteSecondCategory"/>
+        </after>
+
+        <remove keyForRemoval="assertAllBannersOnProductFirst"/>
+        <actionGroup ref="StorefrontAssertNoTopBannerOnProductPageActionGroup" stepKey="assertTopOnProductFirst">
+            <argument name="product" value="$$createFirstProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertLabelBannerOnProductPageActionGroup" after="assertAfterOnProductFirst" stepKey="assertLabelBannerOnProductFirst">
+            <argument name="product" value="$$createFirstProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertLabelBannerOnProductPageActionGroup" after="assertLabelOnProductFirst" stepKey="assertLabelBannerOnProductSecond">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNoTopBannerOnProductPageActionGroup" stepKey="assertTopOnProductSecond">
+            <argument name="product" value="$$createThirdProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertLabelBannerOnProductPageActionGroup" stepKey="assertLabelOnProductFirst">
+            <argument name="product" value="$$createThirdProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNoAfterBannerOnProductPageActionGroup" stepKey="assertAfterOnProductSecond">
+            <argument name="product" value="$$createThirdProduct$$"/>
+        </actionGroup>
+    </test>
+</tests>

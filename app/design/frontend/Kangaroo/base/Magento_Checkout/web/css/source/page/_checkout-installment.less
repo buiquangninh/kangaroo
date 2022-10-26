@@ -32,7 +32,7 @@
             background-color: #fff;
             #select-installment-amount {
                 #installment-amount-option {
-                    font-family: 'Clan';
+                    font-family: @font-family-name__base;
                 }
             }
         }
@@ -108,7 +108,17 @@
             td {
                 background-color: #F3FFF2;
                 padding: 15px;
-                font-weight: 500;
+                font-weight: 400;
+            }
+
+            .price {
+                font-weight: 300;
+            }
+
+            tr:first-child {
+                td {
+                    font-weight: 500;
+                }
             }
 
             .price-highlight {

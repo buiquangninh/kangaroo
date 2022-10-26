@@ -81,11 +81,11 @@ class GetProductSalableQty extends \Magento\InventorySales\Model\GetProductSalab
     /**
      * @inheritdoc
      */
-    public function execute(string $sku, int $stockId): float
+    public function execute(string $sku, int $stockId, $areaCode = ''): float
     {
-        $areaCode = $this->dataHelper->getCurrentArea();
+        $areaCode = $areaCode ?: $this->dataHelper->getCurrentArea();
         $this->validateProductType($sku);
-        $stockItemData = $this->getStockItemData->execute($sku, $stockId);
+        $stockItemData = $this->getStockItemData->execute($sku, $stockId, $areaCode);
         if (empty($stockItemData)) {
             return 0;
         }
@@ -93,6 +93,15 @@ class GetProductSalableQty extends \Magento\InventorySales\Model\GetProductSalab
         $stockItemConfig = $this->getStockItemConfiguration->execute($sku, $stockId);
         $minQty = $stockItemConfig->getMinQty();
         $reservationQtyArray = $this->getReservationsQuantityV2->execute($sku, $stockId, $areaCode);
+        if (is_string($reservationQtyArray)) {
+            $reservationQtyArray = json_decode($reservationQtyArray, true);
+            $reservationQtyArray = $reservationQtyArray[$areaCode];
+        }
+
+        if (isset($stockItemData[0])) {
+            $stockItemData = $stockItemData[0];
+        }
+
         if ($stockItemData[\Magento\InventorySalesApi\Model\GetStockItemDataInterface::IS_SALABLE] == 1) {
             $productQtyInStock[$areaCode] = $stockItemData['quantity']
                 + $reservationQtyArray

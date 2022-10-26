@@ -6,7 +6,6 @@ use Magento\Checkout\Model\Cart;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\UrlInterface;
@@ -56,6 +55,8 @@ class Add
      */
     protected $storeManager;
 
+    protected $isHandled;
+
     /**
      * Add constructor.
      * @param RequestInterface $request
@@ -83,6 +84,19 @@ class Add
         $this->storeManager = $storeManager;
     }
 
+    public function beforeExecute(\Magento\Checkout\Controller\Cart\Add $subject)
+    {
+        if ($this->request->getParam('installment_payment') &&
+            $this->cart->getQuote() &&
+            !$this->cart->getQuote()->getHasError()
+        ) {
+            $this->isHandled = $this->handleProductForInstallmentPayment($this->cart->getQuote());
+//            $this->cart->truncate();
+//            $this->cart->save();
+        }
+        return [];
+    }
+
     /**
      * Function afterExecute
      *
@@ -105,8 +119,8 @@ class Add
                 $this->cart->getQuote() &&
                 !$this->cart->getQuote()->getHasError()
             ) {
-                $isHandled = $this->handleProductForInstallmentPayment($this->cart->getQuote());
-                if ($isHandled) {
+//                $isHandled = $this->handleProductForInstallmentPayment($this->cart->getQuote());
+                if ($this->isHandled) {
                     $content['backUrl'] = $this->_url->getUrl('epay/customer/installmentpayment');
                     $subject->getResponse()->representJson($this->jsonSerializer->serialize($content));
                     $this->messageManager->getMessages(true);
@@ -114,7 +128,6 @@ class Add
                 } else {
                     $this->messageManager->addErrorMessage(__('This product doest not allow checkout with installment payment.'));
                 }
-
             }
         } catch (\Exception $exception) {
             $this->logger->error($exception->getMessage());
@@ -135,7 +148,6 @@ class Add
         try {
             $productId = (int)$this->request->getParam('product');
             if ($productId) {
-                $isCartItemRemove = false;
                 /** @var \Magento\Quote\Model\Quote\Item $item */
                 foreach ($quote->getAllVisibleItems() as $item) {
                     if (
@@ -143,13 +155,8 @@ class Add
                         $item->getProduct()->getId() &&
                         (int)$item->getProduct()->getId() !== $productId
                     ) {
-                        $isCartItemRemove = true;
                         $quote->removeItem($item->getId());
                     }
-                }
-
-                if ($isCartItemRemove) {
-                    $quote->save();
                 }
             }
         } catch (\Exception $exception) {

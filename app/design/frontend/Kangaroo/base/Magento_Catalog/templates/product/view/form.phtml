@@ -25,6 +25,7 @@
         <input type="hidden" name="selected_configurable_option" value="" />
         <input type="hidden" name="related_product" id="related-products-field" value="" />
         <input type="hidden" name="buy_now" id="buy_now" value="0" />
+        <input type="hidden" name="is_preorder" id="is_preorder" value="<?= (int)$_product->getData('is_preorder') ?>" />
         <input type="hidden" name="installment_payment" id="installment_payment" value="0" />
         <input type="hidden" name="item"  value="<?= (int)$block->getRequest()->getParam('id') ?>" />
         <?= $block->getBlockHtml('formkey') ?>

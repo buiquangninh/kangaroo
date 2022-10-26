@@ -6,8 +6,9 @@ define([
     'jquery',
     'underscore',
     'uiRegistry',
-    'Magento_Ui/js/form/element/select'
-], function ($, _, registry, Select) {
+    'Magento_Ui/js/form/element/select',
+    'Magento_Ui/js/lib/validation/validator'
+], function ($, _, registry, Select, validator) {
     'use strict';
 
     return Select.extend({
@@ -16,7 +17,10 @@ define([
             captionValue: 'tn',
             imports: {
                 update: '${ $.parentName }.district_id:value'
-            }
+            },
+            listens: {
+                '${ $.parentName }.district_id:value': 'validate',
+            },
         },
         parentEle: false,
 
@@ -51,11 +55,34 @@ define([
                     self.parentEle.isOpenDirectory(false);
                 }
             }
+
+            self.validate();
         },
 
         initNiceSelect: function () {
             $('.directory-information select[name="ward_id"]').niceSelect();
-        }
+        },
+
+        validate: function () {
+            $('#directory-error').hide();
+
+            var value = this.value(),
+                result = validator(this.validation, value, this.validationParams),
+                isValid = this.disabled() || !this.visible() || result.passed;
+
+            this.error.valueHasMutated();
+            //TODO: Implement proper result propagation for form
+            if (this.source && !isValid) {
+                $('#directory-error').show();
+                this.source.set('params.invalid', true);
+            }
+
+            return {
+                valid: isValid,
+                target: this
+            };
+        },
+
     });
 });
 

@@ -85,7 +85,15 @@ class City extends AbstractDb
 
         return $code ?: $cityId;
     }
+    public function getProvinceCodeWithId($cityId)
+    {
+        $select = $this->getConnection()->select();
+        $select->from($this->getTable(self::MAIN_TABLE), 'province_code');
+        $select->where('city_id = :city_id');
+        $code = $this->getConnection()->fetchOne($select, ['city_id' => $cityId]);
 
+        return $code ?: $cityId;
+    }
     /**
      * {@inheritdoc}
      */

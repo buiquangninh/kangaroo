@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <actionGroup name="AdminCreatePromoCartPriceRuleWholeCartActionGroup" extends="AdminCreatePromoCartRuleTheSameActionGroup">
+        <arguments>
+            <argument name="promoItems"/>
+        </arguments>
+        <remove keyForRemoval="enterMaxQtyDiscount"/>
+        <remove keyForRemoval="enterDiscountStep"/>
+        <selectOption selector="{{AdminPromoCartRuleSection.Type}}" after="enterNumberOfGift" userInput="{{promoCartRule.typeAddFreeGift}}" stepKey="selectTypeAddFreeGift"/>
+        <fillField selector="{{AdminPromoCartRuleSection.PromoItems}}" after="selectTypeAddFreeGift" userInput="{{promoItems}}" stepKey="enterPromoItems"/>
+    </actionGroup>
+</actionGroups>

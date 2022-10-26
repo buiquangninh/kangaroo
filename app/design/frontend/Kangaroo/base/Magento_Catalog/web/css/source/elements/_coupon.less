@@ -1,0 +1,321 @@
+& when (@media-common = true) {
+
+	.discount-code-block {
+		position: relative;
+		flex-wrap: wrap;
+	    -webkit-flex-wrap: wrap;
+	    display: -webkit-flex;
+	    display: flex;
+	    -webkit-align-items: flex-start;
+	    align-items: flex-start;
+
+	    .product-info-main & {
+	    	&:after {
+	    		display: none;
+	    		content: none;
+	    	}
+	    }
+
+		.coupon-content {
+			display: none;
+		}
+
+		.coupon-value {
+			background-color: #FFF4EE;
+			border: 1px solid #F16522;
+		    padding: 2px 15px 0;
+		    display: inline-block;
+		    color: #F16522;
+		    font-weight: 500;
+		    font-size: 13px;
+		    line-height: 21px;
+		    margin-right: 10px;
+		    margin-bottom: 5px;
+		    position: relative;
+		    border-radius: 3px;
+		    margin-top: 2px;
+
+		    &:before ,
+		    &:after {
+		    	content: "";
+		    	width: 6px;
+		    	height: 6px;
+		    	display: block;
+		    	border-radius: 100%;
+		    	background-color: #fff;
+		    	border: 1px solid #F16522;
+		    	position: absolute;
+		    	top: 50%;
+		    	margin-top: -3px;
+		    	z-index: 1;
+		    }
+
+		    &:before {
+		    	left: -4px;
+		    	clip-path: inset(0 0 0 50%);
+		    }
+
+		    &:after {
+		    	right: -4px;
+		    	clip-path: inset(0 50% 0 0);
+
+		    }
+		}
+
+		.coupon-dropdown-content {
+
+		    .label,
+		    .des {
+	    	    display: none;
+		    }
+		}
+
+		.coupon-item {
+			display: -webkit-flex;
+		    display: flex;
+
+		    &-button {
+		    	.action {
+		    		font-weight: 500;
+		    		border: 1px solid #3AAB3D;
+					text-align: center;
+					background: transparent linear-gradient(72deg, #3AAB3D 0%, #008242 100%) 0% 0% no-repeat padding-box;
+					color: #fff;
+					white-space: nowrap;
+
+		    		&.action-saved {
+		    			color: #8F9AA5;
+		    			background-color: transparent;
+		    			background-image: none;
+		    			border: 1px solid #8F9AA5;
+		    		}
+		    	}
+		    }
+		}
+	}
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+	.discount-code-block {
+
+		.coupon-dropdown-content {
+			margin-right: -20px;
+			overflow-x: auto;
+
+			h5 {
+				display: none;
+			}
+		}
+		.coupon-item-list {
+			flex-wrap: nowrap;
+			-webkit-flex-wrap: nowrap;
+			display: -webkit-flex; 
+			display: flex;
+		}
+		.coupon-item {
+		    background-color: #FFF5E5;
+		    border: 1px solid #DEDEDE;
+		    min-width: 279px;
+		    margin-right: 10px;
+		    margin-bottom: 12px;
+		    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5IiBoZWlnaHQ9IjExIiB2aWV3Qm94PSIwIDAgOSAxMSI+DQogIDxnIGlkPSJHcm91cF8xIiBkYXRhLW5hbWU9Ikdyb3VwIDEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMjE1LjUgLTU3OCkiPg0KICAgIDxnIGlkPSJQYXRoXzEiIGRhdGEtbmFtZT0iUGF0aCAxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMjE4IDU3OCkiIGZpbGw9Im5vbmUiPg0KICAgICAgPHBhdGggZD0iTTAsMEgxVjExSDBaIiBzdHJva2U9Im5vbmUiLz4NCiAgICAgIDxwYXRoIGQ9Ik0gMCAwIEwgMSAwIEwgMSAxMSBMIDAgMTEgTCAwIDAgWiIgc3Ryb2tlPSJub25lIiBmaWxsPSIjZGVkZWRlIi8+DQogICAgPC9nPg0KICAgIDxwYXRoIGlkPSJjaXJjbGUiIGQ9Ik04LDZBNCw0LDAsMSwxLDQsMiw0LDQsMCwwLDEsOCw2WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTIxNiA1NzcuNikiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2RlZGVkZSIgc3Ryb2tlLXdpZHRoPSIxIi8+DQogICAgPGcgaWQ9IlBhdGhfMiIgZGF0YS1uYW1lPSJQYXRoIDIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyMTUuNTA3IDU3OCkiIGZpbGw9IiNmZmYiPg0KICAgICAgPHBhdGggZD0iTSAxLjk5MzQwNDE1MDAwOTE1NSAxMC41IEwgMC41MDAwMDQxMTI3MjA0ODk1IDEwLjUgTCAwLjUwMDAwNDExMjcyMDQ4OTUgMC41IEwgMS45OTM0MDQxNTAwMDkxNTUgMC41IEwgMS45OTM0MDQxNTAwMDkxNTUgMTAuNSBaIiBzdHJva2U9Im5vbmUiLz4NCiAgICAgIDxwYXRoIGQ9Ik0gMS4wMDAwMDQwNTMxMTU4NDUgMSBMIDEuMDAwMDA0MDUzMTE1ODQ1IDEwIEwgMS40OTM0MDQxNTAwMDkxNTUgMTAgTCAxLjQ5MzQwNDE1MDAwOTE1NSAxIEwgMS4wMDAwMDQwNTMxMTU4NDUgMSBNIDQuMDUzMTE1ODQ0NzI2NTYyZS0wNiAwIEwgMi40OTM0MDQxNTAwMDkxNTUgMCBMIDIuNDkzNDA0MTUwMDA5MTU1IDExIEwgNC4wNTMxMTU4NDQ3MjY1NjJlLTA2IDExIEwgNC4wNTMxMTU4NDQ3MjY1NjJlLTA2IDAgWiIgc3Ryb2tlPSJub25lIiBmaWxsPSIjZmZmIi8+DQogICAgPC9nPg0KICA8L2c+DQo8L3N2Zz4NCg==);
+		    background-repeat: repeat-y;
+	        border-left: none;
+    		background-position: left -3px top 0px;
+
+		    &-label {
+		    	display: none;
+		    }
+
+		    &-detail {
+		    	font-weight: normal;
+			    font-size: 10px;
+			    line-height: 18px;
+			    padding: 10px 10px 10px 20px;
+			    color: #383E4F;
+			    -webkit-align-self: center;
+				align-self: center;
+		    }
+
+		    &-title {
+		    	font-weight: 500;
+		    	font-size: 12px;
+		    	margin-bottom: 4px;
+		    	color: #F16522;
+		    }
+
+		    &-text {
+		    	margin-bottom: 10px;
+		    }
+
+		    &-date 	{
+		    	color: rgba(143, 154, 165, 0.8);
+		    }
+
+		    &-button {
+		    	width: 88px;
+		    	min-width: 88px;
+		    	-webkit-flex-wrap: nowrap;
+				display: -webkit-flex; 
+				display: flex;
+				-webkit-align-items: center ;
+				align-items: center ;
+				-webkit-justify-content: center ;
+				justify-content: center ;
+				border-left: 0.75px dashed #DEDEDE;
+				margin-left: auto;
+
+		    	.action {
+		    		font-size: 10px;
+					line-height: 23px;
+					height: 25px;
+					padding: 0 10px;
+					min-width: 53px;
+		    	}
+		    }
+		}
+	}
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+	.discount-code-block  {
+
+		.block-title {
+			display: none;
+		}
+		.coupon-content {
+			flex-wrap: wrap;
+		    -webkit-flex-wrap: wrap;
+		    display: -webkit-flex;
+		    display: flex;
+		    -webkit-align-items: flex-start;
+		    align-items: flex-start;
+		    cursor: pointer;
+		}
+
+		.coupon-dropdown-content {
+		    position: absolute;
+		    background-color: #FFFFFF;
+		    right: 30px;
+		    left: 30px;
+		    top: 100%;
+		    z-index: 100;
+		    padding: 30px 26px 26px;
+		    display: none;
+		    box-shadow: 0px 3px 12px #00000029;
+		    color: #383E4F;
+		    &:before {
+		    	content: "";
+		    	width: 0;
+				height: 0;
+				border-style: solid;
+				border-width: 0 12px 12px 12px;
+				border-color: transparent transparent #FFFFFF transparent;
+				position: absolute;
+				top: -11px;
+				left: 120px;
+		    }
+
+		    .label {
+	    	    font-weight: 500;
+			    font-size: 16px;
+			    line-height: 22px;
+			    margin-bottom: 0;
+			    color: #383E4F;
+			    padding: 0 0 9px;
+			    display: block;
+		    }
+
+		    .des {
+		    	display: block;
+		    	font-size: 14px;
+		    	line-height: 20px;
+		    	margin-bottom: 4px;
+		    }
+		}
+
+		&.active {
+			.coupon-dropdown-content {
+				display: block;
+			}
+		}
+
+		.coupon-item-list {
+			overflow-y: auto;
+			max-height: 366px;
+		}
+
+
+		.coupon-item {
+			display: -webkit-flex;
+		    display: flex;
+		    margin-top: 12px;
+		    background: #F8F8F8;
+		    position: relative;
+
+		    &-label {
+		    	color: #FFFFFF;
+			    text-align: center;
+			    font-weight: 500;
+			    font-size: 16px;
+			    line-height: 22px;
+			    padding: 8px;
+			    display: -webkit-flex;
+			    display: flex;
+			    -webkit-align-items: center;
+			    align-items: center;
+			    -webkit-justify-content: center;
+			    justify-content: center;
+			    width: 142px;
+			    min-width: 142px;
+			    background-color: #F16522;
+			    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDEyIDE4Ij4NCiAgPGcgaWQ9Ikdyb3VwXzEiIGRhdGEtbmFtZT0iR3JvdXAgMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEyMTYgLTU3OCkiPg0KICAgIDxwYXRoIGlkPSJjaXJjbGUiIGQ9Ik0xMiw4QTYsNiwwLDEsMSw2LDIsNiw2LDAsMCwxLDEyLDhaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMjE2IDU3OSkiIGZpbGw9IiNmZmYiLz4NCiAgPC9nPg0KPC9zdmc+DQo=);
+		    	background-repeat: repeat-y;
+		    	background-position: top 3px left -6px;
+		    	min-height: 114px;
+		    }
+
+		    &-detail {
+		    	font-weight: normal;
+			    padding: 14px 12px 12px 16px;
+			    border: 1px solid #ECECEC;
+			    margin-left: -1px;
+			    position: relative;
+			    font-size: 14px;
+			    line-height: 20px;
+			    color: #383E4F;
+			    flex-grow: 1;
+				-webkit-flex-grow: 1;
+		    }
+
+		    &-title {
+		    	font-size: 16px;
+		    	font-weight: 500;
+		    	margin-bottom: 8px;
+		    }
+
+		    &-text {
+		    	margin-bottom: 18px;
+		    }
+
+		    &-date {
+		    	color: #8F9AA5;
+		    }
+
+		    &-button {
+		    	.action {
+		    		font-size: 14px;
+					line-height: 32px;
+					height: 34px;
+					padding: 0 10px;
+					min-width: 96px;
+					position: absolute;
+					right: 11px;
+					bottom: 12px;
+					z-index: 3;
+		    	}
+		    }
+		}
+	
+	}
+}

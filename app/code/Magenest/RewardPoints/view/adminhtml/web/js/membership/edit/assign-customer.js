@@ -32,7 +32,8 @@ define([
             } else {
                 eventCustomers.unset(element.value);
             }
-            $('in_group_customers').value = Object.toJSON(eventCustomers);
+
+            $('#in_group_customers').val(Object.toJSON(eventCustomers));
         }
 
         $('body').on('change', '#membership_customer_table > tbody > tr input[name="customer-checkbox"]', function (e) {

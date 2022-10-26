@@ -1,4 +1,5 @@
 <?php
+
 namespace Magenest\PaymentEPay\Ui\DataProvider\Product\Form\Modifier;
 
 use Magento\Catalog\Api\Data\ProductInterface;
@@ -10,8 +11,11 @@ use Magento\Ui\Component\Container;
 use Magento\Ui\Component\DynamicRows;
 use Magento\Ui\Component\Form\Element\DataType\Text;
 use Magento\Ui\Component\Form\Element\Input;
+use Magento\Ui\Component\Form\Element\Select;
 use Magento\Ui\Component\Form\Field;
 use Magento\Ui\Component\Form\Element\DataType\Price;
+use \Magento\Catalog\Model\Config\Source\ProductPriceOptionsInterface;
+
 /**
  * Class InstallmentModifier
  * @package Magenest\PaymentEPay\Ui\DataProvider\Product\Form\Modifier
@@ -27,16 +31,19 @@ class InstallmentModifier extends AbstractModifier
     private $_storeManager;
 
     /**
-     * InstallmentModifier constructor.
+     * @param ProductPriceOptionsInterface $productPriceOptions
      * @param ArrayManager $arrayManager
      * @param LocatorInterface $locator
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        ArrayManager $arrayManager,
-        LocatorInterface $locator,
-        StoreManagerInterface $storeManager
-    ) {
+        ProductPriceOptionsInterface $productPriceOptions,
+        ArrayManager                 $arrayManager,
+        LocatorInterface             $locator,
+        StoreManagerInterface        $storeManager
+    )
+    {
+        $this->productPriceOptions = $productPriceOptions;
         $this->_arrayManager = $arrayManager;
         $this->_locator = $locator;
         $this->_storeManager = $storeManager;
@@ -66,6 +73,9 @@ class InstallmentModifier extends AbstractModifier
      */
     private function addDynamicRowsInstallmentOptions(&$meta)
     {
+        $priceTypeOptions = $this->productPriceOptions->toOptionArray();
+        $firstOption = $priceTypeOptions ? current($priceTypeOptions) : null;
+
         $path = $this->_arrayManager->findPath(
             'installment_options',
             $meta,
@@ -106,6 +116,27 @@ class InstallmentModifier extends AbstractModifier
                         ],
                     ],
                     'children' => [
+                        'value_type' => [
+                            'arguments' => [
+                                'data' => [
+                                    'options' => $priceTypeOptions,
+                                    'config' => [
+                                        'componentType' => Field::NAME,
+                                        'formElement' => Select::NAME,
+                                        'dataType' => 'text',
+                                        'component' => 'Magento_Catalog/js/tier-price/value-type-select',
+                                        'prices' => [
+                                            'fixed' => '${ $.parentName }.rate',
+                                            'percent' => '${ $.parentName }.percentage_value',
+                                            '__disableTmpl' => [
+                                                'fixed' => false,
+                                                'percent' => false,
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
                         'rate' => [
                             'arguments' => [
                                 'data' => [
@@ -113,19 +144,35 @@ class InstallmentModifier extends AbstractModifier
                                         'formElement' => Input::NAME,
                                         'componentType' => Field::NAME,
                                         'dataType' => Price::NAME,
-                                        'label' => __('Option'),
+                                        'label' => __('Options'),
                                         'options' => [
                                             'minDate' => '0'
                                         ],
+                                        'visible' => '${ $.parentName }.type_value.value',
                                         'validation' => [
                                             'validate-zero-or-greater' => true,
                                             'required-entry' => true
                                         ],
-                                        'addbefore' => $this->_storeManager->getStore()->getBaseCurrency()->getCurrencySymbol(),
                                     ],
                                 ],
                             ],
-                        ]
+                        ],
+                        'percentage_value' => [
+                            'arguments' => [
+                                'data' => [
+                                    'config' => [
+                                        'componentType' => Field::NAME,
+                                        'formElement' => Input::NAME,
+                                        'dataType' => Price::NAME,
+                                        'label' => __('Options'),
+                                        'validation' => [
+                                            'validate-number-range' => '1-99',
+                                            'required-entry' => true,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                 ]]
             );

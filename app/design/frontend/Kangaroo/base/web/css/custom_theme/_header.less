@@ -189,15 +189,11 @@
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-	.header_bannerPrompteur {
-		display: none;
-	}
-
-    .page-header {
-        position: fixed;
+    .page-header-block {
+        position: sticky;
         width: 100%;
         top: 0;
-        z-index: 99;
+        z-index: 999;
     }
 
     .navigation.nav-magemenu-menu {
@@ -317,10 +313,6 @@
 			height: 20px;
 			width: auto;
 		}
-	}
-
-	.page-wrapper {
-		padding-top: 60px;
 	}
 
     body:not(.payment) {
@@ -813,7 +805,7 @@
     }
 
 	.header-store {
-        margin-left: 15px;
+        margin-left: 28px;
         .lib-vendor-prefix-display(flex);
         .lib-vendor-box-align(center);
 		white-space: nowrap;

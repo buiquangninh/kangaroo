@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <actionGroup name="StorefrontAssertRemindedAboutPromosActionGroup">
+        <arguments>
+            <argument name="product"/>
+        </arguments>
+        <amOnPage url="{{StorefrontProductPage.url(product.custom_attributes[url_key])}}" stepKey="goToProductPage"/>
+        <waitForPageLoad stepKey="waitForProductPageLoad"/>
+        <waitForAjaxLoad stepKey="waitForAjaxLoadForMessage"/>
+        <seeElement selector="{{StorefrontProductPageWithPromoSection.MessageAboutPromo}}" stepKey="assertVRemindMessage"/>
+        <click selector="{{StorefrontProductPageWithPromoSection.LinkToCartInMessageAboutPromo}}" stepKey="clickToLink"/>
+        <waitForPageLoad stepKey="waitForPageLoadAfterClickToMessage"/>
+    </actionGroup>
+</actionGroups>

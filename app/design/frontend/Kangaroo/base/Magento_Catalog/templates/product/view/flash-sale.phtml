@@ -1,0 +1,63 @@
+<?php
+/** @var Lof\FlashSales\Block\FlashSales\Product\CountDownTimer $block;
+ *
+ */
+$countDownData = $this->helper(\Lof\FlashSales\Helper\CountDownData::class);
+$helper = $this->helper(\Lof\FlashSales\Helper\Data::class);
+$flashSale = $countDownData->getFlashSaleByProductId($block->getProductId());
+if ($flashSale && $flashSale->getIsActive() == 0) {
+    return;
+}
+?>
+<?php if ($block->canDisplay() && $flashSale): ?>
+    <div class="loffs-product-countdowntimer product-info-flash-sale">
+        <div class="product-info-flash-sale-label">
+            <?php if ($flashSale): ?>
+                <div class="label">
+                    <h4><?= $block->escapeHtml($flashSale->getEventName()) ?></h4>
+                </div>
+            <?php endif; ?>
+            <?php if ($countDownData->getFlashSalesQtyStatus($block->getProductId())):?>
+                <h5 class="product-info-flash-sale-status"><?= $block->escapeHtml(__('Not Available'))?></h5>
+            <?php endif;?>
+        </div>
+
+        <?php if ($flashSale->getFormatTime()): ?>
+            <div class="countdown"
+                 data-id="<?= $block->escapeHtmlAttr($flashSale->getFlashSalesId()) ?>">
+                <span class="countdown-label"><?= $block->escapeHtml($block->getStatusText($flashSale)) ?></span>
+                <span class="countdown-content">
+                    <span id="day_checker" class="js-loffs-countdown box-count"
+                          data-format="<?= $block->escapeHtmlAttr('%D') ?>"
+                          data-countdown="<?= $block->escapeHtmlAttr($flashSale->getCurrentDateTime()) ?>">
+                    </span>
+                    <span class="js-loffs-countdown box-count"
+                          data-format="<?= $block->escapeHtmlAttr('%H') ?>"
+                          data-countdown="<?= $block->escapeHtmlAttr($flashSale->getCurrentDateTime()) ?>">
+                    </span>
+                    <span class="js-loffs-countdown box-count"
+                          data-format="<?= $block->escapeHtmlAttr('%M') ?>"
+                          data-countdown="<?= $block->escapeHtmlAttr($flashSale->getCurrentDateTime()) ?>">
+                    </span>
+                    <span class="js-loffs-countdown box-count"
+                          data-format="<?= $block->escapeHtmlAttr('%S') ?>"
+                          data-countdown="<?= $block->escapeHtmlAttr($flashSale->getCurrentDateTime()) ?>">
+                    </span>
+
+                </span>
+            </div>
+        <?php endif; ?>
+
+    </div>
+<?php endif; ?>
+
+<script type="text/javascript">
+    require([
+        "jquery",
+        "loffsCounterTimer"
+    ], function ($, loffsCounterTimer) {
+        loffsCounterTimer.initCountDown('<?= $block->escapeJs($block->getConfigStoreTimezone()) ?>')
+    });
+</script>
+
+

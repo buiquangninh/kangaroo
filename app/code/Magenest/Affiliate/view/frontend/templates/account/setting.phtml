@@ -242,9 +242,16 @@ $wardId = $block->getWardId();
                         </label>
                     </div>
                 </div>
-
             </div>
         </div>
+        <?php if (!$block->hasRequestedAffiliate()) : ?>
+            <input name="affiliate_register" id="affiliate_register" class="checkbox" type="checkbox"
+                   title="<?= $block->escapeHtmlAttr(__('Register Affiliate')) ?>"
+                   value="1">
+            <label for="affiliate_register" class="label">
+                <span><?= $block->escapeHtml(__('Register Affiliate')) ?></span>
+            </label>
+        <?php endif; ?>
         <script>
             require(['jquery', 'Magento_Ui/js/modal/alert'], function ($, alert) {
                 $('.affiliate_image').change(function () {

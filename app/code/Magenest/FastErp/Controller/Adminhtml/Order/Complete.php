@@ -8,7 +8,7 @@ use Magento\Sales\Model\Order;
 
 class Complete extends Action
 {
-    public const ADMIN_RESOURCE = 'Magento_Sales::sales_order';
+    public const ADMIN_RESOURCE = 'Magenest_FastErp::order_complete';
 
     /** @var OrderRepositoryInterface */
     protected $orderRepository;

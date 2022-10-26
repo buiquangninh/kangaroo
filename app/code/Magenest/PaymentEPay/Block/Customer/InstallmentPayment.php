@@ -105,7 +105,29 @@ class InstallmentPayment extends Grid
 
     public function getInstallmentPaymentList($amount)
     {
-        return $this->handlePaymentInterface->handleInstallmentPaymentListing($amount);
+        $installmentPaymentListing = $this->handlePaymentInterface->handleInstallmentPaymentListing($amount);
+
+        foreach ($installmentPaymentListing as &$data) {
+            foreach ($data['listDuration'] as $key1 => $data1) {
+                $data['listDuration'][$key1]['userFeeIs']   = $this->formatPrice($data1['userFeeIs']);
+                $data['listDuration'][$key1]['userFeeIsVal']   = $data1['userFeeIs'];
+                $data['listDuration'][$key1]['merFeeIs']   = $this->formatPrice($data1['merFeeIs']);
+                $data['listDuration'][$key1]['merFeeIsVal']   = $data1['merFeeIs'];
+                $data['listDuration'][$key1]['amountIs']   = $this->formatPrice($data1['amountIs']);
+                $data['listDuration'][$key1]['amountIsVal']   = $data1['amountIs'];
+                $data['listDuration'][$key1]['firstAmount']   = $this->formatPrice($data1['firstAmount']);
+                $data['listDuration'][$key1]['firstAmountVal']   = $data1['firstAmount'];
+                $data['listDuration'][$key1]['nextAmount']   = $this->formatPrice($data1['nextAmount']);
+                $data['listDuration'][$key1]['nextAmountVal']   = $data1['nextAmount'];
+                $data['listDuration'][$key1]['amount']   = $this->formatPrice($amount);
+                $data['listDuration'][$key1]['amountVal']   = $amount;
+//                if($data1['termIs'] == 1) {
+//                    unset($data['listDuration'][$key1]);
+//                }
+            }
+        }
+
+        return $installmentPaymentListing;
     }
 
     public function getInstallmentPaymentInformation()

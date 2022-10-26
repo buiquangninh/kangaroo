@@ -25,4 +25,38 @@
             </argument>
         </arguments>
     </virtualType>
+    <type name="Magento\ProductVideo\Block\Adminhtml\Product\Edit\NewVideo">
+        <plugin name="Magenest_CustomCatalog::new_video" type="Magenest\CustomCatalog\Plugin\Block\Adminhtml\Product\Edit\NewVideo"/>
+    </type>
+    <preference for="Magento\ProductVideo\Model\Plugin\Catalog\Product\Gallery\CreateHandler" type="Magenest\CustomCatalog\Plugin\Catalog\Product\Gallery\CreateHandler"/>
+    <type name="Magenest\CustomCatalog\Controller\Adminhtml\Video\Upload">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">Magento\Catalog\VideoUploader</argument>
+        </arguments>
+    </type>
+    <type name="Magenest\CustomCatalog\Plugin\Catalog\Product\Gallery\CreateHandler">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">Magento\Catalog\VideoUploader</argument>
+        </arguments>
+    </type>
+    <virtualType name="Magento\Catalog\VideoUploader" type="Magento\Catalog\Model\ImageUploader">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">catalog/tmp/product/video</argument>
+            <argument name="basePath" xsi:type="string">catalog/product/video</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="mp4" xsi:type="string">mp4</item>
+            </argument>
+            <argument name="allowedMimeTypes" xsi:type="array">
+                <item name="mp4" xsi:type="string">video/mp4</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magenest\CustomCatalog\Block\Adminhtml\Edit\Tab\Video">
+        <arguments>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="mp4" xsi:type="string">mp4</item>
+            </argument>
+            <argument name="sizeLimit" xsi:type="string">20971520</argument>
+        </arguments>
+    </type>
 </config>

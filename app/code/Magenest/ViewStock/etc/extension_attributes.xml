@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
+    <extension_attributes for="Magento\Catalog\Api\Data\ProductInterface">
+        <attribute code="source_items" type="Magenest\ViewStock\Api\Data\SourceAreaInterface[]" />
+        <attribute code="url" type="string" />
+        <attribute code="media" type="Magenest\ViewStock\Api\Data\ProductMediaInterface[]" />
+    </extension_attributes>
+</config>

@@ -10,4 +10,17 @@
     <preference for="Magenest\CustomInventoryReservation\Api\GetProductSalableQtyInterfaceV2" type="Magenest\CustomInventoryReservation\Model\GetProductSalableQty"/>
     <preference for="Magenest\CustomInventoryReservation\Api\ReservationBuilderInterfaceV2" type="Magenest\CustomInventoryReservation\Model\ReservationBuilder"/>
     <preference for="Magenest\CustomInventoryReservation\Api\ReservationInterfaceV2" type="Magenest\CustomInventoryReservation\Model\ReservationModel"/>
+    <preference for="Magento\InventorySales\Model\IsProductSalableCondition\IsProductSalableConditionChain" type="Magenest\CustomInventoryReservation\Model\IsProductSalableCondition\IsProductSalableConditionChainWithArea"/>
+    <preference for="Magento\InventorySales\Model\IsProductSalableCondition\IsSalableWithReservationsCondition" type="Magenest\CustomInventoryReservation\Model\IsProductSalableCondition\IsSalableWithReservationsConditionWithArea"/>
+    <preference for="Magento\InventorySales\Model\AreProductsSalable" type="Magenest\CustomInventoryReservation\Model\AreProductsSalableWithArea"/>
+    <preference for="Magento\InventoryIndexer\Model\Queue\GetSalabilityDataForUpdate" type="Magenest\CustomInventoryReservation\Model\Queue\GetSalabilityDataForUpdateWithArea"/>
+    <preference for="Magento\InventoryIndexer\Model\Queue\ReservationData" type="Magenest\CustomInventoryReservation\Model\Queue\ReservationDataWithArea"/>
+    <preference for="Magento\InventoryIndexer\Plugin\InventorySales\EnqueueAfterPlaceReservationsForSalesEvent" type="Magenest\CustomInventoryReservation\Plugin\InventorySales\EnqueueAfterPlaceReservationsForSalesEventWithArea"/>
+    <preference for="Magento\InventoryIndexer\Model\Queue\UpdateIndexSalabilityStatus\IndexProcessor"
+                type="Magenest\CustomInventoryReservation\Model\Queue\UpdateIndexSalabilityStatus\IndexProcessorWithArea"/>
+    <preference for="Magento\InventoryIndexer\Model\ResourceModel\UpdateIsSalable"
+                type="Magenest\CustomInventoryReservation\Model\ResourceModel\UpdateIsSalableWithArea"/>
+    <type name="Magento\InventoryIndexer\Model\ResourceModel\GetStockItemData">
+        <plugin name="get_stock_by_area" type="Magenest\CustomInventoryReservation\Plugin\Magento\InventoryIndexer\Model\ResourceModel\GetStockItemData" />
+    </type>
 </config>

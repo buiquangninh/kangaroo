@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="ConfigurableFreeGiftOneOfTheSKUsBelow">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Add Configurable Free Gift And One Of The SKUs Below Add Type"/>
+            <description value="Check Add Configurable Free Gift And One Of The SKUs Below Add Type"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-10"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoFreeGifts"/>
+        </annotations>
+
+        <before>
+            <actionGroup ref="AdminCreateConfigurableProductWithCategory" stepKey="createConfigurableProduct"/>
+            <createData entity="SimpleProductByWatchClamber" stepKey="createFirstSimpleProduct">
+                <requiredEntity createDataKey="createCategoryCreateConfigurableProduct"/>
+            </createData>
+            <actionGroup ref="LoginAsAdmin" stepKey="loginAsAdmin"/>
+            <actionGroup ref="AdminConfigPromoGeneralActionGroup" stepKey="settingGeneralPromoConfiguration"/>
+            <actionGroup ref="AdminConfigPromoMessagesActionGroup" stepKey="settingMessagePromoConfiguration"/>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createPromoCartRule">
+                <argument name="promoCartRule" value="ruleConfigurableFreeGiftOneOfTheSKUsBelow"/>
+                <argument name="promoItems" value="$$createConfigProductCreateConfigurableProduct.sku$$"/>
+            </actionGroup>
+        </before>
+        <after>
+            <deleteData createDataKey="createConfigProductCreateConfigurableProduct" stepKey="deleteConfigProduct"/>
+            <deleteData createDataKey="createFirstChildProdCreateConfigurableProduct" stepKey="deleteFirstSimpleChildProduct"/>
+            <deleteData createDataKey="createSecondChildProdCreateConfigurableProduct" stepKey="deleteSecondSimpleChildProduct"/>
+            <deleteData createDataKey="createConfigProdAttrCreateConfigurableProduct" stepKey="deleteConfigProductAttribute"/>
+            <deleteData createDataKey="createCategoryCreateConfigurableProduct" stepKey="deleteCategoryConfigurable"/>
+            <deleteData createDataKey="createFirstSimpleProduct" stepKey="deleteFirstSimpleProduct"/>
+            <actionGroup ref="AdminConfigPromoGeneralActionGroup" stepKey="defaultGeneralPromoConfig"/>
+            <actionGroup ref="AdminConfigPromoMessagesActionGroup" stepKey="defaultMessagesPromoConfig"/>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deleteCreatedCartPriceRule">
+                <argument name="ruleName" value="{{ruleConfigurableFreeGiftOneOfTheSKUsBelow.name}}"/>
+            </actionGroup>
+            <actionGroup ref="logout" stepKey="amOnLogoutPage"/>
+        </after>
+
+        <!-- Add Product to Cart, Gift and Assert Gift on Cart -->
+        <actionGroup ref="AddCreatedProductToCart" stepKey="addProductToCart">
+            <argument name="product" value="$$createFirstSimpleProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAddConfigurableGiftOneByOnePopUp" stepKey="addConfigGiftFirst">
+            <argument name="product" value="$$createConfigProductCreateConfigurableProduct$$"/>
+            <argument name="configOption" value="configurableProductOptions.optionOne"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertConfigurableProductOnCart" stepKey="assertAddedFreeGiftToCartFirst">
+            <argument name="product" value="$$createConfigProductCreateConfigurableProduct$$"/>
+            <argument name="productChild" value="$$createFirstChildProdCreateConfigurableProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNotPopUpOnCart" stepKey="assertPopUpOnCartFirst"/>
+        <!-- Change Product Qty to Cart, Gift and Assert Gift on Cart -->
+        <actionGroup ref="StorefrontChangeQtyProductInCart" stepKey="changeProductQtyFirst">
+            <argument name="product" value="$$createFirstSimpleProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAddConfigurableGiftOneByOnePopUp" stepKey="addSecondFreeGift">
+            <argument name="product" value="$$createConfigProductCreateConfigurableProduct$$"/>
+            <argument name="configOption" value="configurableProductOptions.optionTwo"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertConfigurableProductOnCart" stepKey="assertAddedFreeGiftToCartSecond">
+            <argument name="product" value="$$createConfigProductCreateConfigurableProduct$$"/>
+            <argument name="productChild" value="$$createSecondChildProdCreateConfigurableProduct$$"/>
+            <argument name="productConfigOption" value="configurableProductOptions.optionTwo"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNotPopUpOnCart" stepKey="assertPopUpOnCartSecond"/>
+        <!-- Delete Product from Cart and Assert Cart Empty -->
+        <actionGroup ref="StorefrontDeleteProductFromTheCart" stepKey="deleteProductFromTheCart">
+            <argument name="product" value="$$createFirstSimpleProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="CheckEmptyCart" stepKey="assertCartIsEmpty"/>
+    </test>
+</tests>

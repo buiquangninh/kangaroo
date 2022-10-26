@@ -95,6 +95,7 @@ class RestoreDefaultNotification extends Action
                 NotificationModel::NEWSLETTER => NotificationModel::NEWSLETTER,
                 NotificationModel::PRODUCT_WISHLIST_PROMOTIONS => NotificationModel::PRODUCT_WISHLIST_PROMOTIONS,
                 NotificationModel::CUSTOMER_LOGIN => NotificationModel::CUSTOMER_LOGIN,
+                NotificationModel::MAINTENANCE => NotificationModel::MAINTENANCE,
             ];
             $listExistDefaultNotificationType = $this->collectionFactory->create()
                 ->addFieldToFilter('default_type', array("in" => array($listDefaultNotificationType)));
@@ -125,7 +126,7 @@ class RestoreDefaultNotification extends Action
                 } elseif ($notificationType == NotificationModel::AFFILIATE_PROGRAM) {
                     $this->addAffiliateProgramNotificationType($mediaUrl, $listDefaultImage);
                     $totalRestore++;
-                } elseif ($notificationType == NotificationModel::NEWSLETTER_LABEL) {
+                } elseif ($notificationType == NotificationModel::NEWSLETTER) {
                     $this->addNewsletterNotificationType($mediaUrl, $listDefaultImage);
                     $totalRestore++;
                 } elseif ($notificationType == NotificationModel::PRODUCT_WISHLIST_PROMOTIONS) {

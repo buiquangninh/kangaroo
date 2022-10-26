@@ -1,6 +1,7 @@
 <?php
 namespace Magenest\OrderCancel\Model;
 
+use Magenest\StoreCredit\Model\KCoin;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Sales\Api\CreditmemoManagementInterfaceFactory;
@@ -96,6 +97,11 @@ class CreditmemoCreator
                 );
             }
 
+            if ($creditmemo->getOrder()->getPayment()->getMethod() === KCoin::CODE) {
+                $creditmemo->setMpStoreCredit(['refund_credit' => true]);
+                $creditmemo->setMpStoreCreditBaseDiscount($creditmemo->getBaseGrandTotal());
+            }
+
             if (!empty($creditmemo['comment_text'])) {
                 $creditmemo->addComment(
                     $creditmemo['comment_text'],
@@ -115,7 +121,7 @@ class CreditmemoCreator
             }
             $creditmemoManagement = $this->creditmemoManagement->create();
             $creditmemo->getOrder()->setCustomerNoteNotify(!empty($creditmemo['send_email']));
-            $doOffline = isset($creditmemo['do_offline']) && (bool)$creditmemo['do_offline'];
+            $doOffline = isset($creditmemo['do_offline']) && $creditmemo['do_offline'];
             $creditmemoManagement->refund($creditmemo, $doOffline);
 
             try {

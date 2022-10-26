@@ -1,0 +1,80 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="carriers" translate="label" type="text" sortOrder="320" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <group id="lalamove" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Lalamove</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>The method uses address validation via Google API. Make sure that Google Maps API is
+                        enabled in Stores / Configuration / Drinkies / Google Maps API
+                    </comment>
+                </field>
+                <field id="test_mode" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Test Mode</label>
+                    <source_model>Magenest\LalaMove\Model\Config\Source\TestMode</source_model>
+                </field>
+                <field id="sandboxPrefix" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Prefix</label>
+                    <source_model>Magenest\LalaMove\Model\Config\Source\SandboxPrefix</source_model>
+                    <depends>
+                        <field id="test_mode">1</field>
+                    </depends>
+                </field>
+                <field id="productionPrefix" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Prefix</label>
+                    <source_model>Magenest\LalaMove\Model\Config\Source\ProductionPrefix</source_model>
+                    <depends>
+                        <field id="test_mode">0</field>
+                    </depends>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Title</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="api_key" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>API Key</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="api_secret" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>API Secret</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="name" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Method Name</label>
+                </field>
+                <field id="total_fee" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Total Fee</label>
+                    <validate>required-entry validate-number validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="price_type">1</field>
+                    </depends>
+                    <comment>Specify price in currency which is configured as "Default Display Currency" in settings on
+                        Website level (Main menu / Stores / General / Currency Setup)
+                    </comment>
+                </field>
+                <field id="specificerrmsg" translate="label" type="textarea" sortOrder="93" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Displayed Error Message</label>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Sort Order</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

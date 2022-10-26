@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+
+    <entity name="scenario" type="wizardStep">
+        <data key="customerAddsN">buy_x_get_y_radio</data>
+        <data key="customerReachesX">spent_x_get_y_radio</data>
+    </entity>
+
+    <entity name="productsWillGifted" type="wizardStep">
+        <data key="theSame">The same as added to the cart</data>
+        <data key="theDifferent">Different products</data>
+    </entity>
+
+    <entity name="doesCouponCode" type="wizardStep">
+        <data key="no">0</data>
+        <data key="yes">1</data>
+    </entity>
+
+    <entity name="howManyTimes" type="wizardStep">
+        <data key="onlyFirstTime">first</data>
+        <data key="everyTime">every</data>
+        <data key="everyTimeWithLimit">limit</data>
+    </entity>
+
+    <entity name="extraCriteria" type="wizardStep">
+        <data key="no">0</data>
+        <data key="yes">1</data>
+    </entity>
+
+</entities>

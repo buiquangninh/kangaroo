@@ -2,7 +2,7 @@
 namespace Magenest\MobileApi\Model;
 
 use Magenest\Customer\Helper\Login;
-use Magenest\Customer\Model\LoginByTelephone;
+use Magenest\Customer\Model\CrmCustomer;
 use Magenest\MobileApi\Api\AccountManagementInterface;
 use Magenest\MobileApi\Api\Data\CustomerInterface as CustomCustomerInterface;
 use Magenest\MobileApi\Api\Data\Customer\VatInvoiceInterface;
@@ -168,7 +168,7 @@ class AccountManagement implements AccountManagementInterface
     /** @var FacebookConnect */
     private $facebookConnect;
 
-    /** @var LoginByTelephone */
+    /** @var CrmCustomer */
     private $loginByTelephone;
 
     /**
@@ -189,7 +189,7 @@ class AccountManagement implements AccountManagementInterface
      * @param ReviewCollectionFactory $reviewCollectionFactory
      * @param SubscriberFactory $subscriberFactory
      * @param CollectionFactory $customerCollectionFactory
-     * @param LoginByTelephone $loginByTelephone
+     * @param CrmCustomer $loginByTelephone
      * @param Random $mathRandom
      * @param PsrLogger $logger
      * @param Data $jsonHelper
@@ -218,7 +218,7 @@ class AccountManagement implements AccountManagementInterface
         ReviewCollectionFactory     $reviewCollectionFactory,
         SubscriberFactory           $subscriberFactory,
         CollectionFactory           $customerCollectionFactory,
-        LoginByTelephone            $loginByTelephone,
+        CrmCustomer                 $loginByTelephone,
         Random                      $mathRandom,
         PsrLogger                   $logger,
         Data                        $jsonHelper,
@@ -320,6 +320,46 @@ class AccountManagement implements AccountManagementInterface
         $this->_getRequestThrottler()->throttle($customer->getEmail(), RequestThrottler::USER_TYPE_CUSTOMER);
 
         return $customer;
+    }
+
+    /**
+     * @inheritdoc
+     * @throws \Exception
+     */
+    public function getCustomerToken($username, $password = null, $guestQuoteId = null)
+    {
+        try {
+            if (preg_match(Login::REGEX_MOBILE_NUMBER, $username)) {
+                $email = $this->loginByTelephone->authenticateByTelephone($username);
+            }
+
+            $customer = $this->_customerSession->getCustomer();
+            $this->_getRequestThrottler()->resetAuthenticationFailuresCount(
+                $customer->getEmail(),
+                RequestThrottler::USER_TYPE_CUSTOMER
+            );
+        } catch (EmailNotConfirmedException $e) {
+            $this->_getRequestThrottler()->logAuthenticationFailure(
+                $email ?? $username,
+                RequestThrottler::USER_TYPE_CUSTOMER
+            );
+            throw new AuthenticationException(__($e->getMessage()));
+        } catch (\Exception $e) {
+            $this->_getRequestThrottler()->logAuthenticationFailure(
+                $email ?? $username,
+                RequestThrottler::USER_TYPE_CUSTOMER
+            );
+            throw new AuthenticationException(
+                __(
+                    'The account sign-in was incorrect or your account is disabled temporarily. '
+                    . 'Please wait and try again later.'
+                )
+            );
+        }
+        return $this->_tokenModelFactory->create()
+            ->createCustomerToken($customer->getId())
+            ->getToken();
+
     }
 
     /**
@@ -690,3 +730,4 @@ class AccountManagement implements AccountManagementInterface
         return $customer;
     }
 }
+

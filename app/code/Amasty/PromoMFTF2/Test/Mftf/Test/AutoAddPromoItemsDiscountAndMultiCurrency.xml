@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AutoAddPromoItemsDiscountAndMultiCurrency" extends="OneByOneNotAddProductAutomatically">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Rule Auto Add Promo Items With Products With Discount And MultiCurrency"/>
+            <description value="Check Rule Auto Add Promo Items With Products With Discount And MultiCurrency"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-23"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoFreeGifts"/>
+        </annotations>
+
+        <before>
+            <remove keyForRemoval="createThirdProduct"/>
+            <createData entity="SimpleProductByWatchClamber" stepKey="createFirstProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="AdminConfigurationCurrenciesSettings" before="createPromoCartRule" stepKey="settingMultiCurrency">
+                <argument name="currenciesForChoose" value="currenciesConfig_USD_EURO.currenciesForChoose"/>
+            </actionGroup>
+            <actionGroup ref="AdminAddCurrenciesRate" after="settingMultiCurrency" stepKey="inputRate">
+                <argument name="rateValue" value="promoAutoAddPromoDiscountMultiCurrency.rateUSDAndEUR"/>
+            </actionGroup>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createPromoCartRule">
+                <argument name="promoCartRule" value="ruleAutoAddPromoDiscountMultiCurrency"/>
+                <argument name="promoItems" value="$$createSecondProduct.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminAddDiscountToPromoCartRuleActionGroup" stepKey="addDiscountSettingRule">
+                <argument name="cartRuleName" value="ruleAutoAddPromoDiscountMultiCurrency.name"/>
+                <argument name="promoCartRule" value="ruleAutoAddPromoDiscountMultiCurrency"/>
+            </actionGroup>
+        </before>
+        <after>
+            <remove keyForRemoval="deleteThirdProduct"/>
+            <actionGroup ref="AdminConfigurationCurrenciesSettings" before="deleteCartPriceRule" stepKey="defaultCurrency"/>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deleteCartPriceRule">
+                <argument name="ruleName" value="{{ruleAutoAddPromoDiscountMultiCurrency.name}}"/>
+            </actionGroup>
+        </after>
+
+        <remove keyForRemoval="assertNotFreeGiftInCartFirst"/>
+        <remove keyForRemoval="assertNotFreeGiftInCartSecond"/>
+        <remove keyForRemoval="addFreeGiftSecond"/>
+        <remove keyForRemoval="assertAddedFreeGiftToCartSecond"/>
+        <actionGroup ref="ChooseCurrency" before="addProductToCart" stepKey="chooseCurrencyEuro"/>
+        <actionGroup ref="StorefrontCheckCartDiscountAmount" after="assertAddedFreeGiftToCartFirst" stepKey="assertDiscountFirst">
+            <argument name="discountAmount" value="promoAutoAddPromoDiscountMultiCurrency.discountAmountOne"/>
+        </actionGroup>
+    </test>
+</tests>

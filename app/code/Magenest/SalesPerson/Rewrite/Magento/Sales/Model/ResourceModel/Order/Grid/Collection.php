@@ -65,7 +65,7 @@ class Collection extends \Magento\Sales\Model\ResourceModel\Order\Grid\Collectio
                     ['so' => 'sales_order'],
                     'main_table.entity_id = so.entity_id'
                 );
-            $this->addFieldToFilter("assigned_to", $this->_authSession->getUser()->getId());
+            $this->addFieldToFilter("so.assigned_to", $this->_authSession->getUser()->getId());
         }
         /*$this->getSelect()
             ->joinLeft(

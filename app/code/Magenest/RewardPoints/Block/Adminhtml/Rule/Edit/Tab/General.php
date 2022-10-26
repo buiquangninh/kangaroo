@@ -5,6 +5,9 @@ namespace Magenest\RewardPoints\Block\Adminhtml\Rule\Edit\Tab;
 use Magenest\RewardPoints\Api\Data\RuleInterface;
 use Magento\Backend\Block\Widget\Form\Generic;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
+use Magento\Msrp\Model\Product\Attribute\Source\Type\Price;
+use Mirasvit\CustomerSegment\Model\ResourceModel\Segment\Collection as GroupCollection;
+use Magenest\RewardPoints\Model\ResourceModel\Membership\Collection as MembershipCollection;
 
 /**
  * Class General
@@ -36,7 +39,14 @@ class General extends Generic implements TabInterface
      * @var \Magento\Framework\Convert\DataObject
      */
     protected $_objectConverter;
-
+    /**
+     * @var GroupCollection
+     */
+    private $groupCollection;
+    /**
+     * @var MembershipCollection
+     */
+    private $membershipCollection;
     /**
      * General constructor.
      *
@@ -59,12 +69,16 @@ class General extends Generic implements TabInterface
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Framework\Convert\DataObject $objectConverter,
         \Magento\Store\Model\System\Store $systemStore,
+        GroupCollection $groupCollection,
+        MembershipCollection $membershipCollection,
         array $data
     ) {
         $this->_systemStore           = $systemStore;
         $this->_groupRepository       = $groupRepository;
         $this->_searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->_objectConverter       = $objectConverter;
+        $this->groupCollection = $groupCollection;
+        $this->membershipCollection = $membershipCollection;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -75,7 +89,8 @@ class General extends Generic implements TabInterface
     protected function _prepareForm()
     {
         $model = $this->_coreRegistry->registry('rewardpoints_rule');
-
+        $rewardPointImage = $model->getData('rewardpoint_img');
+//        $model->setData('rewardpoint_img', null);
         $form = $this->_formFactory->create();
         $form->setHtmlIdPrefix('rule_');
 
@@ -116,6 +131,36 @@ class General extends Generic implements TabInterface
                 'required' => true,
                 'options'  => [RuleInterface::RULE_STATUS_ACTIVE => __('Active'), RuleInterface::RULE_STATUS_INACTIVE => __('Inactive')]
             ]
+        );
+        $url = $this->getBaseUrl().'/media/rewardpoint'.$model->getData('rewardpoint_img');
+        $fieldset->addField(
+            'rewardpoint_img',
+            'image',
+            [
+                'name' => 'rewardpoint_img',
+                'label' => __('Image'),
+                'title' => __('Image'),
+                'note' => 'Allow image type: jpg, jpeg, png',
+                'required' => false,
+            ]
+        )->setBeforeElementHtml(
+            '<img src="'.$url.'" id="rule_rewardpoint_img_image" />'.
+            '<script>' .
+            "
+                 require(['jquery'], function($){
+                    $('#rule_rewardpoint_img').change(function() {
+                       const [file] = rule_rewardpoint_img.files;
+                          if (file) {
+                            $('#rule_rewardpoint_img_image').attr('src','#');
+                            rule_rewardpoint_img_image.src = URL.createObjectURL(file)
+                            $('#rule_rewardpoint_img_image').attr('width','300px');
+                            $('#rule_rewardpoint_img_image').attr('height','300px');
+                            $('#rule_rewardpoint_img_delete').attr('display','none');
+                          }
+                    })
+                });
+                " .
+            '</script>'
         );
         $fieldset->addField(
             'description',
@@ -167,8 +212,54 @@ class General extends Generic implements TabInterface
             ]
         );
 
+        $fieldset->addField(
+            'customer_segment_group_ids',
+            'multiselect',
+            [
+                'name' => 'customer_segment_group_ids[]',
+                'label' => __('Customer Segment Group'),
+                'title' => __('Customer Segment Group'),
+                'values' => $this->groupCollection->toOptionArray(),
+                'disabled' => false
+            ]
+        );
+
+        $fieldset->addField(
+            'membership_group_ids',
+            'multiselect',
+            [
+                'name' => 'membership_group_ids[]',
+                'label' => __('Membership Group'),
+                'title' => __('Membership Group'),
+                'values' => $this->membershipCollection->toOptionArray(),
+                'disabled' => false
+            ]
+        );
+
+        $fieldset->addField(
+            'sort_order',
+            'text',
+            [
+                'name'         => 'sort_order',
+                'label'        => __('Priority'),
+                'title'        => __('Priority'),
+                'image'        => $this->getViewFileUrl('images/grid-cal.png'),
+            ]
+        );
+        $fieldset->addField(
+            'stop_rules_processing',
+            'select',
+            [
+                'name'         => 'stop_rules_processing',
+                'label'        => __('Discard subsequent rules'),
+                'title'        => __('Discard subsequent rules'),
+                'image'        => $this->getViewFileUrl('images/grid-cal.png'),
+                'options'  =>  [RuleInterface::RULE_STOP_RULES_PROCESSING => __('Yes'), RuleInterface::RULE_NOT_STOP_RULES_PROCESSING => __('No')]
+            ]
+        );
 //        $model->setData('status', 1);
         $form->setValues($model->getData());
+        $form->addValues(['rewardpoint_img'=> null]);
         $this->setForm($form);
 
         return parent::_prepareForm();

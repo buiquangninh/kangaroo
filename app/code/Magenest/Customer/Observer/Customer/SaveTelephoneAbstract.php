@@ -74,6 +74,10 @@ abstract class SaveTelephoneAbstract implements ObserverInterface
         $telephone = $this->getTelephoneFromParams();
         $isIgnore = $this->observerCustomerDataProvider->isIgnoreValidateTelephoneCustomer();
 
+        if (!$telephone && $customer->getTelephone()) {
+            return;
+        }
+
         if (
             !$isIgnore &&
             (

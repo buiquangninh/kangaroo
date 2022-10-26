@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="OpenPopUpAutomaticallyCheckout" extends="DontOpenPopUpAutomaticallyCheckout">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Open PopUp Automatically on Checkout"/>
+            <description value="Open PopUp Automatically on Checkout"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-32"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoFreeGifts"/>
+        </annotations>
+
+        <before>
+            <actionGroup ref="AdminConfigPromoMessagesActionGroup" stepKey="settingMessagePromoConfiguration">
+                <argument name="configurationMessages" value="configPromoMessagesAutoOpenPopUp"/>
+            </actionGroup>
+        </before>
+
+        <remove keyForRemoval="addGiftSecond"/>
+        <actionGroup ref="AddCreatedProductToCart" stepKey="addProductToCartFirst">
+            <argument name="product" value="$$createFirstProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAddGiftFromAutoPopUpOnCheckoutActionGroup" stepKey="addGiftFirst">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCheckoutShippingPage" stepKey="assertGiftsFirst">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+    </test>
+</tests>

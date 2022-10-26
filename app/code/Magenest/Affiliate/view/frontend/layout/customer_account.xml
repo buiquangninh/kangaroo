@@ -15,7 +15,7 @@
                     <argument name="path" xsi:type="string">affiliate/account/general</argument>
                     <argument name="label" xsi:type="string">Sale with KangarooShopping</argument>
                 </arguments>
-<!--                <block class="Magento\Framework\View\Element\Html\Link\Current" name="affiliate-navigation-home-link">
+                <block class="Magento\Framework\View\Element\Html\Link\Current" name="affiliate-navigation-home-link">
                     <arguments>
                         <argument name="label" xsi:type="string" translate="true">Affiliate Program</argument>
                         <argument name="path" xsi:type="string">affiliate/</argument>
@@ -23,7 +23,7 @@
                         <argument name="code" xsi:type="string">welcome</argument>
                         <argument name="active" xsi:type="const">Magenest\Affiliate\Block\AffiliateNavigation::ALLOW_BOTH</argument>
                     </arguments>
-                </block>-->
+                </block>
                 <block class="Magento\Framework\View\Element\Html\Link\Current" name="affiliate-navigation-credit-link">
                     <arguments>
                         <argument name="label" xsi:type="string" translate="true">Kcoin Wallet</argument>

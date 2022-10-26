@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AddFreeGiftAfterDiscountSubtotal">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Add Free Gift After Discount Subtotal"/>
+            <description value="Check Add Free Gift After Discount Subtotal"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-06"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoConfiguration"/>
+        </annotations>
+
+        <before>
+            <!-- Create Data for Test -->
+            <createData entity="_defaultCategory" stepKey="createCategory"/>
+            <createData entity="SimpleProductByWayfarerMessenger" stepKey="createFirstProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <createData entity="SimpleProductByFitnessSpriteFoamYogaBrick" stepKey="createSecondProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <createData entity="SimpleProductByStriveShoulderPack" stepKey="createThirdProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="LoginAsAdmin" stepKey="loginAsAdmin"/>
+            <actionGroup ref="AdminConfigPromoGeneralActionGroup" stepKey="settingGeneralPromoConfiguration">
+                <argument name="configurationGeneral" value="configPromoGeneralNotAutoAfterDiscount"/>
+            </actionGroup>
+            <actionGroup ref="AdminConfigPromoMessagesActionGroup" stepKey="settingMessagePromoConfiguration"/>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createFirstPromoCartRule">
+                <argument name="promoCartRule" value="ruleAddGiftAfterDiscount"/>
+                <argument name="promoItems" value="$$createThirdProduct.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminChangePriorityPromoCartRuleActionGroup" stepKey="changePriorityFirstRule">
+                <argument name="cartRuleName" value="ruleAddGiftAfterDiscount.name"/>
+                <argument name="priority" value="ruleAddGiftAfterDiscount.priority"/>
+            </actionGroup>
+            <actionGroup ref="AdminCreateCartPriceRuleActionGroup" stepKey="createSecondPromoCartRule">
+                <argument name="ruleName" value="defaultCartPriceRuleDiscountWhole10"/>
+            </actionGroup>
+        </before>
+        <after>
+            <!-- Delete Created Data after Test -->
+            <deleteData createDataKey="createCategory" stepKey="deleteCategory"/>
+            <deleteData createDataKey="createFirstProduct" stepKey="deleteFirstProduct"/>
+            <deleteData createDataKey="createSecondProduct" stepKey="deleteSecondProduct"/>
+            <deleteData createDataKey="createThirdProduct" stepKey="deleteThirdProduct"/>
+            <actionGroup ref="AdminConfigPromoGeneralActionGroup" stepKey="defaultGeneralPromoConfig"/>
+            <actionGroup ref="AdminConfigPromoMessagesActionGroup" stepKey="defaultMessagesPromoConfig"/>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deleteFirstCartRule">
+                <argument name="ruleName" value="{{ruleAddGiftAfterDiscount.name}}"/>
+            </actionGroup>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deleteSecondCartRule">
+                <argument name="ruleName" value="{{defaultCartPriceRuleDiscountWhole10.name}}"/>
+            </actionGroup>
+            <actionGroup ref="logout" stepKey="amOnLogoutPage"/>
+        </after>
+
+        <!-- Add First Products to Cart, Assert Default Discount and Assert PopUp-->
+        <actionGroup ref="AddCreatedProductToCart" stepKey="addProductToCartFirst">
+            <argument name="product" value="$$createFirstProduct$$"/>
+            <argument name="valueQty" value="_enterQty2"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontCheckCartDiscountAmount" stepKey="assertDiscountAmountFirst">
+            <argument name="discountAmount" value="promoAddGiftAfterDiscount.discountAmount"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNotPopUpOnCart" stepKey="assertPopUpFirst"/>
+        <!-- Add Second Products to Cart, Assert Default Discount and Add Gifts -->
+        <actionGroup ref="AddCreatedProductToCart" stepKey="addProductsToCartSecond">
+            <argument name="product" value="$$createSecondProduct$$"/>
+            <argument name="valueQty" value="_enterQty2"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontCheckCartDiscountAmount" stepKey="assertDiscountAmountSecond">
+            <argument name="discountAmount" value="promoAddGiftAfterDiscount.discountAmount"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAddFreeGiftOneByOneInCart" stepKey="addGiftToCartFirst">
+            <argument name="product" value="$$createThirdProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedFreeGiftToCartFirst">
+            <argument name="product" value="$$createThirdProduct$$"/>
+        </actionGroup>
+        <!--Change Qty Products on Cart and Assert PopUp-->
+        <actionGroup ref="StorefrontChangeQtyProductInCart" stepKey="changeQtyProductFirst">
+            <argument name="product" value="$$createSecondProduct$$"/>
+            <argument name="productQty" value="_enterQty1"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNotProductOnCart" stepKey="assertNotGiftOnCartFirst">
+            <argument name="product" value="$$createThirdProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNotPopUpOnCart" stepKey="assertPopUpSecond"/>
+    </test>
+</tests>

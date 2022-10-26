@@ -53,9 +53,15 @@ define(
 
             showExpiring: function (rule) {
                 var result = '';
+                var day = '';
+                var month = '';
+                var year = '';
                 if (rule.to_date !== null && !this.validateCondition(rule, 'to_date')) {
                     var toDate = new Date(rule.to_date);
-                    result = $t('Valid until: ') + toDate.toDateString();
+                    day =  toDate.getDate();
+                    month = toDate.getMonth() + 1;
+                    year = toDate.getFullYear();
+                    result = $t('Valid until: ') + day + '/' + month + '/' + year;
                 }
                 return result;
             },
@@ -68,7 +74,7 @@ define(
                     discountAmount = priceUtils.formatPrice(rule['discount_amount']);
                 }
 
-                return $t("Input Coupon <span class='discount-code'>%1</span> to get discount <span class='discount-value'>%2</span> for %3")
+                return $t("Input Coupon <span class='discount-code'>%1</span> to get discount <span class='discount-value'>%2</span> program %3")
                     .replace('%1', rule['code'])
                     .replace('%2', discountAmount)
                     .replace('%3', rule['name']);
@@ -151,10 +157,11 @@ define(
                 for (var i = 0; i < conditionFields.length; i++) {
                     if (self.validateCondition(rule, conditionFields[i])) {
                         flag = false;
-                        str += this.checkField(fields[conditionFields[i]]);
+                        str += fields[conditionFields[i]];
+                        break;
                     }
                 }
-                var result = $t('The coupon code ') + str.substring(0, str.length - 2).concat('.');
+                var result = $t('The coupon code ') + str.concat('.');
                 this.reason = ko.observable(result);
 
                 return flag;

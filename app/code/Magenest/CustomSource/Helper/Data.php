@@ -103,7 +103,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param null $storeId
-     * @return bool
+     * @return string
      */
     public function getDefaultArea($storeId = null)
     {
@@ -257,6 +257,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $sourceCodes;
     }
 
+    /**
+     * @return string
+     */
     public function getCurrentArea()
     {
         return $this->context->getValue(SetAreaCodeContext::AREA_CODE_CONTEXT) ?: $this->getDefaultArea();

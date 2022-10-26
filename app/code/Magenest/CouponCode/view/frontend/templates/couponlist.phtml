@@ -11,7 +11,7 @@ $today = $viewModel->getToday();
 if ($coupon->getSize() != 0) {
     $count = count($coupon); ?>
     <div class="coupon-list">
-        <?php foreach ($coupon as $value) { ?>
+        <?php foreach ($coupon as $value): ?>
             <div class="coupon-item">
                 <div class="container_coupon">
                     <?php
@@ -23,61 +23,37 @@ if ($coupon->getSize() != 0) {
                     <img class="coupon-image" src="<?= $block->escapeHtml($images); ?>"
                          alt="coupon"/>
                     <div class="information_mycoupon">
-                        <strong><?= $block->escapeHtml($value->getData('name')) ?></strong>
+                        <strong><?= $block->escapeHtml($value->getStoreLabel() ?: $value->getData('name')) ?></strong>
                         <?php
-/*                        $description = $value->getData('description');
-                        if (strlen($description) <= 120) { */?><!--
+                        $description = $value->getData('description');
+                        if (strlen($description) <= 120) { ?>
                             <div class="description-coupon">
-                                <?/*= $block->escapeHtml($description) */?>
+                                <?= $block->escapeHtml($description) ?>
                             </div>
-                        <?php /*} else {
-                            $description = $viewModel->handleDescription($description) */?>
+                        <?php } else {
+                            $description = $viewModel->handleDescription($description) ?>
                             <div class="description-coupon">
-                                <div><?/*= $block->escapeHtml($description['display']) */?>
+                                <div><?= $block->escapeHtml($description['display']) ?>
                                     <span class="see-more-coupon"
                                           class="seeMore"
                                           data-bind="scope:'seeMore'">
                                             <span data-bind='click: seeMore.bind($parent,
-                                                            "<?/*= $block->escapeHtml($description['fixed']);*/?>")'>
-                                                            <?/*= $block->escapeHtml(__('...See more')) */?>
+                                                            "<?= $block->escapeHtml($description['fixed']); ?>")'>
+                                                            <?= $block->escapeHtml(__('...See more')) ?>
                                             </span>
                                         </span>
                                 </div>
                             </div>
-                        --><?php /*}*/?>
-                        <!--<div class = "usage">
-                            <?php
-/*                            $unlimited = $value->getData('usage_limit');
-                            $usage = $value->getData('usage_limit') - $value->getData('times_used') ;
-                            if ($unlimited == null) { */?>
-                                <div class="usage_limit"><?/*= $block->escapeHtml(__('Usage limit: ')).
-                                    $block->escapeHtml(__('Unlimited')); */?>
-                                </div>
-                            <?php /*} else { */?>
-                                <div class="usage_limit"><?/*= $block->escapeHtml(__('Usage limit: ')).
-                                    $block->escapeHtml($usage); */?>
-                                </div>
-                            <?php /*} */?>
-                            <?php
-/*                            $customerLimit = $value->getData('usage_per_customer');
-                            if ($customerLimit == null) { */?>
-                                <div class="usage_customer"><?/*= $block->escapeHtml(__('Awarded: ')).
-                                    $block->escapeHtml(__('Unlimited')); */?>
-                                </div>
-                            <?php /*} else { */?>
-                                <div class="usage_customer"><?/*= $block->escapeHtml(__('Awarded: ')).
-                                    $block->escapeHtml($customerLimit); */?>
-                                </div>
-                            <?php /*} */?>
-                        </div>-->
+                        <?php
+                        }?>
                         <?php
                         $exp = $value->getData('to_date');
                         if ($exp == null) { ?>
-                            <div class="exp-coupon"><?= $block->escapeHtml(__('Exp: ')).
+                            <div class="exp-coupon"><?= $block->escapeHtml(__('Exp: ')) .
                                 $block->escapeHtml(__('Unlimited')); ?>
                             </div>
                         <?php } else { ?>
-                            <div class="exp-coupon"><?= $block->escapeHtml(__('Exp: ')).
+                            <div class="exp-coupon"><?= $block->escapeHtml(__('Exp: ')) .
                                 $block->escapeHtml($exp); ?>
                             </div>
                         <?php } ?>
@@ -91,21 +67,19 @@ if ($coupon->getSize() != 0) {
                         <?php if ($viewModel->getCustomerGroup() == 0) { ?>
                             <div id="not-login-button"
                                  data-bind="scope:'warning'">
-                                <span data-bind="click: warning.bind($parent, '<?= $block->escapeHtml($value->getData('name')) ?>')">
-                                    <button class="button-coupon-claim"></button>
-                                </span>
+                            <span data-bind="click: warning.bind($parent, '<?= $block->escapeHtml($value->getData('name')) ?>')">
+                                <button class="button-coupon-claim"></button>
+                            </span>
                             </div>
                         <?php } else { ?>
                             <div id="claim-coupon-button"
                                  data-bind="scope:'claim'">
-                                <span data-bind="click: claimCoupon.bind($parent,
-                                                        '<?= $block->escapeHtml($value->getData('coupon_id')) ?>',
-                                                        '<?= $block->escapeHtml($value->getData('rule_id')) ?>',
-                                                        '<?= $block->escapeHtml($viewModel->getUserId()) ?>')">
-                                    <!-- ko template: getTemplate() --><!-- /ko -->
-                                    <button class="button-coupon-claim"
-                                            id="claim<?= $block->escapeHtml($value->getData('rule_id'))?>"></button>
-                                </span>
+                            <span data-bind="click: claimCoupon.bind($parent,
+                                                    '<?= $value->getData('code')?>')">
+                                <!-- ko template: getTemplate() --><!-- /ko -->
+                                <button class="button-coupon-claim"
+                                        id="claim<?= $value->getData('code')?>"></button>
+                            </span>
                             </div>
                         <?php } ?>
                     <?php } else { ?>
@@ -113,12 +87,10 @@ if ($coupon->getSize() != 0) {
                     <?php } ?>
                 </div>
             </div>
-        <?php } ?>
+        <?php endforeach; ?>
     </div>
-    <?php /*if ($count%2 == 1) { */?><!--
-        <div class="coupon-magenest" id="coupon_magenest_blank"></div>
-    --><?php /*} */?>
-<?php } ?>
+<?php
+} ?>
 <?php if ($block->getPagerHtml()): ?>
     <?= $block->getPagerHtml(); ?>
 <?php endif ?>

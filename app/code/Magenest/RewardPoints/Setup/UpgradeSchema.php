@@ -100,6 +100,14 @@ class UpgradeSchema implements UpgradeSchemaInterface
                         'type' => Table::TYPE_FLOAT, null,
                         'comment' => 'Point Refund'
                     ]);
+            $installer->getConnection()
+                ->addColumn(
+                    $installer->getTable('magenest_rewardpoints_transaction'),
+                    'title',
+                    [
+                        'type' => Table::TYPE_TEXT, null,
+                        'comment' => 'Rule Name'
+                    ]);
             $this->createTableReferralCode($installer);
             $this->createTableReferralPoints($installer);
             $this->createTableReferralCoupon($installer);

@@ -1,6 +1,8 @@
 <?php
+
 namespace Magenest\CouponCode\Block;
 
+use Magento\Customer\Model\Context as CustomerContext;
 use Magento\Framework\View\Element\Template;
 use Magenest\CouponCode\Model\ResourceModel\Coupon\CollectionFactory as CouponCollectionFactory;
 use Magenest\CouponCode\Model\ResourceModel\ClaimCoupon\CollectionFactory as ClaimCouponCollectionFactory;
@@ -41,13 +43,14 @@ class Coupon extends Template implements IdentityInterface
      * @param array $data
      */
     public function __construct(
-        Context $httpContext,
-        DateTime $dateTime,
-        Template\Context $context,
-        CouponCollectionFactory $couponCollectionFactory,
+        Context                      $httpContext,
+        DateTime                     $dateTime,
+        Template\Context             $context,
+        CouponCollectionFactory      $couponCollectionFactory,
         ClaimCouponCollectionFactory $claimCouponFactory,
-        array $data = []
-    ) {
+        array                        $data = []
+    )
+    {
         parent::__construct($context, $data);
         $this->dateTime = $dateTime;
         $this->httpContext = $httpContext;
@@ -102,17 +105,16 @@ class Coupon extends Template implements IdentityInterface
         $today = $this->dateTime->date('Y-m-d h:m:s', strtotime('-1 day'));
         $page = ($this->getRequest()->getParam('p')) ? $this->getRequest()->getParam('p') : 1;
         $pageSize = ($this->getRequest()->getParam('limit')) ? $this->getRequest()->getParam('limit') : 12;
-        return $this->couponCollectionFactory->create()
-            ->addFieldToFilter('is_active', 1)
-            ->addFieldToFilter('coupon_display', 0)
-            ->addFieldToFilter('to_date', [
-                  'or' => [
-                      0 => ['gteq' => $today],
-                      1 => ['is' => new \Zend_Db_Expr('null')]
-                  ]
-            ])
-            ->setPageSize($pageSize)
-            ->setCurPage($page);
+        $collection = $this->couponCollectionFactory->create()
+        ->addFieldToFilter('coupon_display', 0)
+        ->setPageSize($pageSize)
+        ->setCurPage($page);
+        $collection->getSelect()->joinInner(
+            ['srg' => 'salesrule_customer_group'],
+            'main_table.rule_id = srg.rule_id and srg.customer_group_id = ' . $this->httpContext->getValue(CustomerContext::CONTEXT_GROUP),
+            ['srg.customer_group_id']
+        );
+        return $collection;
     }
 
     /**

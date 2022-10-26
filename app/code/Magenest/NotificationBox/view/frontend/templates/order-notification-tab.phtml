@@ -4,87 +4,83 @@
 $block->redirectIfNotLoggedIn();
 $unread = $block->getUnreadNotification();
 $allCustomerNotification = $block->getOrderNotification(null);
-$allNotificationType = $block->getAllNotificationType();
 ?>
 
 <form action="">
     <div class="table-wrapper mgn-notification-wrapper">
-        <div class="notification-controller">
-            <div class="select_notification">
-                <select id="select_notification">
-                    <option value="select-none"><?=__('None')?></option>
-                    <option value="select-all" id="selectAll"><?=__('All')?></option>
-                    <option value="select-read"><?=__('Read')?></option>
-                    <option value="select-unread"><?=__('Unread')?></option>
-                    <option value="select-important"><?=__('Important')?></option>
-                    <option value="select-unimportant"><?=__('Unimportant')?></option>
-                </select>
-            </div>
-
-            <div class="reload-notification">
-                <a href=""><span class="mgn-noti-icon icon-refresh"></span></a>
-            </div>
-            <div class="delete-notification"><span class="mgn-noti-icon icon-remove"></span></div>
-
+        <div class="notification-page-head">
             <div class="mark-as-read-notification">
-                <a href="/" onclick="return false;"><?=__('Mark as read')?></a>
+                <a href="/" id="mark-all-as-read" ><?=__('Mark as read')?></a>
             </div>
         </div>
-
-        <div class="listCategory">
-            <?php foreach ($allNotificationType as $key=>$value){?>
-                <label>
-                    <input type="button" value="<?= $value ?>" class="category-notification-btn <?=($block->getFilteredNotificationTypes() == $key)?'is_filter':''?>" id='filter-<?=$key?>'>
-                    <span class="category-notification-label"><?= $value ?></span>
-                </label>
-            <?php }?>
-        </div>
-        <div class="notification-selected">
-            <p>All <span id="notification-selected">0</span> <?=__('notification on this page are selected. ')?><span id="select-all-notification" hidden><a href="/" onclick="return false;"><?= __('select all '.count($allCustomerNotification) .' notification on this page') ?> </a></span></p>
-        </div>
-
-        <table class="data table mgn-notification-table" id="my-notification-table">
-            <caption class="table-caption"><?php echo __('Grid Record') ?></caption>
-
-            <tbody>
+        <div class="data table mgn-notification-table" id="my-notification-table">
+            <div>
             <?php if ($allCustomerNotification && count($allCustomerNotification)): ?>
-                <?php foreach ($allCustomerNotification as $notification):?>
-                    <tr style="background-color: <?= $notification['status'] ? 'transparent' : $unread ?>" id="<?= $notification['entity_id'] ?>">
-                        <td class="col check-box-notification">
-                            <label>
-                                <input type="checkbox" class="checkbox-notification-input <?= $notification['entity_id'] ?>" id= "<?= $notification['status'] ? null : $unread ?>"/>
-                                <span class="checkbox-notification-label is_select"></span>
-                            </label>
-                        </td>
-                        <td class="col marking-notification">
-                            <?php if($notification['star'] == \Magenest\NotificationBox\Model\CustomerNotification::STAR):
-                                $markingClass = 'active';
-                            else:
-                                $markingClass = '';
-                            endif; ?>
-                            <span id="<?=$notification['star']?>" class="marking-important <?= $markingClass ?>"></span>
-                        </td>
+                <?php foreach ($allCustomerNotification as $orderNotifications):?>
+                <?php $notification = array_shift($orderNotifications); ?>
+                <div class="notification-item" id="<?= $notification['entity_id'] ?>">
+                    <div class="notification-item-parent" style="background-color: <?= $notification['status'] ? '#fff' : '#F5FBF5' ?>">
+                        <div class="notification-item-detail">
+                        <span class="product-image-container">
+                            <span class="product-image-wrapper">
+                                <?= $block->getOrderFirstItemImageHtml($notification['additional_data']) ?>
+                            </span>
+                        </span>
+                            <div class="notification-item-info">
+                                <p class="notification-item-title">
+                                    <?= $block->getOrderNotificationTitle($notification['additional_data']) ?>
+                                </p>
+                                <p class="notification-item-description desktop-device">
+                                    <?=$notification['full_description'] ?>
+                                </p>
+                                <span class="notification-item-created-at parent <?= !$orderNotifications ? "hide-icon" : "" ?>">
+                                <?php echo date('Y-m-d', strtotime($notification['created_at'])); ?>
+                                </span>
+                            </div>
+                        </div>
+                        <p class="notification-item-description mobile-device">
+                            <?=$notification['full_description'] ?>
+                        </p>
+                        <a href="<?= $notification['redirect_url'] ?? $block->getOrderUrl($notification['additional_data']) ?>" class="action view-order-detail">
+                            <?= __('View Order Details') ?>
+                        </a>
+                    </div>
+                    <?php if ($orderNotifications):?>
+                    <div class="notification-item-child" style="display: none">
+                        <?php foreach ($orderNotifications as $notification): ?>
+                            <?php
+                                $title = $block->getOrderNotificationTitle($notification['additional_data']);
 
-                        <td class="col notification-image">
-                            <span class="notification-type-img" style="background-image: url('<?= $notification['icon'] ?>')"></span></td>
-
-                        <td class="col notification-type">
-                            <?php echo $notification['notification_type'] ?></td>
-
-                        <td class="col description"><?=$notification['full_description'] ?></td>
-
-                        <td class="col created-at"><?php echo date('Y-m-d', strtotime($notification['created_at'])); ?></td>
-                    </tr>
+                            ?>
+                        <div class="notification-item-detail">
+                            <span class="line"></span>
+                            <div class="notification-item-info">
+                                <p class="notification-item-title">
+                                    <?= $block->getOrderNotificationTitle($notification['additional_data']) ?>
+                                </p>
+                                <p class="notification-item-description">
+                                    <?=$notification['full_description'] ?>
+                                </p>
+                                <span class="notification-item-created-at">
+                                <?php echo date('Y-m-d', strtotime($notification['created_at'])); ?>
+                                </span>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
+                </div>
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="message info empty"><span><?php echo __('No any notification.'); ?></span></div>
             <?php endif ?>
-            </tbody>
-        </table>
+            </div>
+        </div>
     </div>
 </form>
-<?php if ($block->getPagerHtml()): ?>
-    <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); ?></div>
+
+<?php if ($block->getChildHtml('pager')) : ?>
+    <div class="notification-toolbar toolbar bottom"><?= $block->getChildBlock('pager')->setData('toolbar_number_title', 'Notify')->toHtml() ?></div>
 <?php endif ?>
 
 <script type="text/x-magento-init">
@@ -100,4 +96,13 @@ $allNotificationType = $block->getAllNotificationType();
                 }
             }
         }
+</script>
+
+<script type="text/javascript">
+    require(['jquery'], function($) {
+        $('.notification-item-created-at.parent').on('click', function () {
+            $(this).parents('.notification-item-parent').siblings('.notification-item-child').slideToggle(300);
+            $(this).toggleClass('show');
+        })
+    });
 </script>

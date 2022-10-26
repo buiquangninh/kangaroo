@@ -1,12 +1,7 @@
 <!-- ko if: isShippingDisplayed() -->
 <tr class="totals shipping-discount">
     <th class="mark" scope="row">
-        <!-- ko if: getCouponCode() -->
-        <span class="title" data-bind="html: getShippingDiscountTitle() + ' ( ' + getCouponCode() + ' )'"></span>
-        <!-- /ko -->
-        <!-- ko ifnot: getCouponCode() -->
         <span class="title" data-bind="html: getShippingDiscountTitle()"></span>
-        <!-- /ko -->
     </th>
     <td class="amount">
         <span class="price" data-bind="text: getShippingDiscountValue(), attr: {'data-th': name}"></span>

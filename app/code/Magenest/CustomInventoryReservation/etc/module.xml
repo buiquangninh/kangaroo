@@ -15,6 +15,7 @@
     <module name="Magenest_CustomInventoryReservation">
     <sequence>
         <module name="Magento_InventoryAdminUi"/>
+        <module name="Magento_InventoryIndexer"/>
     </sequence>
     </module>
 </config>

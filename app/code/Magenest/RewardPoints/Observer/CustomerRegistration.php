@@ -121,7 +121,7 @@ class CustomerRegistration implements ObserverInterface
                 if (!empty($rulesRegistration)) {
                     foreach ($rulesRegistration as $rule) {
                         $ruleId = $rule->getId();
-                        if ($this->_helper->validateRule($rule)) {
+                        if ($this->_helper->validateRule($rule, $customerId)) {
                             $point = $rule->getPoints();
                             $result = $this->_helper->addPoints($customer, $ruleId, null, null);
 

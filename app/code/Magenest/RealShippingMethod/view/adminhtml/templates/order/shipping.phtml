@@ -126,6 +126,11 @@ if (!$carriers->isSelfDelivery($object->getOrder())) : ?>
                                                 }
                                             }
                                             break;
+                                        case "lalamove":
+                                            resultHtml = "<strong>" + $t("Shipping Fee") + "</strong>: <span>" + response.data.priceBreakdown.total +
+                                                response.data.priceBreakdown.currency
+                                                "</span>";
+                                            break;
                                     }
 
                                     calculatedFee.html(resultHtml);
@@ -194,6 +199,6 @@ if (!$carriers->isSelfDelivery($object->getOrder())) : ?>
     }
     </script>
     <script type="text/javascript">
-        window.checkoutConfig = <?php echo $getISInformation; ?>;
+        window.checkoutConfig = <?php echo 1 ?>;
     </script>
 <?php endif; ?>

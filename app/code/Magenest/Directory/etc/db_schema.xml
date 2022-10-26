@@ -6,8 +6,11 @@
         <column xsi:type="varchar" name="country_id" length="64" comment="Country Id"/>
         <column xsi:type="varchar" name="code" length="64" comment="Code"/>
         <column xsi:type="varchar" name="name" length="64" nullable="false" comment="Name"/>
+        <column xsi:type="varchar" name="nonvnese_name" length="64" nullable="false" comment="Non Vietnamese Name"/>
         <column xsi:type="varchar" name="default_name" length="255" nullable="true" comment="Default Name"/>
         <column xsi:type="tinyint" name="disable_on_storefront" default="0" nullable="true" comment="Disable cities on storefront"/>
+        <column xsi:type="varchar" name="province_code" length="64" comment="Province Code"/>
+        <column xsi:type="varchar" length="64" name="area" nullable="true" comment="VietNam Area"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="city_id"/>
         </constraint>

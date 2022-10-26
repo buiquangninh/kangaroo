@@ -29,7 +29,7 @@ class Membership extends AbstractModel implements IdentityInterface
      */
     protected function _construct()
     {
-        $this->_init('Magenest\RewardPoints\Model\ResourceModel\Membership');
+        $this->_init(ResourceModel\Membership::class);
     }
 
     /**

@@ -16,6 +16,10 @@
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="id"/>
         </constraint>
+        <constraint xsi:type="unique" referenceId="UNIQUE_CUSTOMERID_COUPON_ID">
+            <column name="coupon_id"/>
+            <column name="customer_id"/>
+        </constraint>
         <constraint xsi:type="foreign" referenceId="MAGENEST_RULE_ID" column="rule_id" table="magenest_customer_coupon"
                     referenceTable="salesrule" referenceColumn="rule_id" onDelete="CASCADE" />
         <constraint xsi:type="foreign" referenceId="MAGENEST_COUPON_ID" column="coupon_id" table="magenest_customer_coupon"

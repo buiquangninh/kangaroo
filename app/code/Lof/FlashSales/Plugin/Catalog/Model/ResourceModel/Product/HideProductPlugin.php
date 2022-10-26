@@ -32,6 +32,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Customer\Model\Session;
+use Magenest\CustomFlashSale\Block\Flashsales\Index as FlashSalesHelper;
 
 class HideProductPlugin
 {
@@ -74,6 +75,10 @@ class HideProductPlugin
      * @var ProductFactory
      */
     protected $_productFactory;
+    /**
+     * @var FlashSalesHelper
+     */
+    private $flashSalesHelper;
 
     /**
      * HideProductPlugin constructor.
@@ -92,8 +97,10 @@ class HideProductPlugin
         Session $customerSession,
         ProductFactory $productFactory,
         ProductCollectionFactory $productCollectionFactory,
+        FlashSalesHelper $_flashSalesHelper,
         StoreManagerInterface $storeManager
     ) {
+        $this->flashSalesHelper = $_flashSalesHelper;
         $this->_productFactory = $productFactory;
         $this->_productCollectionFactory = $productCollectionFactory;
         $this->_storeManager = $storeManager;
@@ -173,6 +180,23 @@ class HideProductPlugin
                     }
                 }
             }
+            $productIds = [];
+            $flashSalesIds = [];
+            $flashSalesEndedData = $this->flashSalesHelper->getFlashSalesEndedData();
+
+            if (!empty($flashSalesEndedData->getItems())) {
+                foreach ($flashSalesEndedData->getItems() as $data) {
+                    $flashSalesIds[] = $data->getFlashsalesId();
+                }
+            }
+            foreach ($flashSalesIds as $flashSalesId) {
+                $getAppliedProducts = $this->flashSalesHelper->getApplyProducts($flashSalesId);
+                foreach ($getAppliedProducts->getItems() as $one) {
+                    $productIds[] = $one->getProductId();
+                }
+            }
+
+            $hideProductIds = array_diff($productIds, $hideProductIds);
 
             if ($hideProductIds) {
                 $accessProductIds = [];

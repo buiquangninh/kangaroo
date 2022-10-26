@@ -1,0 +1,28 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** This changes need to valid applying filters and configuration before search process is started. */
+$productList = $block->getProductListHtml();
+?>
+<?php if ($block->getResultCount()) : ?>
+    <?= /* @noEscape */ $block->getChildHtml('tagged_product_list_rss_link') ?>
+    <div class="search results">
+        <?php if ($messages = $block->getNoteMessages()) : ?>
+            <div class="wrapper-notsearch">
+                <img src="<?= $block->getViewFileUrl('images/image-search.png'); ?>" alt="Kangaroo">
+                <p class="search-title"><?= __('We did not find any results for the above keywords') ?></p>
+                <p class="search-hint"><?= __('For exact results, please check spelling or try again with a more general keyword') ?></p>
+            </div>
+        <?php endif; ?>
+        <?= /* @noEscape */ $productList ?>
+    </div>
+<?php else : ?>
+    <div class="wrapper-notsearch">
+        <img src="<?= $block->getViewFileUrl('images/image-search.png'); ?>" alt="Kangaroo">
+        <p class="search-title"><?= __('We did not find any results for the above keywords') ?></p>
+        <p class="search-hint"><?= __('For exact results, please check spelling or try again with a more general keyword') ?></p>
+    </div>
+<?php endif; ?>

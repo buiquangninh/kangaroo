@@ -27,7 +27,7 @@ define([
             $carouselElement.slick('unslick');
         }
 
-        config.slidesToScroll = config.slidesToShow;
+        config.slidesToScroll = 1;
         $carouselElement.slick(config);
     }
 
@@ -74,7 +74,7 @@ define([
             };
 
         if ($element.hasClass('home-block8-products')) {
-          
+
             config.breakpoints.desktop.options.products.default.slidesToShow = 4;
         }
 

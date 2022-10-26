@@ -211,21 +211,24 @@ class Calculation extends Data
         $campaigns = [];
 
         $refAcc = $this->registry->registry('mp_affiliate_account');
-        if ((!$refAcc || !$refAcc->getId()) && $key) {
-            $refAcc = $this->getAffiliateByKeyOrCode($key);
-            if (!$refAcc->getId() && $account->getId()) {
+        if (!$account->getData('is_limited')) {
+            if ((!$refAcc || !$refAcc->getId()) && $key) {
+                $refAcc = $this->getAffiliateByKeyOrCode($key);
+                if (!$refAcc->getId() && $account->getId()) {
+                    $refAcc = $account;
+                }
+                $this->registry->unregister('mp_affiliate_account');
+                $this->registry->register('mp_affiliate_account', $refAcc);
+            } elseif (!$key) {
                 $refAcc = $account;
+                $this->registry->unregister('mp_affiliate_account');
+                $this->registry->register('mp_affiliate_account', $refAcc);
+                $key = $account->getId();
             }
-            $this->registry->unregister('mp_affiliate_account');
-            $this->registry->register('mp_affiliate_account', $refAcc);
-        } elseif (!$key) {
-            $refAcc = $account;
-            $this->registry->unregister('mp_affiliate_account');
-            $this->registry->register('mp_affiliate_account', $refAcc);
-            $key = $account->getId();
         }
+
 //        if ($key && !$account->getId() && $refAcc->getId() && $refAcc->isActive()) {
-        if ($key && $refAcc->getId() && $refAcc->isActive()) {
+        if ($key && $refAcc && $refAcc->getId() && $refAcc->isActive()) {
             $campaigns = $this->getAvailableCampaign($refAcc, $campaignCouponCode);
         }
         if ($isDiscount) {
@@ -236,7 +239,7 @@ class Calculation extends Data
                     return false;
                 }
             } else {
-                return count($campaigns) && (!$this->hasFirstOrder() || ($account->getId()));
+                return count($campaigns) && (!$this->hasFirstOrder() || ($account->getId() && !$account->getData('is_limited')));
             }
         }
 

@@ -11,7 +11,7 @@
         <resources>
             <resource id="Magento_Backend::admin">
                 <resource id="Magento_Reports::report">
-                    <resource id="Aheadworks_AdvancedReports::main" title="Advanced Reports by aheadWorks" sortOrder="999">
+                    <resource id="Magento_Reports::salesroot">
                         <resource id="Magenest_CustomAdvancedReports::reports_salespersonoverview" title="Sales Person Overview" sortOrder="90" />
                     </resource>
                 </resource>

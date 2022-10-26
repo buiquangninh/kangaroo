@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <actionGroup name="AdminConfigPromoGeneralActionGroup">
+        <arguments>
+            <argument name="configurationGeneral" defaultValue="defaultConfigurationPromoGeneral"/>
+        </arguments>
+        <amOnPage url="{{AdminPromoConfigurationPage.url}}" stepKey="navigateToPromoConfiguration"/>
+        <conditionalClick selector="{{AdminConfigurationsPromoSection.GeneralTab}}" dependentSelector="{{AdminConfigurationsPromoSection.AddProductsAutomatically}}" visible="false" stepKey="openGeneralTab"/>
+        <selectOption selector="{{AdminConfigurationsPromoSection.AddProductsAutomatically}}" userInput="{{configurationGeneral.addAutomatically}}" stepKey="selectAddAutomaticallyValue"/>
+        <selectOption selector="{{AdminConfigurationsPromoSection.BasedOnCart}}" userInput="{{configurationGeneral.basedOnCart}}" stepKey="selectBasedOnCartValue"/>
+        <click selector="{{AdminConfigurationsPromoSection.Save}}" stepKey="saveConfiguration"/>
+        <waitForPageLoad stepKey="waitForPageLoadAfterSaveConfig"/>
+    </actionGroup>
+</actionGroups>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AutoAddPromoItemsForEveryXSpentApplyShipping" extends="AutoAddPromoItemsForEveryXSpent">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Rule Auto Add Promo Items For Every X Spent With Apply Shipping For Free Gift"/>
+            <description value="Check Rule Auto Add Promo Items For Every X Spent With Apply Shipping For Free Gift"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-18"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoFreeGifts"/>
+        </annotations>
+
+        <before>
+            <remove keyForRemoval="createSecondProduct"/>
+            <createData entity="SimpleProductByWatchClamber" stepKey="createFirstProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createPromoCartRuleFirst">
+                <argument name="promoCartRule" value="ruleAutoAddPromoItemsForXSpentApplyShip"/>
+                <argument name="promoItems" value="$$createThirdProduct.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminChangeApplyShippingForGiftPromoCartRuleActionGroup" stepKey="enableApplyShippingFreeGift">
+                <argument name="cartRuleName" value="ruleAutoAddPromoItemsForXSpentApplyShip.name"/>
+            </actionGroup>
+        </before>
+        <after>
+            <remove keyForRemoval="deleteSecondProduct"/>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deletePromoCartRule">
+                <argument name="ruleName" value="{{ruleAutoAddPromoItemsForXSpentApplyShip.name}}"/>
+            </actionGroup>
+        </after>
+
+        <remove keyForRemoval="addProductToCartSecond"/>
+        <remove keyForRemoval="assertAddedFreeGiftToCartThird"/>
+        <remove keyForRemoval="changeQtyProductSecond"/>
+        <remove keyForRemoval="assertAddedFreeGiftToCartFour"/>
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedFreeGiftToCartFirst">
+            <argument name="product" value="$$createThirdProduct$$"/>
+            <argument name="productQty" value="_enterQty2"/>
+        </actionGroup>
+        <actionGroup ref="CheckPriceShipping" after="assertAddedFreeGiftToCartFirst" stepKey="assertShippingPriceFirst">
+            <argument name="shippingPrices" value="promoAutoAddPromoItemsForXSpentApplyShip.shippingPriceFirst"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedFreeGiftToCartSecond">
+            <argument name="product" value="$$createThirdProduct$$"/>
+            <argument name="productQty" value="_enterQty4"/>
+        </actionGroup>
+        <actionGroup ref="CheckPriceShipping" stepKey="assertShippingPriceSecond">
+            <argument name="shippingPrices" value="promoAutoAddPromoItemsForXSpentApplyShip.shippingPriceSecond"/>
+        </actionGroup>
+    </test>
+</tests>

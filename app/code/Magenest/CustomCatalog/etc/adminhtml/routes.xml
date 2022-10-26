@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2021 Magenest. All rights reserved.
+ * See COPYING.txt for license details.
+ *
+ * Magenest_CustomCatalog extension
+ * NOTICE OF LICENSE
+ *
+ * @author   PhongNguyen
+ * @category Magenest
+ * @package  Magenest_CustomCatalog
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="admin">
+        <route id="productvideo" frontName="productvideo">
+            <module name="Magenest_CustomCatalog"/>
+        </route>
+    </router>
+</config>

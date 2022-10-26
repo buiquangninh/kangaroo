@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AddGiftWithEachNProductInTheCartWithDiscount" extends="AutoAddTheSameProductCoupon">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Rule Add Gift With Each N Product In The Cart With Discount"/>
+            <description value="Check Rule Add Gift With Each N Product In The Cart With Discount"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-24"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoFreeGifts"/>
+        </annotations>
+
+        <before>
+            <createData entity="SimpleProductByStriveShoulderPack" after="createFirstProduct" stepKey="createSecondProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createPromoCartRuleFirst">
+                <argument name="promoCartRule" value="ruleAddGiftWithEachNWithDiscount"/>
+                <argument name="promoItems" value="$$createSecondProduct.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminAddDiscountToPromoCartRuleActionGroup" stepKey="editCartRule">
+                <argument name="cartRuleName" value="ruleAddGiftWithEachNWithDiscount.name"/>
+            </actionGroup>
+        </before>
+        <after>
+            <deleteData createDataKey="createSecondProduct" after="deleteFirstProduct" stepKey="deleteSecondProduct"/>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deletePromoCartRule">
+                <argument name="ruleName" value="{{ruleAddGiftWithEachNWithDiscount.name}}"/>
+            </actionGroup>
+        </after>
+
+        <remove keyForRemoval="addCoupon"/>
+        <remove keyForRemoval="assertAddedGiftToCartAfterApplyCoupon"/>
+        <actionGroup ref="StorefrontAssertNotProductOnCart" stepKey="assertAddedGiftToCartFirst">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNotPopUpOnCart" after="assertAddedGiftToCartFirst" stepKey="assertPopUpFirst"/>
+        <actionGroup ref="StorefrontChangeQtyProductInCart" stepKey="changeQtyProductFirst">
+            <argument name="product" value="$$createFirstProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAddFreeGiftOneByOneInCart" after="changeQtyProductFirst" stepKey="addFreeGiftFirst">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedGiftToCartSecond">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontCheckCartDiscountAmount" stepKey="assertDiscountAmountFirst">
+            <argument name="discountAmount" value="promoAddGiftWithEachNWithDiscount.discountAmountOne"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontChangeQtyProductInCart" stepKey="changeQtyProductSecond">
+            <argument name="product" value="$$createFirstProduct$$"/>
+            <argument name="productQty" value="_enterQty4"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAddFreeGiftOneByOneInCart" stepKey="addFreeGiftSecond">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedGiftToCartThird">
+            <argument name="product" value="$$createSecondProduct$$"/>
+            <argument name="productQty" value="_enterQty2"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontCheckCartDiscountAmount" stepKey="assertDiscountAmountSecond">
+            <argument name="discountAmount" value="promoAddGiftWithEachNWithDiscount.discountAmountTwo"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNotPopUpOnCart" stepKey="assertPopUpSecond"/>
+    </test>
+</tests>

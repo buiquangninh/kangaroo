@@ -88,7 +88,8 @@ class OutOfStockArea extends \Magento\Catalog\Block\Product\AbstractProduct
         } elseif ($product->getTypeId() == 'grouped') {
             $childrenProduct = $product->getTypeInstance()->getAssociatedProducts($product);
         } elseif ($product->getTypeId() == 'bundle') {
-            $childrenProduct = $this->productLinkManagement->getChildren($product->getData('sku'));
+//            $childrenProduct = $this->productLinkManagement->getChildren($product->getData('sku'));
+            return !$product->isSalable();
         }
         if (isset($childrenProduct) && $childrenProduct) {
             $salableQtyInArea = 0;

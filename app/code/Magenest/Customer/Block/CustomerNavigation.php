@@ -11,7 +11,7 @@ class CustomerNavigation extends AbstractNavigation
     /**
      * Search redundant /index and / in url
      */
-    const REGEX_URL_PATTERN = '/customer\/address|vault|customer\/account/';
+    const REGEX_URL_PATTERN = '/edit|address|vault|changepass/';
 
     /**
      * @inheritDoc

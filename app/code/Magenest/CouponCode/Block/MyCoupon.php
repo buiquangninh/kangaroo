@@ -139,7 +139,6 @@ class MyCoupon extends Template implements IdentityInterface
         $page = ($this->getRequest()->getParam('p')) ? $this->getRequest()->getParam('p') : 1;
         $pageSize = ($this->getRequest()->getParam('limit')) ? $this->getRequest()->getParam('limit') : 12;
         return $this->collectionFactory->create()
-            ->addFieldToFilter('is_active', 1)
             ->addFieldtoFilter('customer_id', $this->httpContext->getValue('customer_id'))
             ->setOrder('claimed_at', 'DESC')
             ->setPageSize($pageSize)
@@ -154,10 +153,18 @@ class MyCoupon extends Template implements IdentityInterface
     {
         if ($coupon->getData('simple_action') == 'by_percent') {
             $amountDiscount = round($coupon->getData('discount_amount')) . '%';
+        } else if ($coupon->getData('simple_action') == "ampromo_items") {
+            $ruleModel = $this->getRule($coupon->getRuleId());
+            $extensionsAttribute = $ruleModel->getExtensionAttributes();
+            $ampromoRule = $extensionsAttribute['ampromo_rule'] ?? false;
+            if ($ampromoRule) {
+                return __("Input Coupon <span class='discount-code'>%1</span> to get <span class='discount-value'>%2 </span>promo item <span class='discount-value'> %3</span> from <span class='discount-value'>%4</span>", $coupon->getData('code'), (int)$coupon->getData('discount_amount'), $ampromoRule->getSku(), $coupon->getData('name'));
+            }
+            $amountDiscount = $this->priceHelper->currency($coupon->getData('discount_amount'));
         } else {
             $amountDiscount = $this->priceHelper->currency($coupon->getData('discount_amount'));
         }
-        return __("Input Coupon <span class='discount-code'>%1</span> to get discount <span class='discount-value'>%2</span> for %3", $coupon->getData('code'), $amountDiscount, $coupon->getData('name'));
+        return __("Input Coupon <span class='discount-code'>%1</span> to get discount <span class='discount-value'>%2</span> program %3", $coupon->getData('code'), $amountDiscount, $coupon->getData('name'));
     }
 
     /**
@@ -175,5 +182,17 @@ class MyCoupon extends Template implements IdentityInterface
         }
 
         return '';
+    }
+
+    public function getRule($ruleId)
+    {
+        try {
+            return $this->ruleFactory->create()
+                ->load($ruleId);
+        } catch (\Exception $exception) {
+            $this->_logger->error($exception->getMessage());
+        }
+
+        return false;
     }
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="DontShowOriginalPriceInPopUp" extends="OneByOneNotAddProductAutomatically">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Setting Dont Show Original Price In PopUp"/>
+            <description value="Check Setting Dont Show Original Price In PopUp"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-08"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoConfiguration"/>
+        </annotations>
+
+        <before>
+            <createData entity="SimpleProductByWayfarerMessenger" stepKey="createFirstProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createPromoCartRule">
+                <argument name="promoCartRule" value="ruleNotShowOriginalPriceFirst"/>
+                <argument name="promoItems" value="$$createSecondProduct.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createSecondPromoCartRule">
+                <argument name="promoCartRule" value="ruleNotShowOriginalPriceSecond"/>
+                <argument name="promoItems" value="$$createThirdProduct.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminAddDiscountToPromoCartRuleActionGroup" stepKey="addDiscountSettingInSecondRule">
+                <argument name="cartRuleName" value="ruleNotShowOriginalPriceSecond.name"/>
+                <argument name="promoCartRule" value="ruleNotShowOriginalPriceSecond"/>
+            </actionGroup>
+        </before>
+        <after>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deleteCartPriceRule">
+                <argument name="ruleName" value="{{ruleNotShowOriginalPriceFirst.name}}"/>
+            </actionGroup>
+            <actionGroup ref="DeleteCartPriceRuleByName" after="deleteCartPriceRule" stepKey="deleteSecondCartRule">
+                <argument name="ruleName" value="{{ruleNotShowOriginalPriceSecond.name}}"/>
+            </actionGroup>
+        </after>
+
+        <remove keyForRemoval="assertNotFreeGiftInCartFirst"/>
+        <remove keyForRemoval="assertNotFreeGiftInCartSecond"/>
+        <remove keyForRemoval="addFreeGiftFirst"/>
+        <remove keyForRemoval="assertAddedFreeGiftToCartFirst"/>
+        <remove keyForRemoval="addFreeGiftSecond"/>
+        <remove keyForRemoval="assertAddedFreeGiftToCartSecond"/>
+        <actionGroup ref="StorefrontAssertPriceInPopUpActionGroup" stepKey="assertPopUpOnCart"/>
+    </test>
+</tests>

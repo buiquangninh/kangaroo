@@ -15,10 +15,6 @@ define([ // jshint ignore:line
 ], function ($, _, Component, ko, registry, $t, niceSelect) {
     'use strict';
 
-    window.addEventListener('DOMContentLoaded', (event) => {
-        console.log($('select[name="city_id"]'));
-    });
-
     return Component.extend({
         defaults: {
             listens: {

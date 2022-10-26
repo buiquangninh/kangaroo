@@ -1,3 +1,27 @@
+<?php
+
+
+/** @var Magenest\Affiliate\Block\Account\General $block */
+
+$getCurrentAccountDataThisMonth = $block->getAllTotalSalesByFilterDate("this_month");
+$getCurrentAccountDataToday = $block->getAllTotalSalesByFilterDate("today");
+
+$getCurrentAccountCompleteDataThisMonth = $block->getCompleteTotalSalesByFilterDate("this_month");
+$getCurrentAccountCompleteDataToday = $block->getCompleteTotalSalesByFilterDate("today");
+
+$totalCompleteSalesThisMonths = $getCurrentAccountCompleteDataThisMonth->getLastItem()['subtotal'];
+$totalCompleteSalesToday = $getCurrentAccountCompleteDataToday->getLastItem()['subtotal'];
+
+$totalSalesThisMonths = $getCurrentAccountDataThisMonth->getLastItem()['subtotal'];
+$totalSalesToday = $getCurrentAccountDataToday->getLastItem()['subtotal'];
+
+$totalAllCommissionThisMonth = $getCurrentAccountDataThisMonth->getLastItem()['affiliate_commission'];
+$totalCompleteCommissionThisMonth = $getCurrentAccountCompleteDataThisMonth->getLastItem()['subtotal'];
+
+$totalAllCommissionToday= $getCurrentAccountDataToday->getLastItem()['affiliate_commission'];
+$totalCompleteCommissionToday = $getCurrentAccountCompleteDataToday->getLastItem()['affiliate_commission'];
+
+?>
 <h2 class="kangaroo-shopping-title mobile-device"><?= __('Sale with KangarooShopping') ?></h2>
 <div class="block-general-statistical">
     <div class="statistical-item this-month">
@@ -5,20 +29,20 @@
         <div class="block-flex">
             <div class="block-sales">
                 <label class="label"><?= __('Sales') ?></label>
-                <p class="value price">30.000.000đ</p>
+                <p class="value price"><?= $block->getPriceCurrency($totalSalesThisMonths) ?></p>
                 <div class="block-commission">
                     <p class="value price">
-                        500.000đ
+                        <?= $block->getPriceCurrency($totalCompleteCommissionThisMonth) ?>
                     </p>
                     <label class="label"><?= __('Temporary commission') ?></label>
                 </div>
             </div>
             <div class="block-pending">
                 <label class="label"><?= __('Pending') ?></label>
-                <p class="value price">30.000.000đ</p>
+                <p class="value price"><?= $block->getPriceCurrency($totalSalesThisMonths - $totalCompleteSalesThisMonths)  ?></p>
                 <div class="block-commission">
                     <p class="value price">
-                        500.000đ
+                        <?= $block->getPriceCurrency($totalAllCommissionThisMonth - $totalCompleteCommissionThisMonth) ?>
                     </p>
                     <label class="label"><?= __('Temporary commission') ?></label>
                 </div>
@@ -30,20 +54,20 @@
         <div class="block-flex">
             <div class="block-sales">
                 <label class="label"><?= __('Sales') ?></label>
-                <p class="value price">30.000.000đ</p>
+                <p class="value price"><?= $block->getPriceCurrency($totalSalesToday) ?></p>
                 <div class="block-commission">
                     <p class="value price">
-                        500.000đ
+                        <?= $block->getPriceCurrency($totalCompleteCommissionToday) ?>
                     </p>
                     <label class="label"><?= __('Temporary commission') ?></label>
                 </div>
             </div>
             <div class="block-pending">
                 <label class="label"><?= __('Pending') ?></label>
-                <p class="value price">30.000.000đ</p>
+                <p class="value price"><?= $block->getPriceCurrency($totalSalesToday - $totalCompleteSalesToday) ?></p>
                 <div class="block-commission">
                     <p class="value price">
-                        500.000đ
+                        <?= $block->getPriceCurrency($totalAllCommissionToday - $totalCompleteCommissionToday)?>
                     </p>
                     <label class="label"><?= __('Temporary commission') ?></label>
                 </div>

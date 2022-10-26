@@ -4,9 +4,6 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="content">
-            <block class="Magenest\Affiliate\Block\Adminhtml\Group\Create" name="magenest_affiliate_group_create"/>
-        </referenceContainer>
         <referenceContainer name="left">
             <block class="Magenest\Affiliate\Block\Adminhtml\Group\Create\Tabs" name="magenest_affiliate_group_tabs">
                 <block class="Magenest\Affiliate\Block\Adminhtml\Group\Create\Tab\Group" name="affiliate_group_create_tab_group"/>
@@ -17,4 +14,5 @@
             </block>
         </referenceContainer>
     </body>
+    <update handle="affiliate_group_edit"/>
 </page>

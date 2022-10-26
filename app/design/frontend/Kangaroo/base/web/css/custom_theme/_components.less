@@ -3,7 +3,7 @@
 //  ---------------------------------------------
 
 //  Fonts
-@font-family-name__base: 'Clan Pro';
+@font-family-name__base: 'Roboto';
 @font-family__base: @font-family-name__base, @font-family__sans-serif;
 
 
@@ -306,7 +306,7 @@
         }
 
         .price {
-            font-family: 'Clan';
+            font-family: @font-family-name__base;
         }
 
         .show-password {
@@ -500,10 +500,6 @@
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-    .page-wrapper {
-        overflow-x: hidden;
-    }
-
     .desktop-device {
         display: none !important;
     }

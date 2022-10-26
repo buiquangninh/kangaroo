@@ -29,10 +29,13 @@
                 font-weight: 500;
                 text-transform: uppercase;
                 float: unset;
-                margin: 10px 15px 0 0 !important;
+                margin: 10px 0 0 0 !important;
+                padding: 0 15px !important;
+
 
                 &.save {
                     border: 1px solid #44BA46;
+                    margin-right: 15px !important;
                 }
 
                 &.back {
@@ -43,18 +46,6 @@
                     }
                 }
             }
-
-            @media (min-width: 475px) {
-                .action {
-                    padding: 0 24px !important;
-                }
-            }
-
-            @media (max-width: 474px) {
-                .action {
-                    padding: 0 !important;
-                }
-            }
         }
     }
 
@@ -63,12 +54,29 @@
             .lib-vendor-prefix-display(flex);
 
             .fieldset {
-                &.info {
-                    width: 55%;
-                }
-
                 &.field-name-avatar {
-                    width: 45%;
+                    .lib-vendor-prefix-display(flex);
+                    .lib-vendor-prefix-flex-direction(column);
+                    .lib-vendor-box-align(center);
+
+                    .profile-image {
+                        width: 120px;
+                        height: 120px;
+                        object-fit: cover;
+                        border-radius: 50%;
+                    }
+
+                    .avatar-customer-desc {
+                        font-size: 13px;
+                        line-height: 20px;
+                        color: #697180;
+                        text-align: center;
+                        margin-top: 16px;
+
+                        span {
+                            display: block;
+                        }
+                    }
                 }
 
                 .field.choice {
@@ -85,16 +93,7 @@
                         line-height: 20px;
                         font-weight: 500;
                         color: #2C2727;
-                    }
 
-                    .label {
-                        font-size: 13px;
-                        line-height: 20px;
-                        font-weight: 500;
-                        color: #2C2727;
-                    }
-
-                    .value {
                         &:before {
                             content: '';
                             display: table;
@@ -168,16 +167,67 @@
                         }
                     }
                 }
+
+                &.date-of-birth {
+                    .label {
+                        padding-bottom: 10px;
+                    }
+
+                    .block-flex {
+                        .lib-vendor-prefix-display(flex);
+                        justify-content: space-between;
+                        -webkit-align-content: space-between;
+
+                        select {
+                            width: calc(~'100% / 3 - 7px');
+                        }
+                    }
+                }
             }
+        }
+    }
+
+    .customer-address-form {
+        .fieldset > .field.choice {
+            &.set {
+                .label {
+                    line-height: 26px !important;
+                    font-size: 14px !important;
+                    font-weight: normal !important;
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    .customer-account-edit {
+        .form-edit-account {
+            .fieldset {
+                &.field-name-avatar {
+                    width: 44%;
+                    border-left: 1px solid #E0E6EC;
+                    margin-left: 30px;
+                    min-width: 230px;
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__l) {
+    .customer-account-edit {
+        .form-edit-account {
+            .lib-vendor-prefix-flex-direction(column-reverse);
         }
     }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
     .customer-account-edit, .customer-address-form {
-        .page-description {
-            display: none;
-        }
+        //.page-description {
+        //    display: none;
+        //}
 
         .actions-toolbar {
             .action {
@@ -186,6 +236,37 @@
 
                     &:hover {
                         border-color: @primary-color;
+                    }
+                }
+            }
+        }
+    }
+
+    .customer-account-edit {
+        .form-edit-account {
+            .fieldset {
+                &.info {
+                    flex: 1;
+                }
+
+                &.field-name-avatar {
+                    .avatar-file-upload {
+                        border: 1px solid #E0E6EC;
+                        border-radius: 2px;
+                        padding: 9px 22px 5px;
+                        font-size: 12px;
+                        line-height: 20px;
+                        font-weight: 500;
+                        color: #8F9AA5;
+                        text-transform: uppercase;
+                        margin-top: 18px;
+                        display: block;
+                        cursor: pointer;
+
+                        &:hover {
+                            color: @primary-color;
+                            border-color: @primary-color;
+                        }
                     }
                 }
             }
@@ -207,8 +288,57 @@
         }
     }
 
+    .customer-account-edit {
+        .form-edit-account {
+            .fieldset {
+                &.field-name-avatar {
+                    position: relative;
+                    margin-bottom: 20px;
+
+                    .avatar-file-upload {
+                        font-size: 0;
+                        color: transparent;
+                        background-color: rgba(255, 255, 255, 0.57);
+                        position: absolute;
+                        width: 120px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        top: 90px;
+                        height: 30px;
+                        .lib-vendor-prefix-display(flex);
+                        .lib-vendor-box-align(center);
+                        justify-content: center;
+                        -webkit-align-content: center;
+
+                        &:before {
+                            content: '';
+                            background-image: url("data:image/svg+xml,%3Csvg fill='%2334373D' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3C!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --%3E%3Cpath d='M194.6 32H317.4C338.1 32 356.4 45.22 362.9 64.82L373.3 96H448C483.3 96 512 124.7 512 160V416C512 451.3 483.3 480 448 480H64C28.65 480 0 451.3 0 416V160C0 124.7 28.65 96 64 96H138.7L149.1 64.82C155.6 45.22 173.9 32 194.6 32H194.6zM256 384C309 384 352 341 352 288C352 234.1 309 192 256 192C202.1 192 160 234.1 160 288C160 341 202.1 384 256 384z'/%3E%3C/svg%3E");
+                            width: 14px;
+                            height: 12px;
+                            background-position: center;
+                            background-size: cover;
+                            display: block;
+                        }
+                    }
+                }
+
+                > .field {
+                    margin: 0 0 20px;
+                }
+            }
+        }
+
+        .actions-toolbar {
+            .lib-vendor-prefix-flex-direction(column);
+
+            > div {
+                width: 100%;
+            }
+        }
+    }
+
     @media (max-width: 479px) {
-        .customer-account-edit, .customer-address-form {
+        .customer-address-form {
             .actions-toolbar {
                 > .primary, > .secondary {
                     width: 50%;

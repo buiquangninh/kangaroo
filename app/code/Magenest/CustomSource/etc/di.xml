@@ -19,4 +19,20 @@
 
     <preference for="Magento\CatalogInventory\Model\Quote\Item\QuantityValidator"
                 type="Magenest\CustomSource\Plugin\QuantityValidatorByArea"/>
+    <preference for="Magento\InventoryIndexer\Indexer\IndexStructure"
+                type="Magenest\CustomSource\Indexer\IndexStructureWithArea"/>
+    <preference for="Magento\InventoryIndexer\Indexer\SelectBuilder"
+                type="Magenest\CustomSource\Indexer\SelectBuilderWithArea"/>
+    <preference for="Magento\InventoryIndexer\Indexer\IndexHandler"
+                type="Magenest\CustomSource\Indexer\IndexHandlerWithArea"/>
+    <preference for="Magento\InventoryConfigurableProductIndexer\Indexer\SelectBuilder"
+                type="Magenest\CustomSource\Indexer\Configurable\SelectBuilderWithArea"/>
+    <type name="Magento\InventoryCatalog\Model\ResourceModel\AddStockDataToCollection">
+        <plugin name="add_area_code_filter"
+                type="Magenest\CustomSource\Plugin\AddAreaCodeFilter" sortOrder="10"/>
+    </type>
+    <preference for="Magento\InventoryBundleProductIndexer\Indexer\SelectBuilder"
+                type="Magenest\CustomSource\Indexer\Bundle\SelectBuilderWithArea"/>
+    <preference for="Magento\InventoryGroupedProductIndexer\Indexer\SelectBuilder"
+                type="Magenest\CustomSource\Indexer\Grouped\SelectBuilderWithArea"/>
 </config>

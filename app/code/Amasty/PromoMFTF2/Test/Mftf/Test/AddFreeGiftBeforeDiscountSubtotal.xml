@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AddFreeGiftBeforeDiscountSubtotal" extends="OneByOneNotAddProductAutomatically">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Add Free Gift Before Discount Subtotal"/>
+            <description value="Check Add Free Gift Before Discount Subtotal"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-05"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoConfiguration"/>
+        </annotations>
+
+        <before>
+            <remove keyForRemoval="createThirdProduct"/>
+            <createData entity="SimpleProductByWayfarerMessenger" stepKey="createFirstProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createPromoCartRule">
+                <argument name="promoCartRule" value="ruleAddGiftBeforeDiscount"/>
+                <argument name="promoItems" value="$$createSecondProduct.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminChangePriorityPromoCartRuleActionGroup" stepKey="changePriorityFirstRule">
+                <argument name="cartRuleName" value="ruleAddGiftBeforeDiscount.name"/>
+                <argument name="priority" value="ruleAddGiftBeforeDiscount.priority"/>
+            </actionGroup>
+            <actionGroup ref="AdminCreateCartPriceRuleActionGroup" stepKey="createDefaultCartPriceRule">
+                <argument name="ruleName" value="defaultCartPriceRuleDiscountWhole10"/>
+            </actionGroup>
+        </before>
+        <after>
+            <remove keyForRemoval="deleteThirdProduct"/>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deleteCartPriceRule">
+                <argument name="ruleName" value="{{ruleAddGiftBeforeDiscount.name}}"/>
+            </actionGroup>
+            <actionGroup ref="DeleteCartPriceRuleByName" after="deleteCartPriceRule" stepKey="deleteSecondCartPriceRule">
+                <argument name="ruleName" value="{{defaultCartPriceRuleDiscountWhole10.name}}"/>
+            </actionGroup>
+        </after>
+
+        <remove keyForRemoval="assertNotFreeGiftInCartFirst"/>
+        <remove keyForRemoval="assertNotFreeGiftInCartSecond"/>
+        <remove keyForRemoval="addFreeGiftSecond"/>
+        <remove keyForRemoval="assertAddedFreeGiftToCartSecond"/>
+        <actionGroup ref="AddCreatedProductToCart" stepKey="addProductToCart">
+            <argument name="product" value="$$createFirstProduct$$"/>
+            <argument name="valueQty" value="_enterQty2"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontCheckCartDiscountAmount" after="addProductToCart" stepKey="checkDiscountAmount">
+            <argument name="discountAmount" value="promoAddGiftBeforeDiscount.discountAmount"/>
+        </actionGroup>
+    </test>
+</tests>

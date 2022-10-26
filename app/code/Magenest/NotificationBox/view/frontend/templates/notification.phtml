@@ -2,10 +2,11 @@
 /** @var  $block \Magenest\NotificationBox\Block\Notification\Notification */
 /** show icon notification when customer is login */
 ?>
-<div class="notificationBox" data-bind="scope: 'notificationBox'" hidden>
-    <div class="magenest-notification" data-bind="visible: visibleNotificationBox">
-        <span class="magenest-notification-icon" ><img src="<?=$block->getViewFileUrl('Magenest_NotificationBox::image/noti.png');?>" alt=""></span>
-        <span class="magenest-notification-count" data-bind="text: totalNotificationUnread"></span>
+<div class="notificationBox" data-bind="scope: 'notificationBox'">
+    <div class="magenest-notification">
+        <span class="magenest-notification-icon"></span>
+        <span class="magenest-notification-text"><?= __('Notify') ?></span>
+        <span class="notification-dots" style="display: none"></span>
         <div >
             <!-- ko template: getTemplate() --><!-- /ko -->
         </div>

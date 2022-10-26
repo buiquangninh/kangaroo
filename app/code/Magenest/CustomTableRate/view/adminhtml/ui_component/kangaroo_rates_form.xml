@@ -86,7 +86,7 @@
                 </select>
             </formElements>
         </field>
-        <field name="city_id" component="Magenest_Directory/js/form/element/city" sortOrder="20" formElement="select" >
+        <field name="city_id" component="Magenest_AdditionalRegisterForm/js/city" sortOrder="20" formElement="select" >
             <settings>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -106,7 +106,7 @@
                 </select>
             </formElements>
         </field>
-        <field name="district_id" component="Magenest_Directory/js/form/element/district" sortOrder="30" formElement="select" >
+        <field name="district_id" component="Magenest_AdditionalRegisterForm/js/district" sortOrder="30" formElement="select" >
             <settings>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>

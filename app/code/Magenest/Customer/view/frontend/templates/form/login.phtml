@@ -98,7 +98,10 @@ $scriptString = <<<script
                 $(this).removeClass('show');
                 input.attr('type', 'password');
             }
-        })
+        });
+        $('input#email').on('keyup', function () {
+            $(this).val($(this).val().toLowerCase());
+        });
     });
 script;
 ?>

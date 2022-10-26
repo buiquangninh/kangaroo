@@ -190,6 +190,10 @@
                 <width>240</width>
                 <height>300</height>
             </image>
+            <image id="product_detail_free_gift" type="thumbnail">
+                <width>200</width>
+                <height>200</height>
+            </image>
         </images>
     </media>
     <vars module="Magento_Catalog">
@@ -222,7 +226,7 @@
                     <var name="duration">500</var> <!-- Sets transition duration in ms -->
                 </var>
             </var>
-            
+
 
             <var name="thumbmargin">6</var>
         </var>

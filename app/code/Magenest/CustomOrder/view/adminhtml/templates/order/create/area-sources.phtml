@@ -1,0 +1,36 @@
+<?php
+/** @var \Magenest\CustomSource\Helper\Data $helper */
+$helper = $this->helper(Magenest\CustomSource\Helper\Data::class);
+?>
+<div class="admin__field field field-order_source  required _required" style="margin-bottom: 15px">
+    <label class="label admin__field-label" for="area_source"><span><?= __('Order Area') ?></span></label>
+    <div class="admin__field-control control">
+        <select id="area_source" name="area_source" class="required-entry required-entry _required select admin__control-select" aria-required="true">
+            <?php foreach ($helper->getAreaData() as $area): ?>
+                <option value="<?= $area['area_code'] ?>" <?= $area['area_code'] == $helper->getCurrentArea() ? 'selected' : '' ?>><?= $area['area_label'] ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+</div>
+<script type="text/javascript">
+    require(['jquery','mage/cookies'], function ($jq) {
+        $jq(document).on('change', '#area_source', function () {
+            let url = "<?= $block->getUrl("customsource/order/assignorderarea") ?>";
+            // use ajax function to save the data
+            $jq.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    area_code: $jq(this).val(),
+                },
+                showLoader: true,
+                complete: function(response) {
+                },
+                error: function (xhr, status, errorThrown) {
+                    console.log('Error happens. Try again.');
+                }
+            });
+        });
+    })
+</script>

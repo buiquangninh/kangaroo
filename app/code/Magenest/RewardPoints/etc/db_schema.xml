@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="salesrule" resource="sales" engine="innodb" comment="Sales Order">
+        <column xsi:type="int" name="kpoint" nullable="true"  comment="KPoint"/>
+        <column xsi:type="smallint" name="is_reward_point" unsigned="false" nullable="false" identity="false"
+                default="0" comment="Is Reward Point"/>
+    </table>
+    <table name="magenest_rewardpoints_rule" resource="sales" engine="innodb" comment="">
+        <column xsi:type="text" name="customer_segment_group_ids" nullable="true" comment="Customer Segment Group Ids"/>
+        <column xsi:type="text" name="membership_group_ids" nullable="true" comment="Membership Group Ids"/>
+        <column xsi:type="int" name="sort_order" nullable="true"  comment="Rule Priority"/>
+        <column xsi:type="boolean" name="stop_rules_processing" nullable="true" comment="Rule Discard Subsequent Rules"/>
+        <column xsi:type="text" name="rewardpoint_img" nullable="true" comment="RewardPoint Rule Img"/>
+    </table>
+    <table name="magenest_rewardpoints_transaction" resource="sales" engine="innodb" comment="">
+        <column xsi:type="text" name="rewardpoint_img" nullable="true" comment="RewardPoint Rule Img"/>
+    </table>
+</schema>

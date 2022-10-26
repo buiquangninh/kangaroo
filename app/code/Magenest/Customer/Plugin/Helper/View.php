@@ -56,10 +56,15 @@ class View
      * @param CustomerInterface $customerData
      * @return array|mixed|string
      */
-    public function afterGetCustomerName(\Magento\Customer\Helper\View $subject, $result, CustomerInterface $customerData)
-    {
+    public function afterGetCustomerName(
+        \Magento\Customer\Helper\View $subject,
+        $result,
+        CustomerInterface $customerData
+    ) {
         try {
-            if ($this->configHelper->isEnabledFullNameInstead()) {
+            if ($this->configHelper->isEnabledFullNameInstead()
+                && $customerData->getCustomAttribute('fullname')
+                && $customerData->getCustomAttribute('fullname')->getValue()) {
                 $fullName =  $customerData->getCustomAttribute('fullname')->getValue();
                 return $this->escaper->escapeHtml($fullName);
             }

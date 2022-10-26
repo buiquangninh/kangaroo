@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="magenest_affiliate_group" engine="innodb" comment="Magenest Affiliate Group">
+        <column name="approval_time" nullable="true" xsi:type="text" comment="approval time"/>
+        <column name="revenue_to_reach" nullable="true" xsi:type="decimal" comment="revenue to reach" scale="4" precision="25"/>
+        <column name="revenue_to_keep" nullable="true" xsi:type="decimal" comment="revenue to keep" scale="4" precision="25"/>
+        <column name="qty_order" nullable="true" xsi:type="int" comment="Qty Order" />
+        <column name="additional_reward_by_revenue" nullable="true" xsi:type="int" comment="additional reward by revenue" />
+        <column name="reward_value" nullable="true" xsi:type="decimal" comment="reward value" scale="2" precision="10"/>
+    </table>
+</schema>

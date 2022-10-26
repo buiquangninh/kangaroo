@@ -24,16 +24,22 @@ class ViewOrder
     /** @var Registry */
     private $registry;
 
+    /** @var \Magento\Framework\AuthorizationInterface */
+    private $_authorization;
+
     /**
      * @param Registry $registry
      * @param SerializerInterface $serializer
      */
     public function __construct(
         Registry            $registry,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        \Magento\Framework\AuthorizationInterface $_authorization
+
     ) {
         $this->registry   = $registry;
         $this->serializer = $serializer;
+        $this->_authorization = $_authorization;
     }
 
     /**
@@ -50,7 +56,7 @@ class ViewOrder
         $this->handleConfirmButton($subject, $order);
         $this->handleResyncButton($subject, $order);
         $this->handleCompleteButton($subject, $order);
-
+//        $this->handleCompleteSupportButton($subject,$order);
         return [$layout];
     }
 
@@ -133,19 +139,19 @@ class ViewOrder
      */
     protected function handleCompleteButton(View $subject, Order $order)
     {
-        if ($this->checkComplete($order)) {
+        if ($this->checkComplete($order) && $this->_isAllowedAction('Magenest_FastErp::order_completesupport')) {
             $onclickJs = 'jQuery(\'#order_complete_btn\').orderResyncDialog({message: \''
                 . $this->getCompleteMessage() . '\', url: \'' . $subject->getUrl(
-                    'fasterp/order/complete',
+                    'fasterp/order/completesupport',
                     ['order_id' => $order->getEntityId()]
                 )
-                . '\', title: \'Mark As Complete'
+                . '\', title: \'Mark As Complete Support'
                 . '\'}).orderResyncDialog(\'showDialog\');';
 
             $subject->addButton(
                 'order_complete_btn',
                 [
-                    'label'          => __('Complete'),
+                    'label'          => __('Complete Support'),
                     'class'          => 'edit primary',
                     'id'             => 'order_complete_btn',
                     'onclick'        => $onclickJs,
@@ -157,6 +163,38 @@ class ViewOrder
         }
     }
 
+
+    /**
+     * @param View $subject
+     * @param Order $order
+     *
+     * @return void
+     */
+    protected function handleCompleteSupportButton(View $subject, Order $order)
+    {
+        if ($this->checkDeliveried($order) && $this->_isAllowedAction('Magenest_FastErp::order_completesupport')) {
+            $onclickJs = 'jQuery(\'#order_complete_btn\').orderResyncDialog({message: \''
+                . $this->getCompleteSupportMessage() . '\', url: \'' . $subject->getUrl(
+                    'fasterp/order/completesupport',
+                    ['order_id' => $order->getEntityId()]
+                )
+                . '\', title: \'Mark As Complete Support'
+                . '\'}).orderResyncDialog(\'showDialog\');';
+
+            $subject->addButton(
+                'order_complete_btn',
+                [
+                    'label'          => __('Complete Support'),
+                    'class'          => 'edit primary',
+                    'id'             => 'order_complete_btn',
+                    'onclick'        => $onclickJs,
+                    'data_attribute' => [
+                        'mage-init' => '{"orderResyncDialog":{}}',
+                    ]
+                ]
+            );
+        }
+    }
     /**
      * @param Order $order
      *
@@ -204,10 +242,30 @@ class ViewOrder
     }
 
     /**
+     * @param Order $order
+     *
+     * @return bool
+     */
+    private function checkDeliveried(Order $order)
+    {
+        return ($order->getStatus() == Order::STATE_COMPLETE);
+    }
+    /**
+     * @return \Magento\Framework\Phrase|string
+     */
+    private function getCompleteSupportMessage()
+    {
+        return __('This will change the order status to "Complete Support". Are you sure?');
+    }
+    /**
      * @return \Magento\Framework\Phrase|string
      */
     private function getCompleteMessage()
     {
         return __('This will change the order status to "Complete". Are you sure?');
+    }
+    private function _isAllowedAction($resourceId)
+    {
+        return $this->_authorization->isAllowed($resourceId);
     }
 }

@@ -16,4 +16,7 @@
     <event name="sales_quote_address_collect_totals_before">
         <observer name="add_data_to_address" instance="Magenest\Directory\Observer\AddDataToAddress"/>
     </event>
+    <event name="sales_order_address_save_before">
+        <observer name="normalize_address_directory" instance="Magenest\Directory\Observer\NormalizeAddressDirectory"/>
+    </event>
 </config>

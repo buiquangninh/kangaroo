@@ -49,40 +49,41 @@ if ($coupon->getSize() != 0) {
     $count = count($coupon); ?>
     <div class="coupon-list">
         <?php foreach ($coupon as $value) { ?>
-            <div class="coupon-item">
-                <div class="container_coupon">
-                    <?php
-                    if (!empty($value->getData('images'))) {
-                        $images = $viewModel->handleImage($value->getData('images'));
-                    } else {
-                        $images = $block->getViewFileUrl('Magenest_CouponCode::image/default-coupon.png');
-                    } ?>
-                    <img class="coupon-image" src="<?= $block->escapeHtml($images); ?>"
-                         alt="coupon"/>
-                    <div class="information_mycoupon">
-                        <strong><?= $escaper->escapeHtml($block->getTitleHtmlOfCoupon($value), ['span']) ?></strong>
+                <div class="coupon-item">
+                    <div class="container_coupon">
                         <?php
-                        if ($today < strtotime($value->getData('to_date')) + 86400) { ?>
-                            <div class="exp-coupon">
-                                <?= $block->escapeHtml(__('Exp: ') . $block->formatDate($value->getData('to_date'))); ?>
-                            </div>
-                        <?php } elseif ($value->getData('to_date') != null) { ?>
-                            <div class="exp-coupon">
-                                <?= $block->escapeHtml( __('Out of date') )?>
-                            </div>
-                        <?php } else { ?>
-                            <div class="exp-coupon"><?= $block->escapeHtml(__('Exp: ')) .
-                                $block->escapeHtml(__('Unlimited')); ?>
-                            </div>
-                        <?php } ?>
-                    </div>
-                    <div class="information-condition">
-                        <a href="<?= $escaper->escapeUrl($block->getUrl("voucher/details", ['ruleId' => $value->getRuleId(), 'evcode' => $value->getCode()])) ?>" target="_blank">
-                            <?= $escaper->escapeHtml(__('Condition')) ?>
-                        </a>
+                        if (!empty($value->getData('images'))) {
+                            $images = $viewModel->handleImage($value->getData('images'));
+                        } else {
+                            $images = $block->getViewFileUrl('Magenest_CouponCode::image/default-coupon.png');
+                        } ?>
+                        <img class="coupon-image" src="<?= $block->escapeHtml($images); ?>"
+                             alt="coupon"/>
+                        <div class="information_mycoupon">
+                            <strong><?= $escaper->escapeHtml($block->getTitleHtmlOfCoupon($value), ['span']) ?></strong>
+                            <?php
+                            if ($today < strtotime($value->getData('to_date')) + 86400) { ?>
+                                <div class="exp-coupon">
+                                    <?= $block->escapeHtml(__('Exp: ') . $block->formatDate($value->getData('to_date'))); ?>
+                                </div>
+                            <?php } elseif ($value->getData('to_date') != null) { ?>
+                                <div class="exp-coupon">
+                                    <?= $block->escapeHtml(__('Out of date')) ?>
+                                </div>
+                            <?php } else { ?>
+                                <div class="exp-coupon"><?= $block->escapeHtml(__('Exp: ')) .
+                                    $block->escapeHtml(__('Unlimited')); ?>
+                                </div>
+                            <?php } ?>
+                        </div>
+                        <div class="information-condition">
+                            <a href="<?= $escaper->escapeUrl($block->getUrl("voucher/details", ['ruleId' => $value->getRuleId(), 'evcode' => $value->getCode()])) ?>"
+                               target="_blank">
+                                <?= $escaper->escapeHtml(__('Condition')) ?>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
         <?php } ?>
     </div>
     <?php if ($count % 2 == 1) { ?>

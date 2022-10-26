@@ -117,13 +117,13 @@ class SalesCreditmemoSaveAfter implements ObserverInterface
             }
         }
 
-        $data = $this->request->getPost('mpstorecredit');
+        $data = $this->request->getPost('mpstorecredit') ?? $creditmemo->getMpStoreCredit();
 
         /** Refund store credit from order */
         if (($this->helper->isAllowRefundSpending($storeId) && !empty($data['refund_credit']))
             || ($this->helper->isAllowRefundExchange($storeId) && !empty($data['refund_exchange']))
         ) {
-            $credit = isset($data['refund_exchange_amount']) ? $data['refund_exchange_amount'] : $creditmemo->getMpStoreCreditBaseDiscount();
+            $credit = $data['refund_exchange_amount'] ?? $creditmemo->getMpStoreCreditBaseDiscount();
             if ($credit > 0.0001) {
                 try {
                     $this->helper->addTransaction(

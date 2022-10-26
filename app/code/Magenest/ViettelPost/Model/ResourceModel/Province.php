@@ -17,16 +17,15 @@ class Province extends AbstractDb
     }
 
     /**
-     * @param $name
+     * @param $code
      * @return string
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function searchProvinceCode($name)
+    public function searchProvinceCode($code)
     {
         $select = $this->getConnection()->select()
             ->from(["main_table" => $this->getMainTable()], ['province_id'])
-            ->where("`province_name` LIKE \"%$name%\"")
-            ->order('province_name ASC');
+            ->where("`province_code` = \"$code\"");
         return $this->getConnection()->fetchOne($select);
     }
 }

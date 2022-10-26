@@ -5,5 +5,5 @@
     <type name="Magento\SalesRule\Model\Rule\DataProvider">
         <plugin name="HandleImages" type="Magenest\CouponCode\Plugin\Images" sortOrder="1"/>
     </type>
-    <preference for="Magento\SalesRule\Model\RulesApplier" type="Magenest\CouponCode\Model\OriginalPriceApplier"/>
+    <preference for="Magenest\CustomizeSalesRules\Model\Validator" type="Magenest\CouponCode\Model\Validator"/>
 </config>

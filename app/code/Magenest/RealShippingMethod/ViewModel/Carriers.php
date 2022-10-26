@@ -5,6 +5,7 @@ namespace Magenest\RealShippingMethod\ViewModel;
 use Magenest\API247\Model\API247Post;
 use Magenest\API247\Model\Carrier\API247;
 use Magenest\GiaoHangTietKiem\Model\Carrier\GiaoHangTietKiem;
+use Magenest\LalaMove\Model\Carrier\LalaMove;
 use Magenest\SelfDelivery\Model\Carrier\SelfDelivery;
 use Magenest\ViettelPostCarrier\Model\Carrier\ViettelPost;
 use Magento\Framework\App\RequestInterface;
@@ -70,7 +71,7 @@ class Carriers implements ArgumentInterface
         $carriers[''] = __('--Please select--');
         $carrierInstances = $this->shippingConfig->getAllCarriers($storeId);
         foreach ($carrierInstances as $code => $carrier) {
-            if ($code == GiaoHangTietKiem::CODE || $code == ViettelPost::CODE || $code === API247::CODE) {
+            if ($code == GiaoHangTietKiem::CODE || $code == ViettelPost::CODE || $code === API247::CODE || $code == LalaMove::CODE) {
                 $carriers[$code] = $carrier->getConfigData('title');
             }
         }
@@ -111,7 +112,7 @@ class Carriers implements ArgumentInterface
                 in_array($code, $sourceAllow)
             ) {
                 $result[$code] = "$name: $ward, $district, $city";
-                if ($source->getErpSourceCode() === 'VU177') {
+                if ($source->getErpSourceCode() === 'VU157') {
                     $this->existsVU157InSource[$code] = true;
                 }
             }
@@ -152,7 +153,7 @@ class Carriers implements ArgumentInterface
     public function isExistVU157($sourceCode)
     {
         if ($sourceCode && isset($this->existsVU157InSource[$sourceCode])) {
-            return true;
+            return false;
         }
 
         return false;

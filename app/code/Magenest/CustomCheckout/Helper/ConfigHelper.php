@@ -18,6 +18,8 @@ use \Magento\Framework\UrlInterface;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magenest\PaymentEPay\Api\Data\HandlePaymentInterface;
 use Magento\Framework\Stdlib\CookieManagerInterface;
+use Magento\Catalog\Api\ProductRepositoryInterfaceFactory;
+use Magento\Catalog\Helper\Image;
 
 /**
  * Class ConfigHelper
@@ -77,6 +79,10 @@ class ConfigHelper extends AbstractHelper
 
     protected $sessionManager;
 
+    protected $productRepositoryInterface;
+
+    protected $image;
+
     /**
      * @param RedirectFactory $redirectFactory
      * @param Context $context
@@ -94,9 +100,13 @@ class ConfigHelper extends AbstractHelper
         HandlePaymentInterface $handlePaymentInterface,
         CookieManagerInterface $cookieManager,
         \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory,
+        ProductRepositoryInterfaceFactory $productRepositoryInterface,
         \Magento\Framework\Session\SessionManagerInterface $sessionManager,
+        Image $image,
         Context $context
     ) {
+        $this->image = $image;
+        $this->productRepositoryInterface = $productRepositoryInterface;
         $this->handlePaymentInterface = $handlePaymentInterface;
         $this->serializer = $serializer;
         $this->hashParamResourceModel = $hashParamResourceModel;
@@ -199,5 +209,14 @@ class ConfigHelper extends AbstractHelper
     public function getQrCodeCookie()
     {
         return $this->cookieManager->getCookie('qrCode');
+    }
+
+    public function getProductRepositoryFactory() {
+
+        return $this->productRepositoryInterface;
+    }
+
+    public function getImageHelper() {
+        return $this->image;
     }
 }

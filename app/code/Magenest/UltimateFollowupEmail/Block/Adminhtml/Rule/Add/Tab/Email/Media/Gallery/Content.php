@@ -65,21 +65,21 @@ class Content extends \Magento\Backend\Block\Widget
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
-        if(class_exists(\Magento\Backend\Block\DataProviders\ImageUploadConfig::class)){
+        if (class_exists(\Magento\Backend\Block\DataProviders\ImageUploadConfig::class)) {
             $imageUploadConfigDataProvider = $objectManager->get(\Magento\Backend\Block\DataProviders\ImageUploadConfig::class);
             $this->addChild(
                 'uploader',
                 \Magento\Backend\Block\Media\Uploader::class,
                 ['image_upload_config_data' => $imageUploadConfigDataProvider]
             );
-        }elseif (class_exists(\Magento\Backend\Block\DataProviders\UploadConfig::class)){
+        } elseif (class_exists(\Magento\Backend\Block\DataProviders\UploadConfig::class)) {
             $uploadConfigDataProvider = $objectManager->get(\Magento\Backend\Block\DataProviders\UploadConfig::class);
             $this->addChild(
                 'uploader',
                 \Magento\Backend\Block\Media\Uploader::class,
                 ['image_upload_config_data' => $uploadConfigDataProvider]
             );
-        }else{
+        } else {
             $this->addChild(
                 'uploader',
                 \Magento\Backend\Block\Media\Uploader::class
@@ -90,7 +90,7 @@ class Content extends \Magento\Backend\Block\Widget
 
         $this->getUploader()->getConfig()->setUrl(
             //  $this->_urlBuilder->addSessionParam()->getUrl('demo/media/upload')
-            $this->_urlBuilder->addSessionParam()->getUrl('ultimatefollowupemail/rule/upload')
+            $this->_urlBuilder->getUrl('ultimatefollowupemail/rule/upload')
         )->setFileField(
             'image'
         )->setFilters(

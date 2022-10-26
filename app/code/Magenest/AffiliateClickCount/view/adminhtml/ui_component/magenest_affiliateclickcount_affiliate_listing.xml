@@ -1,0 +1,74 @@
+<?xml version="1.0" ?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+	<argument name="data" xsi:type="array">
+		<item name="js_config" xsi:type="array">
+			<item name="provider" xsi:type="string">magenest_affiliateclickcount_affiliate_listing.magenest_affiliateclickcount_affiliate_listing_data_source</item>
+		</item>
+	</argument>
+	<settings>
+		<spinner>magenest_affiliateclickcount_affiliate_columns</spinner>
+		<deps>
+			<dep>magenest_affiliateclickcount_affiliate_listing.magenest_affiliateclickcount_affiliate_listing_data_source</dep>
+		</deps>
+	</settings>
+	<dataSource name="magenest_affiliateclickcount_affiliate_listing_data_source" component="Magento_Ui/js/grid/provider">
+		<settings>
+			<storageConfig>
+				<param name="indexField" xsi:type="string">affiliate_id</param>
+			</storageConfig>
+			<updateUrl path="mui/index/render"/>
+		</settings>
+		<aclResource>Magenest_AffiliateClickCount::Affiliate</aclResource>
+		<dataProvider name="magenest_affiliateclickcount_affiliate_listing_data_source" class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+			<settings>
+				<requestFieldName>id</requestFieldName>
+				<primaryFieldName>affiliate_id</primaryFieldName>
+			</settings>
+		</dataProvider>
+	</dataSource>
+	<listingToolbar name="listing_top">
+		<settings>
+			<sticky>true</sticky>
+		</settings>
+		<bookmark name="bookmarks"/>
+		<columnsControls name="columns_controls"/>
+		<filters name="listing_filters"/>
+		<paging name="listing_paging"/>
+	</listingToolbar>
+	<columns name="magenest_affiliateclickcount_affiliate_columns">
+		<selectionsColumn name="ids">
+			<settings>
+				<indexField>affiliate_id</indexField>
+			</settings>
+		</selectionsColumn>
+		<column name="affiliate_id">
+			<settings>
+				<filter>text</filter>
+				<sorting>asc</sorting>
+				<label translate="true">ID</label>
+			</settings>
+		</column>
+		<column name="customer_id" class="Magenest\AffiliateClickCount\Ui\Component\Listing\Column\Customer\GetCustomerName">
+			<settings>
+				<label translate="true">Customer Name</label>
+			</settings>
+		</column>
+		<column name="referal_url">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Refer Url</label>
+			</settings>
+		</column>
+        <column name="affiliate_code">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Affiliate Code</label>
+            </settings>
+        </column>
+        <column name="count" class="Magenest\AffiliateClickCount\Ui\Component\Listing\Column\Count\getCountReferalUrl">
+            <settings>
+                <label translate="true">Count Assign Link</label>
+            </settings>
+        </column>
+	</columns>
+</listing>

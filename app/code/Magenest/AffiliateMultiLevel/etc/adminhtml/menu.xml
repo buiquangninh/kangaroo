@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!--
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Magenest_AffiliateMultiLevel::report_CTV" title="Report CTV" module="Magenest_AffiliateMultiLevel" sortOrder="10" action="affiliatereportsctv/report" resource="Magenest_AffiliateMultiLevel::report_CTV" parent="Magenest_Affiliate::affiliate"/>
+    </menu>
+</config>

@@ -373,7 +373,7 @@ class ViettelPost extends AbstractCarrierOnline implements CarrierInterface
      */
     private function convertCityIdToViettelPost($id)
     {
-        return $this->provinceResource->searchProvinceCode($this->directoryProvinceResource->getShortNameById($id));
+        return $this->provinceResource->searchProvinceCode($this->directoryProvinceResource->getProvinceCodeWithId($id));
     }
 
     /**
@@ -436,7 +436,7 @@ class ViettelPost extends AbstractCarrierOnline implements CarrierInterface
             );
 
             $params = $this->getDeliveryParams($order, $sourceItem, $packagesWeight);
-            $viettelPostApi = $this->viettelPostApi->connect($order->getAreaCode() . "_" . self::CODE);
+            $viettelPostApi = $this->viettelPostApi->connect($sourceItem->getAreaCode() . "_" . self::CODE);
             $this->_logger->debug("VIETTELPOST ORDER REQUEST", ['request' => $this->serializer->serialize($params)]);
             $response = $viettelPostApi->createOrder($params);
             $this->_logger->debug(

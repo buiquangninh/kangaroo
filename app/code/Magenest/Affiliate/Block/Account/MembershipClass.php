@@ -17,9 +17,11 @@ use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template\Context;
-use Magenest\RewardPoints\Model\Membership;
+use Magenest\Affiliate\Model\Group;
+use Magenest\Affiliate\Model\ResourceModel\Account\CollectionFactory as AccountCollection;
 use \Magento\Sales\Model\ResourceModel\Order\CollectionFactory as SalesOrderCollection;
 use Magento\Framework\Pricing\Helper\Data as PriceData;
+use \Magento\Framework\App\Config\ScopeConfigInterface;
 
 /**
  * Class Refer
@@ -28,7 +30,7 @@ use Magento\Framework\Pricing\Helper\Data as PriceData;
 class MembershipClass extends Account
 {
     /**
-     * @var Membership
+     * @var Group
      */
     private $membership;
     /**
@@ -39,6 +41,14 @@ class MembershipClass extends Account
      * @var PriceData
      */
     private $priceHelper;
+    /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
+    /**
+     * @var AccountCollection
+     */
+    private $affiliateAccount;
     public function __construct(
         Context $context,
         Session $customerSession,
@@ -53,88 +63,100 @@ class MembershipClass extends Account
         AccountFactory $accountFactory,
         WithdrawFactory $withdrawFactory,
         TransactionFactory $transactionFactory,
-        Membership $membership,
+        Group $membership,
         SalesOrderCollection $collectionFactory,
         PriceData $priceHelper,
+        ScopeConfigInterface $scopeConfig,
+        AccountCollection $affiliateAccount,
         array $data = []
     ) {
+        $this->affiliateAccount = $affiliateAccount;
         $this->priceHelper = $priceHelper;
         $this->salesOrderCollectionFactory = $collectionFactory;
         $this->membership = $membership;
+        $this->scopeConfig = $scopeConfig;
         parent::__construct($context, $customerSession, $helperView, $affiliateHelper, $paymentHelper, $jsonHelper, $registry, $pricingHelper, $objectManager, $campaignFactory, $accountFactory, $withdrawFactory, $transactionFactory, $data);
     }
 
-    public function getCurrentMembershipRank($totalSales,$countTotalOrders) {
-        $membershipRank = [];
-        $membershipRankOnly = [];
-        $finalValue = [];
-        $collection = $this->membership->getCollection()->setOrder('condition_reach_tier_value', 'DESC')->getData();
-
-        foreach($collection as $data) {
-            $membershipRank[$data['name']] = [
-                'total_sales'  => $data['condition_reach_tier_value'],
-                'total_orders' => $data['added_value_amount']
-            ];
-        }
-
-        foreach ($membershipRank as $key => $value) {
-            if ($totalSales < $value['total_sales'] || $value['total_orders'] > $countTotalOrders) {
-                unset($membershipRank[$key]);
-            }
-        }
-
-        foreach ($membershipRank as $key => $value) {
-            $membershipRankOnly[$key] = $value["total_sales"];
-        }
-
-
-        if (!empty($membershipRankOnly)) {
-            $membershipRankKey = array_search(max($membershipRankOnly), $membershipRankOnly);
-
-            $membershipRankValue = max($membershipRankOnly);
-
-            $finalValue[$membershipRankKey] = $membershipRankValue;
-        }
-
-        return $finalValue;
+    public function getCurrentMembershipRank() {
+        $customer = $this->getCustomer();
+        $affiliateGroups = $this->affiliateAccount->create()
+            ->addFieldToFilter('customer_id', $customer->getId())
+            ->join(
+                ['mag' => 'magenest_affiliate_group'],
+                'main_table.group_id = mag.group_id',
+                ["mag.name"]
+            );
+        return $affiliateGroups->getData()[0];
     }
 
-    public function getConditionUpdateMembershipRank($totalSales, $countTotalOrders) {
-        $membershipRank = [];
-        $membershipRankOnly = [];
-        $finalValue = [];
-        $collection = $this->membership->getCollection()->setOrder('condition_reach_tier_value', 'ASC')->getData();
+    public function getConditionUpdateMembershipRank($currentRank) {
+        $allGroups = $this->membership->getCollection()->addFieldToFilter('revenue_to_reach', ['neq' => 'NULL'])
+            ->addFieldToFilter('revenue_to_keep', ['neq' => 'NULL'])
+            ->setOrder('revenue_to_reach','ASC')
+            ->getData();
+        $groups = [];
+        $revenueToReach = [];
+        $upgradeGroup = [];
 
-        foreach($collection as $data) {
-            $membershipRank[$data['name']] = [
-                'total_sales'  => $data['condition_reach_tier_value'],
-                'total_orders' => $data['added_value_amount']
-            ];
+        foreach ($allGroups as $key => $group) {
+            $groups[$key] = $group['name'];
+            $revenueToReach[$key] = $group['revenue_to_reach'];
         }
 
-        foreach ($membershipRank as $key => $value) {
-            if ($totalSales >= $value['total_sales'] && $value['total_orders'] <= $countTotalOrders) {
-                unset($membershipRank[$key]);
+        foreach ($groups as $key => $data) {
+            if ($data == $currentRank) {
+                if (isset($groups[$key + 1])) {
+                    $upgradeGroup[$groups[$key + 1]] = $revenueToReach[$key + 1];
+                } else {
+                    $upgradeGroup[$data] = $revenueToReach[$key];
+                }
+
             }
         }
+        if (empty($upgradeGroup)) {
+            $upgradeGroup[min($groups)] = $revenueToReach[array_search(min($groups), $groups)];
+        }
+        return $upgradeGroup;
+    }
 
-        foreach ($membershipRank as $key => $value) {
-            $membershipRankOnly[$key] = $value["total_sales"];
+    public function getUpgradeAffiliateGroupId($currentRankId) {
+        $allGroups = $this->membership->getCollection()->addFieldToFilter('revenue_to_reach', ['neq' => 'NULL'])
+            ->addFieldToFilter('revenue_to_keep', ['neq' => 'NULL'])
+            ->setOrder('revenue_to_reach','ASC')
+            ->getData();
+        $groups = [];
+        $upgradeGroup = "";
+
+        foreach ($allGroups as $key => $group) {
+            $groups[$key] =
+                [
+                    'name' => $group['name'],
+                    'group_id' => $group['group_id']
+                ];
         }
 
-        $membershipRankKey = array_search(min($membershipRankOnly),$membershipRankOnly);
+        foreach ($groups as $key => $data) {
+            if ($key == $currentRankId) {
+                if (isset($groups[$key + 1])) {
+                    $upgradeGroup = $key + 1;
+                } else {
+                    $upgradeGroup = $key;
+                }
 
-        $membershipRankValue = min($membershipRankOnly);
+            }
+        }
+        if (empty($upgradeGroup)) {
+            $upgradeGroup = $groups[array_search(min($groups), $groups)]['group_id'];
+        }
 
-        $finalValue[$membershipRankKey] = $membershipRankValue;
-
-        return $finalValue;
+        return $upgradeGroup;
     }
 
     public function getConditionTotalSalesOrderAmount($name) {
         $collection = $this->membership->getCollection()->addFieldToFilter('name', $name)->getLastItem();
 
-        return $collection->getData('added_value_amount');
+        return $collection->getData('qty_order') ?? 0;
     }
 
     public function getMembershipTotalSales() {
@@ -143,8 +165,50 @@ class MembershipClass extends Account
         $collection = $this->salesOrderCollectionFactory->create()
             ->addFieldToFilter('customer_id', $customer->getId());
 
+        $collection->getSelect()
+            ->reset('columns')
+            ->columns('COUNT(entity_id) as entity_id')
+            ->columns('SUM(subtotal) as subtotal')
+            ->group('customer_id');
+
+
+        $getAffiliateCommissionConfig = $this->scopeConfig->getValue('affiliate/commission/process/earn_commission_invoice');
+
+        if ($getAffiliateCommissionConfig == 1) {
+            $collection->getSelect()->where(new \Zend_Db_Expr('state = "complete" OR state = "processing"'));
+        } else {
+            $collection->getSelect()->where('state = ?', 'complete');
+        }
+
         return $collection;
     }
+
+    public function getMembershipTotalSalesCurrentRank($currentRank) {
+        $customer = $this->getCustomer();
+
+        $collection = $this->salesOrderCollectionFactory->create()
+            ->addFieldToFilter('customer_id', $customer->getId());
+        $affiliateGroupId = $this->getUpgradeAffiliateGroupId($currentRank);
+        $affiliateGroup = $this->membership->getCollection()->addFieldToFilter('group_id', $affiliateGroupId)->getLastItem();
+
+        $collection->getSelect()
+            ->reset('columns')
+            ->where('created_at >= "'. $affiliateGroup->getData()['created_at'] . '"')
+            ->columns('COUNT(entity_id) as entity_id')
+            ->columns('SUM(subtotal) as subtotal')
+            ->group('customer_id');
+
+        $getAffiliateCommissionConfig = $this->scopeConfig->getValue('affiliate/commission/process/earn_commission_invoice');
+
+        if ($getAffiliateCommissionConfig == 1) {
+            $collection->getSelect()->where(new \Zend_Db_Expr('state = "complete" OR state = "processing"'));
+        } else {
+            $collection->getSelect()->where('state = ?', 'complete');
+        }
+
+        return $collection;
+    }
+
     public function getFormatPrice($price) {
         return $this->pricingHelper->currency($price);
     }

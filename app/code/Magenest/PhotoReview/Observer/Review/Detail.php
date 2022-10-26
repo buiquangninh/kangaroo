@@ -184,8 +184,8 @@ class Detail implements ObserverInterface
                         $connect->insert($customReviewDetailTable, $data);
                     }
                     $isRequiredImages = (boolean)$this->_helperData->getScopeConfig(Data::REQUIRED_PHOTO);
-                    $images = $this->_request->getFiles('photo');
-                    $videos = $this->_request->getFiles('video');
+                    $images = $this->_request->getFiles('photo') ?? $this->_request->getFiles('photo_'. key($_FILES['photo']));
+                    $videos = $this->_request->getFiles('video') ?? $this->_request->getFiles('video_'. key($_FILES['video']));
                     $data = [];
                     $dataVideo = [];
                     if($images&&!empty($detailId)){

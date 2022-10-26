@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="AddGiftWithEachNProductInTheCartTest" extends="AutoAddPromoItemsForEveryXSpentTest">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Rule Add Gift With Each N Product In The Cart"/>
+            <description value="Check Rule Add Gift With Each N Product In The Cart"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-19"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoFreeGifts"/>
+        </annotations>
+
+        <before>
+            <createData entity="SimpleProductByWayfarerMessenger" stepKey="createFirstProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <createData entity="SimpleProductByBagImpulseDuffle" stepKey="createSecondProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createPromoCartRuleFirst">
+                <argument name="promoCartRule" value="ruleAddGiftWithEachNProductOnTheCart"/>
+                <argument name="promoItems" value="$$createThirdProduct.sku$$"/>
+            </actionGroup>
+        </before>
+        <after>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deletePromoCartRule">
+                <argument name="ruleName" value="{{ruleAddGiftWithEachNProductOnTheCart.name}}"/>
+            </actionGroup>
+        </after>
+
+        <actionGroup ref="StorefrontAssertProductOnCartActionGroup" stepKey="assertAddedFreeGiftToCartThird">
+            <argument name="product" value="$$createThirdProduct$$"/>
+        </actionGroup>
+    </test>
+</tests>

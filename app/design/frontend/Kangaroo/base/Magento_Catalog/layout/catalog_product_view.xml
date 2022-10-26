@@ -10,6 +10,9 @@
         <referenceContainer name="product.info.stock.sku">
             <block class="Magento\Framework\View\Element\Template" name="product.copy.link" template="Magento_Catalog::product/view/copy-link.phtml" />
         </referenceContainer>
+        <referenceContainer name="product.info.price">
+            <block class="Lof\FlashSales\Block\FlashSales\Product\CountDownTimer" name="product.flash.sale" template="Magento_Catalog::product/view/flash-sale.phtml" after="product.info.stock.sku" />
+        </referenceContainer>
 
         <referenceContainer name="product.info.main">
             <container name="product.info.main.bottom" htmlTag="div" htmlClass="product-shop-infos" after="-">
@@ -21,11 +24,13 @@
 
             </container>
 
-            <block class="Magento\Cms\Block\Block" name="block-discount-code" after="product.info.price">
+            <!-- <block class="Magento\Cms\Block\Block" name="block-discount-code" after="product.info.price">
                 <arguments>
                     <argument name="block_id" xsi:type="string">discount-code-product-detail</argument>
                 </arguments>
-            </block>
+            </block> -->
+
+            <block class="Magenest\CouponCode\Block\Product\CouponListing" name="block-discount-code" template="Magento_Catalog::product/view/discount-code.phtml" after="product.info.price" />
 
             <block class="Magento\Cms\Block\Block" name="block-shipping" after="block-discount-code">
                 <arguments>
@@ -71,6 +76,10 @@
                             <argument name="block_id" xsi:type="string">product-shipping-method-infos</argument>
                         </arguments>
                     </block>
+                </container>
+
+                <container name="product.free.gift.container" htmlTag="div" htmlClass="block-free-gift-container" >
+                    <block class="Amasty\BannersLite\Block\ProductBanner" name="product.free.gift" template="Magento_Catalog::product/view/free-gift.phtml"/>
                 </container>
 
                 <container name="product.page.mind.left"  htmlTag="div" htmlClass="product-page-mind-left">

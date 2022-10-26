@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="salesrule_rule_save_before">
+        <observer name="seasonal_prepare_save" instance="Magenest\SeasonalDiscount\Observer\ValidateSeasonalDiscount" />
+    </event>
+    <event name="catalogrule_rule_save_before">
+        <observer name="cataglog_seasonal_prepare_save" instance="Magenest\SeasonalDiscount\Observer\CatalogValidateSeasonalDiscount" />
+    </event>
+</config>

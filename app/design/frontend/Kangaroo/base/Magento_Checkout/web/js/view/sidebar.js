@@ -151,7 +151,7 @@ define([
                 item['extension_attributes'] &&
                 item['extension_attributes']['original_price'] &&
                 (item['price_excl_tax'] !== item['extension_attributes']['original_price']
-                || item['extension_attributes']['discount_price'] !== item['extension_attributes']['original_price']
+                || item['extension_attributes']['discount_price'] > 0 && item['extension_attributes']['discount_price'] !== item['extension_attributes']['original_price']
                 ); //eslint-disable-line
         },
 

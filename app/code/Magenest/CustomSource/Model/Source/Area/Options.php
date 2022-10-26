@@ -50,4 +50,15 @@ class Options implements OptionSourceInterface
 
         return $options;
     }
+
+    public function getValueArray()
+    {
+        $options = [];
+
+        foreach ($this->helperData->getAreaData() as $item) {
+            $options[] = $item[Area::COLUMN_AREA_CODE];
+        }
+
+        return $options;
+    }
 }

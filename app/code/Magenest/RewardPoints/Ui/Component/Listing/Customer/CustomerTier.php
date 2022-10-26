@@ -51,12 +51,12 @@ class CustomerTier extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 if ($this->getData('name') == 'customer_tier') {
-                    $tier = $this->_membershipAction->setCustomerId($item['entity_id'])->getTierByCustomerId();
-                    if ($tier->getId()) {
-                        $item[$this->getData('name')] = $tier->getData(MembershipInterface::GROUP_NAME);
-                    } else {
-                        $item[$this->getData('name')] = __('Not yet join');
-                    }
+//                    $tier = $this->_membershipAction->setCustomerId($item['entity_id'])->getTierByCustomerId();
+//                    if ($tier->getId()) {
+//                        $item[$this->getData('name')] = $tier->getData(MembershipInterface::GROUP_NAME);
+//                    } else {
+//                        $item[$this->getData('name')] = __('Not yet join');
+//                    }
                 }
             }
         }

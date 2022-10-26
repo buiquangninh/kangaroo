@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="magenest_preorder" translate="label" type="text" sortOrder="500" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Pre-Order</label>
+            <tab>magenest</tab>
+            <resource>Magenest_PreOrder::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="order_type" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Pre-order/Backorder</label>
+                    <source_model>Magenest\PreOrder\Model\System\Config\Source\OrderType</source_model>
+                </field>
+                <field id="add_to_cart_label" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Add to Cart Button Label</label>
+                </field>
+                <field id="stock_status_label" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Stock Status Label</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/PageObject.xsd">
+
+    <page name="AdminPromoConfigurationPage" url="/admin/system_config/edit/section/ampromo/" area="admin" module="Magento_Promo">
+        <section name="AdminConfigurationsPromoSection" />
+    </page>
+
+    <page name="AdminSalesRuleWizard" url="/amasty_promowizard/wizard/" area="admin" module="Magento_Promo">
+        <section name="AdminSalesRuleWizardSection"/>
+    </page>
+
+</pages>

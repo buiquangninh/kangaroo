@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+
+    <section name="StorefrontCheckoutSection">
+        <element name="PopUpForAddProductOnCheckout" type="button" selector="//div[@class='columns']//a[@data-role='ampromo-popup-show']"/>
+        <element name="OpenPopUpOnCheckout" type="block" selector="//div[@data-role='ampromo-overlay']"/>
+        <element name="PopUpProductsContainerOnCheckout" type="block" selector="//div[@class='ampromo-items-content']//div[@class='ampromo-carousel-product']"/>
+        <element name="MultipleProductCheckbox" type="input" parameterized="true" selector="//div[@data-product-sku='{{productSKU}}']//input[@type='checkbox']"/>
+        <element name="MultipleProductQty" type="input" parameterized="true" selector="//div[@data-product-sku='{{productSKU}}']//div[@class='ampromo-item-qty-input']/input"/>
+        <element name="OneByOneProduct" type="button" timeout="10" parameterized="true" selector="//div[@data-product-sku='{{productSKU}}']//button"/>
+    </section>
+</sections>

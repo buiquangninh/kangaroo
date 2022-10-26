@@ -87,6 +87,7 @@ define([
             $(this.options.telephoneContainerSelector).show();
             $(this.options.newPasswordContainerSelector).show();
             $(this.options.confirmPasswordContainerSelector).show();
+            $(this.options.currentPasswordSelector).show();
 
             $(this.options.currentPasswordSelector).attr('data-validate', '{required:true}').prop('disabled', false);
             $(this.options.emailSelector).attr('data-validate', '{required:true}').prop('disabled', false);
@@ -108,6 +109,7 @@ define([
             $(this.options.telephoneContainerSelector).hide();
             $(this.options.newPasswordContainerSelector).hide();
             $(this.options.confirmPasswordContainerSelector).hide();
+            $(this.options.currentPasswordSelector).hide();
 
             $(this.options.currentPasswordSelector).removeAttr('data-validate').prop('disabled', true);
             $(this.options.emailSelector).removeAttr('data-validate').prop('disabled', true);
@@ -142,6 +144,7 @@ define([
 
             $(this.options.emailContainerSelector).hide();
             $(this.options.telephoneContainerSelector).hide();
+            $(this.options.currentPasswordSelector).hide();
 
             $(this.options.emailSelector).removeAttr('data-validate').prop('disabled', true);
         },
@@ -157,6 +160,7 @@ define([
             $(this.options.emailContainerSelector).hide();
             $(this.options.newPasswordContainerSelector).hide();
             $(this.options.confirmPasswordContainerSelector).hide();
+            $(this.options.currentPasswordSelector).show();
 
             $(this.options.telephoneSelector).prop('disabled', false);
             $(this.options.emailSelector).removeAttr('data-validate').prop('disabled', true);

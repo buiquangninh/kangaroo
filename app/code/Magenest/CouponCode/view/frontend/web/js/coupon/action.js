@@ -23,21 +23,21 @@ define(['jquery',
                     }]
                 });
             },
-            claimCoupon: function (coupon, rule, user) {
+            claimCoupon: function (couponCode) {
                 var url = urlBuilder.build('voucher/coupon/claimajax');
-                var tmp = $('#claim' + rule );
+                var tmp = $('#claim ' + couponCode );
                 $.ajax({
                     url: url,
                     type: 'POST',
                     dataType: 'json',
                     data: {
-                        rule_id: rule,
-                        customer_id: user,
-                        coupon_id: coupon
+                        couponCode: couponCode,
                     },
                     success: function(response) {
                         if (response.success && response.success) {
                             tmp.removeClass('button-coupon-claim').addClass('button-coupon-claimed');
+                            tmp.attr('disabled', 'true');
+                            window.location.reload();
                         }
                     },
                     error: function (xhr, status, errorThrown) {

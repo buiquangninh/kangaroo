@@ -4,21 +4,19 @@
 /** @var Magenest\Affiliate\Block\Account\MembershipClass $block */
 
 $getMembershipTotalSales = $block->getMembershipTotalSales();
-$totalSales = 0;
-$countTotalOrders = 0;
+$totalSales = $getMembershipTotalSales->getLastItem()['subtotal'];
+$countTotalOrders = $getMembershipTotalSales->getLastItem()['entity_id'];
 
-foreach($getMembershipTotalSales as $data){
-    $totalSales += $data->getSubTotal();
-    $countTotalOrders++;
-}
-
-$getMembershipRank = $block->getCurrentMembershipRank($totalSales, $countTotalOrders);
-$getUpgradeMembershipRank = $block->getConditionUpdateMembershipRank($totalSales,$countTotalOrders);
+$getMembershipRank = $block->getCurrentMembershipRank();
+$getMembershipTotalSalesCurrentRank = $block->getMembershipTotalSalesCurrentRank($getMembershipRank['group_id'])->getLastItem()['subtotal'];
+$getUpgradeMembershipRank = $block->getConditionUpdateMembershipRank($getMembershipRank['name']);
 $getTotalSalesOrderToUpgrade = $block->getConditionTotalSalesOrderAmount(key($getUpgradeMembershipRank));
 
 $totalSalesInt = $totalSales;
 $totalSales = $block->getFormatPrice($totalSales);
 $customer = $block->getCustomer();
+
+$goalPoint = array_values($getUpgradeMembershipRank)[0] ?? 99999999999;
 
 ?>
 <div class="membership-class">
@@ -29,12 +27,11 @@ $customer = $block->getCustomer();
         <div class="current-rank-head">
             <div class="current-rank">
                 <span class="current-rank-label"><?= __('Membership class') ?></span>
-                <span class="current-rank-value"><?= key($getMembershipRank) ?? __('Not Rank'); ?></span>
+                <span class="current-rank-value"><?= $getMembershipRank['name'] ?? __('Not Rank'); ?></span>
             </div>
             <a href="#" class="membership-class-promotion-link gold"><span><?= __('Membership offers') ?></span></a>
         </div>
         <span class="total-label"><?= __('Your total sales') ?></span>
-        <!--@Todo: Get data full template-->
         <span class="price total-price">
             <?= $totalSales ?>
         </span>
@@ -47,7 +44,7 @@ $customer = $block->getCustomer();
     </div>
     <div class="block-up-rank">
         <div class="box-head">
-            <h2><?= __('To increase rank') ?> <?= key($getUpgradeMembershipRank); ?></h2>
+            <h2><?= __('To increase rank') ?> <?= key($getUpgradeMembershipRank) != $getMembershipRank['name'] ? key($getUpgradeMembershipRank): __("This is the highest rank"); ?></h2>
         </div>
         <div class="box-content">
             <div class="box-content-item box-sales">
@@ -56,7 +53,7 @@ $customer = $block->getCustomer();
                     <h3 class="box-content-title">
                         <?= __('Sales') ?>
                     </h3>
-                    <?php if(array_values($getUpgradeMembershipRank)[0] - $totalSalesInt > 0): ?>
+                    <?php if($goalPoint - $getMembershipTotalSalesCurrentRank > 0): ?>
                         <span class="status not-reached">
                             <?= __('Not reached') ?>
                         </span>
@@ -68,15 +65,15 @@ $customer = $block->getCustomer();
                 </div>
                 <p class="current-value">
                     <span class="current-value-number price">
-                        <?= $totalSales ?>
+                        <?= $block->getFormatPrice($getMembershipTotalSalesCurrentRank) ?? 0 ?>
                     </span>
                     /
-                    <span class="achieve-value-number"><?= $block->getFormatPrice(array_values($getUpgradeMembershipRank)[0]) ?></span>
+                    <span class="achieve-value-number"><?= $block->getFormatPrice($goalPoint) ?></span>
                 </p>
-                <?php if(array_values($getUpgradeMembershipRank)[0] - $totalSalesInt > 0): ?>
+                <?php if($goalPoint - $getMembershipTotalSalesCurrentRank > 0): ?>
                     <p class="box-content-desc">
                         <?= __('Selling an additional') ?>
-                        <span class="price"><?= $block->getFormatPrice(array_values($getUpgradeMembershipRank)[0] - $totalSalesInt) ?></span>
+                        <span class="price"><?= $block->getFormatPrice($goalPoint - $getMembershipTotalSalesCurrentRank) ?></span>
                         <?= __('to upgrade to') ?>
                         <?= key($getUpgradeMembershipRank); ?>
                     </p>

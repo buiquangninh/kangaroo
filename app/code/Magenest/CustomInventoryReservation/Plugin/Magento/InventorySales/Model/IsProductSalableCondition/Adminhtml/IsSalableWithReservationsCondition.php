@@ -85,6 +85,12 @@ class IsSalableWithReservationsCondition
         }
 
         $productType = $this->getProductTypesBySkus->execute([$sku])[$sku];
+        if (!isset($stockItemData[0])) {
+            $tmp = [];
+            $tmp[] = $stockItemData;
+            $stockItemData = $tmp;
+        }
+
         foreach ($stockItemData as $data) {
             if (isset($qtySpecificArea[$data['area_code']])) {
                 $qtySpecificArea[$data['area_code']] += $data["quantity"];

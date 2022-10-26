@@ -43,6 +43,7 @@ class Order
     const NEED_CONFIRM_REIMBURSEMENT_CODE = 'need_confirm_reimbursement';
     const REIMBURSED_CODE = 'reimbursed';
     const ORDER_COMPLETE_SHIPMENT = 'complete_shipment';
+    const ORDER_COMPLETE_SUPPORT = 'complete_support';
 
     /** @const Order status label */
     const WAIT_SUPPLIER_LABEL = 'Wait Supplier';

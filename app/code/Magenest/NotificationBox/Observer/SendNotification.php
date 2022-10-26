@@ -68,6 +68,8 @@ class SendNotification implements ObserverInterface
     /** @var Session */
     protected $checkoutSession;
 
+    protected $checkExist = false;
+
     /**
      * @param CustomerNotification $customerNotificationResource
      * @param Collection $tokenCollection
@@ -122,7 +124,7 @@ class SendNotification implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        if (!$this->helper->getEnableModule()) {
+        if (!$this->helper->getEnableModule() || $this->checkExist) {
             return;
         }
         /**
@@ -195,6 +197,7 @@ class SendNotification implements ObserverInterface
                         $tokenSent[] = $currentToken;
                     }
                 }
+                $this->checkExist = true;
             }
         } catch (Exception $e) {
             $this->logger->critical($e->getMessage());

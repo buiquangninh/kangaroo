@@ -2,12 +2,16 @@
 namespace Magenest\UltimateFollowupEmail\Observer\Order;
 
 use Magenest\UltimateFollowupEmail\Model\Processor\OrderProcessor;
-use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\App\ObjectManager;
 use Magento\Sales\Model\Order;
+use Psr\Log\LoggerInterface;
 
 class OrderProductReview extends StatusChange
 {
-
+    /**
+     * @param \Magento\Framework\Event\Observer $observer
+     * @return void
+     */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         try {
@@ -21,7 +25,7 @@ class OrderProductReview extends StatusChange
                 $orderProcessor->run();
             }
         } catch (\Exception $e) {
-            \Magento\Framework\App\ObjectManager::getInstance()->get(\Psr\Log\LoggerInterface::class)->debug($e->getMessage());
+            ObjectManager::getInstance()->get(LoggerInterface::class)->debug($e->getMessage());
         }
     }
 }

@@ -167,7 +167,7 @@ class LayoutProcessor implements LayoutProcessorInterface
                 'component' => 'Magenest_Directory/js/form/element/city',
                 'config' => [
                     // customScope is used to group elements within a single form (e.g. they can be validated separately)
-                    'customScope' => 'shippingAddress.city_id',
+                    'customScope' => 'shippingAddress',
                     'customEntry' => null,
                     'template' => 'ui/form/field',
                     'elementTmpl' => 'Magenest_Directory/checkout/shipping/directory',
@@ -196,7 +196,7 @@ class LayoutProcessor implements LayoutProcessorInterface
                 'component' => 'Magenest_Directory/js/form/element/district',
                 'config' => [
                     // customScope is used to group elements within a single form (e.g. they can be validated separately)
-                    'customScope' => 'shippingAddress.district',
+                    'customScope' => 'shippingAddress',
                     'customEntry' => null,
                     'template' => 'ui/form/field',
                     'elementTmpl' => 'Magenest_Directory/checkout/shipping/directory',
@@ -225,7 +225,7 @@ class LayoutProcessor implements LayoutProcessorInterface
                 'component' => 'Magenest_Directory/js/form/element/ward',
                 'config' => [
                     // customScope is used to group elements within a single form (e.g. they can be validated separately)
-                    'customScope' => 'shippingAddress.ward',
+                    'customScope' => 'shippingAddress',
                     'customEntry' => null,
                     'template' => 'ui/form/field',
                     'elementTmpl' => 'Magenest_Directory/checkout/shipping/directory',

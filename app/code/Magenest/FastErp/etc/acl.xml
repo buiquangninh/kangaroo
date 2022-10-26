@@ -12,8 +12,13 @@
                 <resource id="Magento_Sales::sales">
                     <resource id="Magento_Sales::sales_operation">
                         <resource id="Magento_Sales::sales_order">
-                            <resource id="Magenest_FastErp::order_confirm" title="Confirm Order" translate="title" sortOrder="10" />
-                            <resource id="Magenest_FastErp::erp_sync_order" title="Sync Order ERP" translate="title" sortOrder="20" />
+                            <resource id="Magento_Sales::actions">
+                                <resource id="Magenest_FastErp::order_confirm" title="Confirm Order" translate="title" sortOrder="10" />
+                                <resource id="Magenest_FastErp::erp_sync_order" title="Sync Order ERP" translate="title" sortOrder="20" />
+                                <resource id="Magenest_FastErp::order_complete" title="Complete Order" translate="title" sortOrder="30" />
+                                <resource id="Magenest_FastErp::order_completeshipment" title="Complete Shipment" translate="title" sortOrder="40" />
+                                <resource id="Magenest_FastErp::order_completesupport" title="Complete Support" translate="title" sortOrder="50" />
+                            </resource>
                         </resource>
                     </resource>
                 </resource>

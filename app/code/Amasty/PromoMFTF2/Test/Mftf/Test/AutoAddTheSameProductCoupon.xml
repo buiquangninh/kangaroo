@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AutoAddTheSameProductCoupon">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Auto add the same product with coupon"/>
+            <description value="Check Auto add the same product with coupon"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-16"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoFreeGifts"/>
+        </annotations>
+
+        <before>
+            <!-- Create Data Before Test -->
+            <createData entity="_defaultCategory" stepKey="createCategory"/>
+            <createData entity="SimpleProductByBagImpulseDuffle" stepKey="createFirstProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="LoginAsAdmin" stepKey="loginAsAdmin"/>
+            <actionGroup ref="AdminConfigPromoGeneralActionGroup" stepKey="settingGeneralPromoConfiguration"/>
+            <actionGroup ref="AdminConfigPromoMessagesActionGroup" stepKey="settingMessagePromoConfiguration"/>
+            <actionGroup ref="AdminCreatePromoCartRuleTheSameActionGroup" stepKey="createPromoCartRuleFirst">
+                <argument name="promoCartRule" value="ruleAutoAddTheSameProductCoupon"/>
+            </actionGroup>
+            <actionGroup ref="EditCartPriceRuleAddCouponCode" stepKey="editCartRule">
+                <argument name="cartRuleName" value="ruleAutoAddTheSameProductCoupon.name"/>
+                <argument name="couponCode" value="ruleAutoAddTheSameProductCoupon"/>
+            </actionGroup>
+        </before>
+        <after>
+            <!-- Delete Created Data After Test -->
+            <deleteData createDataKey="createCategory" stepKey="deleteCategory"/>
+            <deleteData createDataKey="createFirstProduct" stepKey="deleteFirstProduct"/>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deletePromoCartRule">
+                <argument name="ruleName" value="{{ruleAutoAddTheSameProductCoupon.name}}"/>
+            </actionGroup>
+            <actionGroup ref="logout" stepKey="amOnLogoutPage"/>
+        </after>
+
+        <!-- Add First Product to Cart and Assert Gift on Cart-->
+        <actionGroup ref="AddCreatedProductToCart" stepKey="addProductToCartFirst">
+            <argument name="product" value="$$createFirstProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNotSameGiftProductInCartActionGroup" stepKey="assertAddedGiftToCartFirst">
+            <argument name="productName" value="$$createFirstProduct.name$$"/>
+        </actionGroup>
+        <!-- Apply Coupon Code and Assert Gift on Cart-->
+        <actionGroup ref="StorefrontOpenCartAndApplyCoupon" stepKey="addCoupon">
+            <argument name="coupon" value="ruleAutoAddTheSameProductCoupon.code"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedGiftToCartAfterApplyCoupon">
+            <argument name="product" value="$$createFirstProduct$$"/>
+        </actionGroup>
+        <!--Change Qty Products on Cart and Assert PopUp-->
+        <actionGroup ref="StorefrontChangeQtyProductInCart" stepKey="changeQtyProductFirst">
+            <argument name="product" value="$$createFirstProduct$$"/>
+            <argument name="productQty" value="_enterQty3"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedGiftToCartSecond">
+            <argument name="product" value="$$createFirstProduct$$"/>
+            <argument name="productQty" value="_enterQty3"/>
+        </actionGroup>
+    </test>
+</tests>

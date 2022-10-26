@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+
+    <entity name="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Default Promo Cart Rule Name</data>
+        <data key="description">Default Promo Cart Rule Description</data>
+        <data key="websites">Main Website</data>
+        <data key="customers">'NOT LOGGED IN', 'General', 'Wholesale', 'Retailer'</data>
+        <data key="action">Auto add promo items with products</data>
+        <data key="numberOfGiftItems">1</data>
+        <data key="typeAddFreeGift">0</data>
+        <data key="maxQtyDiscount">0</data>
+        <data key="discountQtyStep">1</data>
+        <data key="discount">50%</data>
+        <data key="minimalPrice">0</data>
+    </entity>
+
+    <entity name="ruleOneByOneNotAddProductAutomatically" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check PopUp One By One and Not Add Product Automatically</data>
+    </entity>
+
+    <entity name="ruleMultipleOnlyFreeProductAutoFirst" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check PopUp Multiple and Add Only Free Product Automatically First</data>
+    </entity>
+
+    <entity name="ruleMultipleOnlyFreeProductAutoSecond" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check PopUp Multiple and Add Only Free Product Automatically Second</data>
+        <data key="numberOfGiftItems">2</data>
+    </entity>
+
+    <entity name="ruleAddAllProductsAutomaticallyFirst" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Add All Products Automatically First</data>
+    </entity>
+
+    <entity name="ruleAddAllProductsAutomaticallySecond" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Add All Products Automatically Second</data>
+        <data key="description">Check Add All Products Automatically Second</data>
+        <data key="numberOfGiftItems">2</data>
+    </entity>
+
+    <entity name="ruleOpenPopUpAutomatically" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Open PopUp Automatically</data>
+    </entity>
+
+    <entity name="ruleAddGiftBeforeDiscount" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Add Free Gift Before Discount Subtotal First</data>
+        <data key="action">Auto add promo items for every</data>
+        <data key="discountQtyStep">90</data>
+        <data key="priority">1</data>
+    </entity>
+
+    <entity name="ruleAddGiftAfterDiscount" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Add Free Gift After Discount Subtotal First</data>
+        <data key="action">Auto add promo items for every</data>
+        <data key="discountQtyStep">90</data>
+        <data key="priority">1</data>
+    </entity>
+
+    <entity name="ruleShowOriginalPriceFirst" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Setting Show Original Price In PopUp First</data>
+    </entity>
+
+    <entity name="ruleShowOriginalPriceSecond" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Setting Show Original Price In PopUp Second</data>
+        <data key="discount">60%</data>
+    </entity>
+
+    <entity name="ruleNotShowOriginalPriceFirst" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Setting Show Original Price In PopUp First</data>
+    </entity>
+
+    <entity name="ruleNotShowOriginalPriceSecond" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Setting Show Original Price In PopUp Second</data>
+        <data key="discount">60%</data>
+    </entity>
+
+    <entity name="ruleRemindedAboutAvailablePromos" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Setting Reminded About Available Promos</data>
+    </entity>
+
+    <entity name="ruleConfigurableFreeGiftOneOfTheSKUsBelow" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Add Configurable Free Gift And One Of The SKUs Below Add Type</data>
+        <data key="typeAddFreeGift">1</data>
+    </entity>
+
+    <entity name="ruleDiscardSubsequentRulesFirst" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Discard subsequent rules First</data>
+    </entity>
+
+    <entity name="ruleDiscardSubsequentRulesSecond" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Discard subsequent rules Second</data>
+    </entity>
+
+    <entity name="ruleAutoAddPromoItemsForTheWholeCart" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Auto add promo items for the whole cart</data>
+        <data key="action">Auto add promo items for the whole cart</data>
+        <data key="numberOfGiftItems">3</data>
+    </entity>
+
+    <entity name="ruleAutoAddPromoItemsForTheWholeCartConditions" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Rule Auto Add Promo Items For The Whole Cart With Conditions</data>
+        <data key="action">Auto add promo items for the whole cart</data>
+        <data key="conditionSubtotal">100</data>
+    </entity>
+
+    <entity name="ruleAutoAddTheSameProduct" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Auto add the same product</data>
+        <data key="action">Auto add the same product</data>
+        <data key="discountQtyStep">3</data>
+    </entity>
+
+    <entity name="ruleSameProductMaxQtyDiscountApplied" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">The Same Product Maximum Qty Discount is Applied To</data>
+        <data key="action">Auto add the same product</data>
+        <data key="maxQtyDiscount">3</data>
+    </entity>
+
+    <entity name="ruleAutoAddTheSameProductCoupon" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Auto add the same product with coupon</data>
+        <data key="action">Auto add the same product</data>
+        <data key="code">codePromoTest</data>
+    </entity>
+
+    <entity name="ruleAutoAddPromoItemsForEveryXSpent" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Auto Add Promo Items For Every X Spent</data>
+        <data key="action">Auto add promo items for every</data>
+        <data key="discountQtyStep">140</data>
+    </entity>
+
+    <entity name="ruleAutoAddPromoItemsForXSpentApplyShip" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Rule Auto Add Promo Items For Every X Spent With Apply Shipping For Free Gift</data>
+        <data key="action">Auto add promo items for every</data>
+        <data key="numberOfGiftItems">2</data>
+        <data key="discountQtyStep">50</data>
+    </entity>
+
+    <entity name="ruleAddGiftWithEachNProductOnTheCart" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Rule Add Gift With Each N Product In The Cart</data>
+        <data key="action">Add gift with each N-th product in the cart</data>
+        <data key="discountQtyStep">2</data>
+    </entity>
+
+    <entity name="ruleAddGiftEachNApplyTax" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Rule Add Gift With Each N Product In The Cart With Apply Tax On Original Price</data>
+        <data key="action">Add gift with each N-th product in the cart</data>
+        <data key="discountQtyStep">2</data>
+    </entity>
+
+    <entity name="ruleAutoAddPromoItemsWithDiscount" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Rule Auto Add Promo Items With Products With Discount</data>
+        <data key="discount">25</data>
+    </entity>
+
+    <entity name="ruleAutoAddPromoMinimalPriceAndDiscount" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Rule Auto Add Promo Items With Products With Minimal Price And Discount</data>
+        <data key="discount">-15</data>
+        <data key="minimalPrice">30</data>
+    </entity>
+
+    <entity name="ruleAutoAddPromoDiscountMultiCurrency" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Rule Auto Add Promo Items With Products With Discount And MultiCurrency</data>
+        <data key="discount">25</data>
+        <data key="rateUSDAndEUR">0.8</data>
+        <data key="discountAmountOne">-€5.60</data>
+    </entity>
+
+    <entity name="ruleAddGiftWithEachNWithDiscount" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Rule Add Gift With Each N Product In The Cart With Discount</data>
+        <data key="action">Add gift with each N-th product in the cart</data>
+        <data key="discountQtyStep">2</data>
+    </entity>
+
+    <entity name="ruleAutoAddTheSameConfigurableProduct" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Auto Add Add The Same Configurable Product</data>
+        <data key="action">Auto add the same product</data>
+        <data key="discountQtyStep">2</data>
+    </entity>
+
+    <entity name="wizardAndAutoAddTheSameProduct" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Buy 2 products, get 3 products Free</data>
+        <data key="ruleAutoName">Buy 2 products, get 3 products Free</data>
+        <data key="action">Auto add the same product</data>
+        <data key="actionWizard">The same as added to the cart</data>
+        <data key="customers">Retailer</data>
+        <data key="customerGroupNotSelect">General</data>
+        <data key="scenario">buy_x_get_y_radio</data>
+        <data key="doesCouponCode">0</data>
+        <data key="howManyTimes">first</data>
+        <data key="extraCriteria">0</data>
+        <data key="numberOfGiftItems">3</data>
+        <data key="discountQtyStep">2</data>
+        <data key="maxQtyDiscount">3</data>
+        <data key="ruleStatus">1</data>
+        <data key="couponCodeCheckValue">No Coupon</data>
+    </entity>
+
+    <entity name="ruleAutoAddPromoItemsApplyToSku" extends="defaultPromoCartRule" type="promoCartRule">
+        <data key="name">Check Auto add promo items with conditions from action tab</data>
+    </entity>
+
+</entities>

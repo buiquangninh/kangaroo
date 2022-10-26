@@ -1,0 +1,166 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magenest\CustomCatalog\Helper\Helper;
+use Magento\Framework\App\Action\Action;
+
+/** @var \Magento\CatalogWidget\Block\Product\ProductsList $block */
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+/** @var Helper $helper */
+$helper =  $this->helper(Helper::class);
+// phpcs:disable Generic.Files.LineLength.TooLong
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+?>
+<div class="page-flash-sale">
+    <div class="page-flash-sale-countdown">
+        <strong class="label"><?= $block->escapeHtml(__('Flash Sale')) ?></strong>
+        <div class="countdown" id="count-down-clock">
+            <div class="countdown-label"><?= $block->escapeHtml(__('Ending in')) ?></div>
+            <div class="countdown-content">
+                <div class="box-count">01</div>
+                <div class="box-count">35</div>
+                <div class="box-count">37</div>
+            </div>
+        </div>
+    </div>
+
+    <div data-content-type='row' data-appearance='contained'>
+
+        <div class="page-flash-sale-banner">
+            <picture>
+                <source media="(max-width: 767px)" srcset="https://kangaroo.izysync.com/media/wysiwyg/flash-sale-banner-mb.jpg">
+                <img src="https://kangaroo.izysync.com/media/wysiwyg/flash-sale-banner.jpg" alt="">
+            </picture>
+        </div>
+
+        <div class="page-flash-sale-time">
+            <div class="item active">
+                <strong>16:00</strong>
+                <span><?= $block->escapeHtml(__('Happenning')) ?></span>
+            </div>
+            <div class="item">
+                <strong>18:00</strong>
+                <span><?= $block->escapeHtml(__('Coming soon')) ?></span>
+            </div>
+            <div class="item">
+                <strong>20:00</strong>
+                <span><?= $block->escapeHtml(__('Coming soon')) ?></span>
+            </div>
+            <div class="item">
+                <strong>22:00</strong>
+                <span><?= $block->escapeHtml(__('Coming soon')) ?></span>
+            </div>
+            <div class="item">
+                <strong>00:00</strong>
+                <span><?= $block->escapeHtml(__('Coming soon')) ?></span>
+            </div>
+        </div>
+
+        <?php if ($exist = ($block->getProductCollection() && $block->getProductCollection()->getSize())): ?>
+            <?php
+            $type = 'widget-product-grid';
+
+            $mode = 'grid';
+
+            $image = 'new_products_content_widget_grid';
+            $items = $block->getProductCollection()->getItems();
+
+            $showWishlist = true;
+            $showCompare = true;
+            $showCart = true;
+            $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+            $description = false;
+            ?>
+            <div class="block-products-list products-list-flash-sale  <?= /* @noEscape */ $mode ?>">
+                <div class="block-content">
+                    <?= /* @noEscape */ '<!-- ' . $image . '-->' ?>
+                    <div class="products-<?= /* @noEscape */ $mode ?> <?= /* @noEscape */ $mode ?>">
+                        <ol class="product-items <?= /* @noEscape */ $type ?>">
+                            <?php $iterator = 1; ?>
+                            <?php foreach ($items as $_item): ?>
+                                <?= /* @noEscape */ ($iterator++ == 1) ? '<li class="product-item">' : '</li><li class="product-item">' ?>
+                                <div class="product-item-info">
+                                    <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>" class="product-item-photo">
+                                        <?= $block->getImage($_item, $image)->toHtml() ?>
+                                    </a>
+                                    <div class="product-item-details">
+                                        <?php if ($sale = \Magenest\Core\Helper\CatalogHelper::getSalesPercent($_item)): ?>
+                                            <span class="label label-discount">
+                                                <span class="text-sm-mi-des-wh"><?= '' . $sale . '%' ?></span>
+                                            </span>
+                                        <?php endif; ?>
+                                        
+
+                                        <strong class="product-item-name">
+                                            <a title="<?= $block->escapeHtml($_item->getName()) ?>"
+                                               href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
+                                               class="product-item-link">
+                                                <?= $block->escapeHtml($_item->getName()) ?>
+                                            </a>
+                                        </strong>
+                                       
+
+                                        <?= $block->getProductPriceHtml($_item, $type) ?>
+
+                                        <div class="product-item-bottom">
+                                            <?php $soldQty = $_item->getFinalSoldQty() ?? 0 ?>
+                                            <div class="progress-item-buy">
+                                                <span class="item-bar" style="width: 40%;"></span>
+                                                <span class="text">
+                                                    <?= __(
+                                                    'Sold %1',
+                                                    Magenest\QuantitySold\Block\Product\SoldQuantity::numberPrefixEncode(
+                                                        (int)$soldQty
+                                                    )
+                                                ) ?>
+                                                </span>
+                                                    
+                                            </div>
+                                        </div>
+
+                                        <div class="product-item-inner">
+                                           
+                                               
+                                                <?php $postParams = $block->getAddToCartPostParams($_item); ?>
+                                                <form data-role="tocart-form" data-product-sku="<?= $block->escapeHtml($_item->getSku()) ?>" action="<?= $block->escapeUrl($postParams['action']) ?>" method="post">
+                                                    <input type="hidden" name="product" value="<?= $block->escapeHtmlAttr($postParams['data']['product']) ?>">
+                                                    <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+                                                    <?= $block->getBlockHtml('formkey') ?>
+                                                    <button type="submit"
+                                                            title="<?= $block->escapeHtml(__('Buy now')) ?>"
+                                                            class="action tocart primary">
+                                                        <span><?= $block->escapeHtml(__('Buy now')) ?></span>
+                                                    </button>
+                                                </form>
+                                           
+                                        </div>
+
+                                        
+                                    </div>
+                                </div>
+                                <?= ($iterator == count($items) + 1) ? '</li>' : '' ?>
+                            <?php endforeach ?>
+                        </ol>
+                    </div>
+                    <?= $block->getPagerHtml() ?>
+                </div>
+            </div>
+            <?php if($block->getBlockHtml('formkey')): ?>
+            <script type="text/x-magento-init">
+            {
+                ".block.widget [data-role=tocart-form]": {
+                    "Magento_Catalog/js/validate-product": {}
+                }
+            }
+            </script>
+            <?php endif;?>
+
+           
+        <?php endif;?>
+    </div>
+
+</div>

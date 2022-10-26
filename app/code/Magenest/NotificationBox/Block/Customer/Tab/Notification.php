@@ -3,6 +3,7 @@
 namespace Magenest\NotificationBox\Block\Customer\Tab;
 
 use Magenest\NotificationBox\Helper\Helper;
+use Magenest\NotificationBox\Model\CustomerNotification as CustomerNotificationModel;
 use Magenest\NotificationBox\Model\CustomerNotificationFactory;
 use Magenest\NotificationBox\Model\Notification as NotificationModel;
 use Magenest\NotificationBox\Model\NotificationType as NotificationTypeModel;
@@ -156,46 +157,48 @@ class Notification extends Template
         return $this->helper->getUnreadNotification();
     }
 
-    public function getOrderNotification($condition)
-    {
-        if (isset($condition)) {
-            $allNotification = $this->helper->getAllNotificationByCondition($condition);
-        } else {
-            $allNotification = $this->getAllCustomerNotification("all");
-            if ($allNotification) {
-                $allNotification = $allNotification->setOrder('entity_id', 'DESC');
-            }
-        }
-        $allNotification->addFieldToFilter('notification_type', ['like' => 'order_%']);
-        return $this->getNotificationByCondition($condition, $allNotification->getData());
-    }
-
     /**
      * @param $condition
-     * @param $collection
-     * @return array|null
+     * @param bool $allNotification
+     * @return array|bool|null
      */
     public function getNotificationByCondition($condition, $allNotification = false)
     {
         if (!$allNotification) {
             if (isset($condition)) {
-                $allNotification = $this->helper->getAllNotificationByCondition($condition)->getData();
+                $allNotification = $this->helper->getAllNotificationByCondition($condition);
             } else {
                 $allNotification = $this->getAllCustomerNotification("all");
                 if ($allNotification) {
-                    $allNotification = $allNotification->setOrder('entity_id', 'DESC')->getData();
+                    $allNotification = $allNotification->setOrder('entity_id', 'DESC');
                 }
             }
+            $connection = $allNotification->getConnection();
+            $mainTable = $allNotification->getMainTable();
+            $allNotification = $allNotification->getData();
+            $updateRows = [];
+            foreach ($allNotification as $notification) {
+                $groupedOrderNotification[$notification['notification_type']][] = $notification;
+                $updateRows[] = $notification['entity_id'];
+            }
+            try {
+                $where = ['entity_id IN (?)' => $updateRows];
+                $connection->beginTransaction();
+                $connection->update($mainTable, ['status' => CustomerNotificationModel::STATUS_READ], $where);
+                $connection->commit();
+            } catch (\Exception $e) {
+                $connection->rollBack();
+            }
         }
-
 
         foreach ($allNotification as $key => $notification) {
             $notificationModel = $this->notificationTypeFactory->create();
             if (in_array($notification['notification_type'], self::NOTIFICATION_BOX_DEFAULT)) {
                 $this->notificationTypeResource->load($notificationModel, $notification['notification_type'], 'default_type');
-                $allNotification[$key]['notification_type'] = $notificationModel->getName();
             } else {
                 $this->notificationTypeResource->load($notificationModel, $notification['notification_type'], 'entity_id');
+            }
+            if ($notificationModel->getName()) {
                 $allNotification[$key]['notification_type'] = $notificationModel->getName();
             }
 
@@ -248,8 +251,7 @@ class Notification extends Template
     public function getFilteredNotificationTypes()
     {
         $params = $this->getRequest()->getParams();
-        $type = $this->getData('type');
-        return $type ?? ((isset($params['type'])) ? $params['type'] : 'all');
+        return (isset($params['type'])) ? $params['type'] : 'all';
     }
 
     /**
@@ -265,8 +267,11 @@ class Notification extends Template
             $pageSize = ($this->getRequest()->getParam('limit')) ? $this->getRequest()->getParam('limit') : $pageLimit;
             $this->notificationCollection = $this->collectionFactory->create()
                 ->addFieldToFilter('customer_id', $customerId);
+            if ($this->getData('exclude_type')) {
+                $this->notificationCollection->addFieldToFilter('notification_type', ['nlike' => $this->getData('exclude_type')]);
+            }
             if ($type != 'all') {
-                $this->notificationCollection->addFieldToFilter('notification_type', ['like' => '%'.$type.'%']);
+                $this->notificationCollection->addFieldToFilter('notification_type', $type);
             }
             $this->notificationCollection->setPageSize($pageSize);
             $this->notificationCollection->setCurPage($page);

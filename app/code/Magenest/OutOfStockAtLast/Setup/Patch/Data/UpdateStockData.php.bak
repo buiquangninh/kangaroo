@@ -1,0 +1,103 @@
+<?php
+
+namespace Magenest\OutOfStockAtLast\Setup\Patch\Data;
+
+use Magento\Catalog\Model\ProductRepository;
+use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Magento\Framework\Setup\Patch\DataPatchInterface;
+use Magenest\CustomSource\Model\Source\Area\Options;
+use Magento\Catalog\Model\ProductFactory;
+use Magento\Framework\Registry;
+use Magenest\OutOfStockAtLast\Model\ResourceModel\Inventory;
+use Magento\Store\Model\StoreManagerInterface;
+
+class UpdateStockData implements DataPatchInterface
+{
+    protected $moduleDataSetup;
+
+    public function __construct(
+        \Magento\Framework\App\State $appState,
+        ModuleDataSetupInterface     $moduleDataSetup,
+        Options                      $options,
+        ProductFactory               $productFactory,
+        Registry                     $registry,
+        Inventory                    $inventory,
+        StoreManagerInterface        $storeManager,
+        ProductRepository            $productRepository
+    )
+    {
+        $this->appState = $appState;
+        $this->moduleDataSetup = $moduleDataSetup;
+        $this->options = $options;
+        $this->productFactory = $productFactory;
+        $this->registry = $registry;
+        $this->inventory = $inventory;
+        $this->storeManager = $storeManager;
+        $this->productRepository = $productRepository;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getDependencies()
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAliases()
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function apply()
+    {
+        $this->appState->setAreaCode(\Magento\Framework\App\Area::AREA_ADMINHTML);
+
+        $this->moduleDataSetup->startSetup();
+
+        $connection = $this->moduleDataSetup->getConnection();
+
+        $productTable = $connection->getTableName('catalog_product_entity');
+
+        $select = $connection->select()
+            ->from($productTable)
+            ->where(
+                'out_of_stock_at_last_mien_bac IS NULL',
+            )->orWhere(
+                'out_of_stock_at_last_mien_trung IS NULL',
+            )->orWhere(
+                'out_of_stock_at_last_mien_nam IS NULL',
+            );
+        $result = $connection->fetchAll($select);
+        $options = $this->options->toOptionArray();
+        foreach ($result as $item) {
+            if ($item['out_of_stock_at_last_mien_bac'] == null || $item['out_of_stock_at_last_mien_trung'] == null
+                || $item['out_of_stock_at_last_mien_nam'] == null) {
+                foreach ($options as $option) {
+                    $this->registry->unregister('current_area');
+                    $this->registry->register('current_area', $option['value']);
+                    $value = $this->inventory->getStockStatus(
+                        $item['sku'],
+                        $this->storeManager->getStore($this->storeManager->getStore()->getId())->getWebsite()->getCode()
+                    );
+                    $connection->update(
+                        $productTable,
+                        [
+                            'out_of_stock_at_last_' . $option['value'] => $value,
+                        ],
+                        ['entity_id = ?' => $item['entity_id']]
+                    );
+                }
+            }
+        }
+        $this->moduleDataSetup->endSetup();
+
+
+    }
+}

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="DiscardSubsequentRules" extends="AddAllProductsAutomatically">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Discard Subsequent Rules"/>
+            <description value="Discard Subsequent Rules"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-11"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoFreeGifts"/>
+        </annotations>
+
+        <before>
+            <remove keyForRemoval="addDiscountSettingInSecondRule"/>
+            <createData entity="commonCustomerNewYork" before="createCategory" stepKey="createCustomer"/>
+            <createData entity="SimpleProductByOvernightDuffle" stepKey="createFirstProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <createData entity="SimpleProductByWayfarerMessenger" stepKey="createSecondProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createPromoCartRuleFirst">
+                <argument name="promoCartRule" value="ruleDiscardSubsequentRulesFirst"/>
+                <argument name="promoItems" value="$$createThirdProduct.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminChangeDiscardSubsequentPromoCartRuleActionGroup" after="createPromoCartRuleFirst"
+                         stepKey="changeDiscardRuleValueFirstRule">
+                <argument name="cartRuleName" value="ruleDiscardSubsequentRulesFirst.name"/>
+            </actionGroup>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createPromoCartRuleSecond">
+                <argument name="promoCartRule" value="ruleDiscardSubsequentRulesSecond"/>
+                <argument name="promoItems" value="$$createSecondProduct.sku$$"/>
+            </actionGroup>
+        </before>
+        <after>
+            <deleteData createDataKey="createCustomer" before="deleteCategory" stepKey="deleteCustomer"/>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deleteCartPriceRuleFirst">
+                <argument name="ruleName" value="{{ruleDiscardSubsequentRulesFirst.name}}"/>
+            </actionGroup>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deleteCartPriceRuleSecond">
+                <argument name="ruleName" value="{{ruleDiscardSubsequentRulesSecond.name}}"/>
+            </actionGroup>
+        </after>
+
+        <remove keyForRemoval="checkDiscountAmount"/>
+        <remove keyForRemoval="createOrder"/>
+        <actionGroup ref="LoginToStorefrontActionGroup" before="addProductToCart" stepKey="logInToStorefront">
+            <argument name="Customer" value="$$createCustomer$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNotProductOnCart" stepKey="assertAddedFreeGiftToCartFirst">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedFreeGiftToCartSecond">
+            <argument name="product" value="$$createThirdProduct$$"/>
+        </actionGroup>
+    </test>
+</tests>

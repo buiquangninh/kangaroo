@@ -15,7 +15,7 @@ class MassComplete extends AbstractMassAction implements HttpPostActionInterface
     /**
      * Authorization level of a basic admin session
      */
-    const ADMIN_RESOURCE = 'Magento_Sales::sales_order';
+    const ADMIN_RESOURCE = 'Magenest_FastErp::order_complete';
 
     /** @var LoggerInterface */
     private $logger;

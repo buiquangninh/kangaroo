@@ -41,8 +41,8 @@ class CustomerSegment extends \Magento\Ui\Component\Listing\Columns\Column
             foreach ($dataSource['data']['items'] as & $item) {
                 if (isset($item['customer_segment'])) {
                     $customerSegments = '';
-                    $listSegments = $this->serializer->unserialize($item['customer_segment']);
-                    if (count($listSegments) == count($this->customerSegment->getAllOptions())) {
+                    $listSegments = $this->serializer->unserialize($item['customer_segment']) ?: [];
+                    if (count($listSegments) == count($this->customerSegment->getAllOptions() ?? [])) {
                         $item['customer_segment'] = 'All Customer Segment';
                     } else {
                         foreach ($listSegments as $listSegment) {

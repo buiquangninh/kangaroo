@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <actionGroup name="AdminWizardStepTwoActionGroup">
+        <arguments>
+            <argument name="promoCartRuleWizard"/>
+        </arguments>
+        <fillField selector="{{AdminSalesRuleWizardSection.CustomerAddsHowManyProducts}}" userInput="{{promoCartRuleWizard.discountQtyStep}}" stepKey="inputQtyStep"/>
+        <fillField selector="{{AdminSalesRuleWizardSection.CustomerAddsHowManyFree}}" userInput="{{promoCartRuleWizard.numberOfGiftItems}}" stepKey="inputQtyFreeGift"/>
+        <selectOption selector="{{AdminSalesRuleWizardSection.CustomerAddsWhichProductsGifted}}" userInput="{{promoCartRuleWizard.actionWizard}}" stepKey="selectTheSameProduct"/>
+        <click selector="{{AdminSalesRuleWizardSection.ButtonNext}}" stepKey="clickButtonNextStep"/>
+    </actionGroup>
+</actionGroups>

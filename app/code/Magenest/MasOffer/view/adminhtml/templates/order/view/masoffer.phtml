@@ -1,0 +1,33 @@
+<?php
+/**
+ * @var $block Magenest\MasOffer\Block\Adminhtml\Order\View\Custom
+ */
+$data = $block->isMasOffer();
+$order = $block->getOrder();
+$masOfferHelper = $this->helper(\Magenest\MasOffer\Helper\MasOffer::class);
+?>
+<h3>Mas Offer</h3>
+<?php if ($data == 1) : ?>
+    <p>Đơn hàng của bạn đã được thêm thành công vào MasOffer</p>
+<?php else : ?>
+    <p>Đơn hàng của bạn đã chưa thêm vào MasOffer</p>
+    <section id="masoffer_resync" style="margin-top: 30px" class="admin__page-section" data-bind="scope: 'masoffer_resync'">
+        <div class="admin__page-section-title">
+            <?php if ($data != 1): ?>
+                <div class="actions">
+                    <a href="<?= $masOfferHelper->postBack($order) ?>"><?= /* @escapeNotVerified */
+                        __('Cập nhật') ?></a>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="admin__page-section-content">
+            <!-- ko template: getTemplate() --><!-- /ko -->
+        </div>
+    </section>
+<?php endif; ?>
+
+
+
+
+
+

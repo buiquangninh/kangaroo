@@ -2,8 +2,10 @@
 
 namespace Magenest\AffiliateOpt\Controller\Account;
 
+use Magenest\AffiliateOpt\Helper\Reports as ReportsHelper;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\Page;
@@ -65,11 +67,14 @@ class Credit extends Account
     }
 
     /**
-     * @return Page
+     * @return \Magento\Framework\Controller\ResultInterface|Page
      * @throws NoSuchEntityException
      */
     public function execute()
     {
-        return $this->getResponse()->representJson($this->creditChartBlock->creditChartData());
+        $result = $this->resultFactory->create(ResultFactory::TYPE_JSON);
+        $result->setData(ReportsHelper::jsonDecode($this->creditChartBlock->creditChartData()));
+        return $result;
+//        return $this->getResponse()->representJson($this->creditChartBlock->creditChartData());
     }
 }

@@ -300,4 +300,9 @@ class BankInfo implements \Magento\Framework\Data\OptionSourceInterface
 
         return $options;
     }
+
+    public function getBankInfoByCode($code)
+    {
+        return self::OPTIONS[$code] ?? false;
+    }
 }

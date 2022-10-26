@@ -158,7 +158,7 @@ class GetStockItemData
                         ]
                     )->join(
                         ['isi' => $connection->getTableName('inventory_source_item')],
-                        '`main_table`.`sku` = `isi`.`sku`',
+                        "`main_table`.`sku` = `isi`.`sku` and `main_table`.`area_code` = '{$areaCode}'",
                         ["source_code"]
                     )->join(
                         ['is' => $connection->getTableName('inventory_source')],

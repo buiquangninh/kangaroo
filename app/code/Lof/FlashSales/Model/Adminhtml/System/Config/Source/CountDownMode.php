@@ -29,6 +29,7 @@ class CountDownMode implements \Magento\Framework\Option\ArrayInterface
      */
     const CDM_DISABLED = 'disabled';
     const CDM_DAYS_HOURS= 'days_hours';
+    const CDM_HOURS_MINUTES_SECONDS = 'hours_minutes_seconds';
     const CDM_DAYS_HOURS_MINUTES_SECONDS = 'days_hours_minutes_seconds';
 
     /**
@@ -44,7 +45,12 @@ class CountDownMode implements \Magento\Framework\Option\ArrayInterface
             [
                 'value' => self::CDM_DAYS_HOURS,
                 'label' => __('Count Down (Day & Hours)')
-            ],    [
+            ],
+            [
+                'value' => self::CDM_HOURS_MINUTES_SECONDS,
+                'label' => __('Count Down (Hours/Minutes/Seconds)')
+            ],
+            [
                 'value' => self::CDM_DAYS_HOURS_MINUTES_SECONDS,
                 'label' => __('Count Down (Day/Hours/Minutes/Seconds)')
             ]
@@ -61,6 +67,7 @@ class CountDownMode implements \Magento\Framework\Option\ArrayInterface
         return [
             self::CDM_DISABLED => __('Disabled'),
             self::CDM_DAYS_HOURS => __('Count Down (Day & Hours)'),
+            self::CDM_HOURS_MINUTES_SECONDS => __('Count Down (Hours/Minutes/Seconds)'),
             self::CDM_DAYS_HOURS_MINUTES_SECONDS => __('Count Down (Day/Hours/Minutes/Seconds)')
         ];
     }

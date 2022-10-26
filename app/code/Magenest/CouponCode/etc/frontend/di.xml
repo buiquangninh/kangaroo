@@ -53,4 +53,11 @@
     <type name="Magento\Framework\App\Action\AbstractAction">
         <plugin name="customer-session-data-to-context" type="Magenest\CouponCode\Plugin\CustomerSessionContext" sortOrder="15"/>
     </type>
+    <type name="Magento\Customer\CustomerData\SectionPoolInterface">
+        <arguments>
+            <argument name="sectionSourceMap" xsi:type="array">
+                <item name="customer_coupon" xsi:type="string">Magenest\CouponCode\CustomerData\CustomerCoupon</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

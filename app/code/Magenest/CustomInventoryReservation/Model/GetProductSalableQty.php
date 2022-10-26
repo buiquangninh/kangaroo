@@ -97,21 +97,21 @@ class GetProductSalableQty implements GetProductSalableQtyInterfaceV2
                 $qtySpecificArea[$data['area_code']] = $data["quantity"];
             }
         }
-        foreach($stockItemData as $data) {
+         foreach($stockItemData as $data) {
             $reservationQtyArray = json_decode($this->getReservationsQuantity->execute($sku, $stockId, $data['area_code']), true);
-            if ($data[GetStockItemDataInterface::IS_SALABLE] == 1) {
-                if (!is_array($reservationQtyArray)) {
+//            if ($data[GetStockItemDataInterface::IS_SALABLE] == 1) {
+            if (!is_array($reservationQtyArray)) {
+                $productQtyInStock[$data['area_code']] = $qtySpecificArea[$data['area_code']]
+                    + $reservationQtyArray
+                    - $minQty;
+            } else {
+                foreach ($reservationQtyArray as $reservationData) {
                     $productQtyInStock[$data['area_code']] = $qtySpecificArea[$data['area_code']]
-                        + $reservationQtyArray
+                        + $reservationData
                         - $minQty;
-                } else {
-                    foreach ($reservationQtyArray as $reservationData) {
-                        $productQtyInStock[$data['area_code']] = $qtySpecificArea[$data['area_code']]
-                            + $reservationData
-                            - $minQty;
-                    }
                 }
             }
+//            }
         }
         if (empty($productQtyInStock)) {
             return 0;

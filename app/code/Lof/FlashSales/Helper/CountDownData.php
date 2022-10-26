@@ -26,6 +26,7 @@ use Lof\FlashSales\Model\ResourceModel\AppliedProducts\CollectionFactory as Appl
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
+use \Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 class CountDownData extends AbstractHelper
 {
@@ -53,12 +54,14 @@ class CountDownData extends AbstractHelper
      * @param AppliedProductsCollectionFactory $appliedProductsCollectionFactory
      */
     public function __construct(
+        TimezoneInterface $timezone,
         Context $context,
         Data $helperData,
         FlashSales $flashSalesModel,
         AppliedProductsCollectionFactory $appliedProductsCollectionFactory
     ) {
         $this->helperData = $helperData;
+        $this->timezone = $timezone;
         $this->flashSalesModel = $flashSalesModel;
         $this->appliedProductsCollectionFactory = $appliedProductsCollectionFactory;
         parent::__construct($context);
@@ -70,17 +73,35 @@ class CountDownData extends AbstractHelper
      */
     public function getFlashSalesWithChildProduct($childProductId)
     {
+        $flashSalesIds = [];
         $appliedProduct = $this->appliedProductsCollectionFactory->create()
             ->addFieldToFilter('product_id', $childProductId)
-            ->addFieldToFilter('flash_sale_price', ['gteq' => 0])
-            ->getFirstItem();
-        if ($appliedProduct->getEntityId()) {
-            $flashSale = $this->flashSalesModel->load($appliedProduct->getFlashSalesId());
+            ->addFieldToFilter('flash_sale_price', ['gteq' => 0]);
+        foreach ($appliedProduct as $data) {
+            $flashSalesIds[] = $data->getFlashSalesId();
+        }
+        foreach ($flashSalesIds as $flashSalesId) {
+            $flashSale = $this->flashSalesModel->load($flashSalesId);
             if ($this->eventTimingValid($flashSale)) {
                 return $flashSale;
             }
         }
         return null;
+    }
+
+    /**
+     * @param \Lof\FlashSales\Model\FlashSales $flashSale
+     * @return
+     */
+    public function getFlashSalesQtyStatus($product_id)
+    {
+        $appliedProduct = $this->appliedProductsCollectionFactory->create()
+            ->addFieldToFilter('product_id', $product_id)
+            ->getFirstItem()->getQtyLimit();
+        if ($appliedProduct == 0){
+            return true;
+        }
+        else return false;
     }
 
     /**
@@ -95,7 +116,7 @@ class CountDownData extends AbstractHelper
             return null;
         }
         $flashSale->setData('format_time', $this->helperData->getProductTimerMode());
-        $flashSale->setData('current_date_time', $this->getCurrentDateTimeFlashSales($flashSale));
+        $flashSale->setData('current_date_time', $this->timezone->date($this->getCurrentDateTimeFlashSales($flashSale))->format('Y-m-d H:i:s'));
         return $flashSale;
     }
 

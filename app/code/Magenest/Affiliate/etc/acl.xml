@@ -8,7 +8,12 @@
                 <resource id="Magento_Backend::marketing">
                     <resource id="Magenest_Affiliate::affiliate" title="Magenest Affiliate" sortOrder="43">
                         <resource id="Magenest_Affiliate::account" title="Accounts" sortOrder="10"/>
-                        <resource id="Magenest_Affiliate::group" title="Groups" sortOrder="20"/>
+                        <resource id="Magenest_Affiliate::group" title="Groups" sortOrder="20">
+                            <resource id="Magenest_Affiliate::Group_save" title="Save Group" sortOrder="10"/>
+                            <resource id="Magenest_Affiliate::Group_delete" title="Delete Group" sortOrder="20"/>
+                            <resource id="Magenest_Affiliate::Group_update" title="Update Group" sortOrder="30"/>
+                            <resource id="Magenest_Affiliate::Group_view" title="View Group" sortOrder="40"/>
+                        </resource>
                         <resource id="Magenest_Affiliate::campaign" title="Campaigns" sortOrder="30"/>
                         <resource id="Magenest_Affiliate::withdraw" title="Withdraws" sortOrder="50"/>
                         <resource id="Magenest_Affiliate::transaction" title="Transactions" sortOrder="60"/>

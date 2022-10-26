@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <actionGroup name="StorefrontAssertAutoOpenPopUpActionGroup">
+        <amOnPage url="{{StorefrontCartPage.url}}" stepKey="navigateToStorefrontCartPage"/>
+        <waitForPageLoad stepKey="waitForLoadAfterOpenPage"/>
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappear"/>
+        <waitForElementVisible selector="{{StorefrontCartSection.OpenPopUp}}" stepKey="waitWhenOpenPopUp"/>
+        <waitForPageLoad stepKey="waitForPageLoadBeforeAssertResult"/>
+        <seeElement selector="{{StorefrontCartSection.PopUpProductsContainer}}" stepKey="seeHaveProducts"/>
+    </actionGroup>
+</actionGroups>

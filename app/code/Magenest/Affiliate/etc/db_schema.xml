@@ -37,6 +37,8 @@
         <column xsi:type="varchar" name="district_id" nullable="true" length="255" comment="District Id" />
         <column xsi:type="varchar" name="ward" nullable="true" length="255" comment="Ward" />
         <column xsi:type="varchar" name="ward_id" nullable="true" length="255" comment="Ward Id" />
+        <column xsi:type="boolean" name="is_limited" nullable="false" default="false" comment="Is Account Limited" />
+        <column xsi:type="boolean" name="request_official" nullable="false" default="false" comment="Request Official Affiliate" />
         <constraint
             xsi:type="foreign"
             referenceId="MAGENEST_AFFILIATE_ACCOUNT_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID"
@@ -81,6 +83,7 @@
     </table>
 
     <table name="magenest_rewardpoints_membership" resource="default">
+        <column xsi:type="text" name="customer_group_ids" nullable="true" comment="Customer Group Ids to mebemership"/>
         <column xsi:type="bigint" name="condition_reach_tier_value" nullable="false" comment="value of condition to reach membership"/>
     </table>
 </schema>

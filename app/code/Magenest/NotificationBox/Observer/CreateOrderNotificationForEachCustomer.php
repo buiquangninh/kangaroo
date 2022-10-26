@@ -66,6 +66,8 @@ class CreateOrderNotificationForEachCustomer implements ObserverInterface
         try {
             $order = $this->orderRepository->get($orderComment->getParentId());
             if ($order->getCustomerId() && $orderComment->getIsCustomerNotifiedStoreFront()) {
+                $items = $order->getItems();
+                $item = array_shift($items);
                 $model = $this->model->create();
                 $model->setData([
                     'customer_id' => $order->getCustomerId(),
@@ -76,6 +78,7 @@ class CreateOrderNotificationForEachCustomer implements ObserverInterface
                         'order_id' => $order->getEntityId(),
                         'title' => $orderComment->getTitle(),
                         'order_status' => $order->getStatus(),
+                        'first_item_sku' => $item->getSku()
                     ]),
                     'notification_type' => 'order_' . $order->getEntityId()
                 ]);

@@ -87,14 +87,14 @@ $helperCatalog =  $this->helper(Helper::class);
                            class="product photo product-item-photo"
                            tabindex="-1">
                             <?= $productImage->toHtml() ?>
-                            <?php if ($helperCatalog->isSalableInArea($_product->getSku())): ?>
+                            <?php if ($helperCatalog->isSalableInArea($_product)): ?>
                                 <p class="label-out-of-stock"><?= __("Out of Stock") ?></p>
                             <?php endif; ?>
                         </a>
                         <div class="product details product-item-details">
                             <?php $_productNameStripped = $block->stripTags($_product->getName(), null, true); ?>
                             <strong class="product name product-item-name">
-                                <a class="product-item-link"
+                                <a class="product-item-link" data-product-sku="<?= $block->escapeHtml($_product->getSku())?>"
                                    href="<?= $escaper->escapeUrl($_product->getProductUrl()) ?>">
                                     <?= /* @noEscape */
                                     $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
@@ -121,7 +121,12 @@ $helperCatalog =  $this->helper(Helper::class);
                                         ) : '' ?>
 
                                     <div class="stock available">
-                                        <span><?= $isSalableInAreaCode->isInOfStock($_product) ?? '' ?></span>
+                                        <span>
+                                            <?php if (!$helperCatalog->isSalableInArea($_product)): ?>
+                                                <?= __('In Stock'); ?>
+                                            <?php else: ?>
+                                                <?= __('Out Of Stock'); ?>
+                                            <?php endif; ?>
                                     </div>
                                     <div class="product-bottom">
                                         <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>

@@ -25,6 +25,9 @@ $countItem = count($items);
         <div class="title-order"><?= $block->escapeHtml(__('Your order')) ?></div>
         <div class="number-order"><?= __('%1 Items', $countItem) ?></div>
     </div>
+
+    <?= $block->getChildHtml('ampromo.add') ?>
+    
     <div class="cart table-wrapper<?= $mergedCells == 2 ? ' detailed' : '' ?>">
         <?php if ($block->getPagerHtml()): ?>
             <div class="cart-products-toolbar cart-products-toolbar-top toolbar"

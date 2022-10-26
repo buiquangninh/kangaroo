@@ -24,6 +24,7 @@ use Magenest\RewardPoints\Model\ResourceModel\Membership\Collection;
 use Magenest\RewardPoints\Model\MembershipCustomerFactory as MembershipCustomer;
 use Magenest\RewardPoints\Model\ResourceModel\MembershipCustomer as MembershipCustomerResource;
 use Magento\Customer\Model\ResourceModel\CustomerRepository;
+use Magento\Customer\Model\Customer as CustomerModel;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\LocalizedException;
@@ -88,6 +89,8 @@ class MembershipAction extends AbstractHelper
      */
     protected $_groupResource;
 
+    private $customerModel;
+
     /**
      * MemberAction constructor.
      * @param ImageHelper $imageHelper
@@ -111,6 +114,7 @@ class MembershipAction extends AbstractHelper
         MembershipGroupCollection $groupCollection,
         Membership $groupResource,
         MembershipCustomerCollection $membershipCustomerCollection,
+        CustomerModel $customerModel,
         Context $context
     ) {
         parent::__construct($context);
@@ -123,6 +127,7 @@ class MembershipAction extends AbstractHelper
         $this->_emailHelper = $emailHelper;
         $this->_customerRepository = $customerRepository;
         $this->_imageHelper = $imageHelper;
+        $this->customerModel = $customerModel;
     }
 
     /**
@@ -142,6 +147,9 @@ class MembershipAction extends AbstractHelper
                     MembershipCustomerInterface::CUSTOMER_ID => $this->getCustomerId()
                 ]);
                 $this->_membershipCustomerResource->save($membershipCustomer);
+                $customer = $this->_customerRepository->getById($this->getCustomerId());
+                $customer->setGroupId($tier->getData('customer_group_ids'));
+                $this->_customerRepository->save($customer);
                 $this->sendEmailChangeTier($tier);
             }
         } catch (\Exception $exception) {

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 2 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AutoAddPromoItemsApplyToSku" extends="AutoAddPromoItemsForTheWholeCart">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Auto add promo items with conditions from action tab"/>
+            <description value="Check Auto add promo with conditions from action tab"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-29"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="Rule"/>
+            <group value="PromoFreeGifts"/>
+        </annotations>
+
+        <before>
+            <createData entity="SimpleProductByWatchClamber" after="createThirdProduct" stepKey="createFourProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <actionGroup ref="AdminCreatePromoCartPriceRuleWholeCartActionGroup" stepKey="createPromoCartRuleFirst">
+                <argument name="promoCartRule" value="ruleAutoAddPromoItemsApplyToSku"/>
+                <argument name="promoItems" value="$$createThirdProduct.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="EditRuleAddActionsConditions" stepKey="addConditionsForCartRule">
+                <argument name="actionsConditionOptions" value="_SKU"/>
+                <argument name="ruleName" value="ruleAutoAddPromoItemsApplyToSku.name"/>
+                <argument name="actionsConditionOptionsParamIs" value="_isOneOf"/>
+                <argument name="conditionsData" value="$$createSecondProduct.sku$$,$$createFourProduct.sku$$"/>
+            </actionGroup>
+        </before>
+        <after>
+            <deleteData createDataKey="createFourProduct" after="deleteThirdProduct" stepKey="deleteFourProduct"/>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deletePromoCartRule">
+                <argument name="ruleName" value="{{ruleAutoAddPromoItemsApplyToSku.name}}"/>
+            </actionGroup>
+        </after>
+
+        <actionGroup ref="StorefrontAssertNotProductOnCart" stepKey="assertAddedFreeGiftToCartFirst">
+            <argument name="product" value="$$createThirdProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedFreeGiftToCartSecond">
+            <argument name="product" value="$$createThirdProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontDeleteProductFromTheCart" stepKey="deleteProductFromTheCart">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertNotProductOnCart" stepKey="assertAddedFreeGiftToCartThird">
+            <argument name="product" value="$$createThirdProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="AddCreatedProductToCart" stepKey="addProductToCartThird">
+            <argument name="product" value="$$createFourProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedFreeGiftToCartFour">
+            <argument name="product" value="$$createThirdProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="AddCreatedProductToCart" stepKey="addProductToCartFour">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAssertProductOnCart" stepKey="assertAddedFreeGiftToCartFive">
+            <argument name="product" value="$$createThirdProduct$$"/>
+            <argument name="productQty" value="_enterQty2"/>
+        </actionGroup>
+    </test>
+</tests>

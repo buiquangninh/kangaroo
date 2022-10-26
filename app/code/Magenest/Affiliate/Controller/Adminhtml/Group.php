@@ -71,6 +71,20 @@ abstract class Group extends AbstractAction
     }
 
     /**
+     * Init page
+     *
+     * @param \Magento\Backend\Model\View\Result\Page $resultPage
+     * @return \Magento\Backend\Model\View\Result\Page
+     */
+    public function initPage($resultPage)
+    {
+        $resultPage->setActiveMenu(self::ADMIN_RESOURCE)
+            ->addBreadcrumb(__('Magenest'), __('Magenest'))
+            ->addBreadcrumb(__('Group'), __('Group'));
+        return $resultPage;
+    }
+
+    /**
      * is action allowed
      *
      * @return bool

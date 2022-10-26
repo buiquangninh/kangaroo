@@ -5,11 +5,13 @@ namespace Magenest\CouponCode\Controller\Coupon;
 use Exception;
 use Magenest\CouponCode\Model\ClaimCouponFactory;
 use Magenest\CouponCode\Model\ResourceModel\ClaimCoupon;
+use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\PageCache\Model\Cache\Type;
+use Magento\SalesRule\Model\CouponFactory;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -43,9 +45,12 @@ class ClaimAjax extends Action
      */
     protected $logger;
 
+    protected $session;
+
+    protected $coupon;
+
     /**
-     * Data constructor
-     *
+     * ClaimAjax constructor.
      * @param Context $context
      * @param Type $flush
      * @param Json $json
@@ -53,6 +58,8 @@ class ClaimAjax extends Action
      * @param ClaimCouponFactory $couponFactory
      * @param JsonFactory $resultJsonFactory
      * @param LoggerInterface $logger
+     * @param Session $session
+     * @param CouponFactory $coupon
      */
     public function __construct(
         Context            $context,
@@ -61,7 +68,9 @@ class ClaimAjax extends Action
         ClaimCoupon        $resource,
         ClaimCouponFactory $couponFactory,
         JsonFactory        $resultJsonFactory,
-        LoggerInterface    $logger
+        LoggerInterface    $logger,
+        Session            $session,
+        CouponFactory         $coupon
     ) {
         $this->flush = $flush;
         $this->resource = $resource;
@@ -69,6 +78,8 @@ class ClaimAjax extends Action
         $this->json = $json;
         $this->resultJsonFactory = $resultJsonFactory;
         $this->logger = $logger;
+        $this->session = $session;
+        $this->coupon = $coupon;
         parent::__construct($context);
     }
 
@@ -86,9 +97,14 @@ class ClaimAjax extends Action
 
         if ($this->getRequest()->isAjax()) {
             try {
-                $response = $this->getRequest()->getParams();
+                $couponCode = $this->_request->getParam('couponCode');
+                $coupon = $this->coupon->create()->load($couponCode,'code');
                 $model = $this->couponFactory->create();
-                $model->addData($response);
+                $model->addData([
+                    'rule_id' => $coupon->getRuleId(),
+                    'coupon_id' => $coupon->getId(),
+                    'customer_id' => $this->session->getCustomerId()
+                ]);
                 $this->resource->save($model);
                 $response['success'] = true;
             } catch (\Exception $exception) {

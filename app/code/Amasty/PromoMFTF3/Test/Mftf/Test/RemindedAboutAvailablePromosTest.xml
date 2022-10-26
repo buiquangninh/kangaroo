@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Free Gift MFTF 3 for Magento 2 (System)
+*/-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="RemindedAboutAvailablePromosTest" extends="OneByOneNotAddProductAutomaticallyTest">
+        <annotations>
+            <features value="Rule Creation"/>
+            <stories value="Create a Rule via the Admin"/>
+            <title value="Check Setting Reminded About Available Promos"/>
+            <description value="Check Setting Reminded About Available Promos"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="AA-MFTF-09"/>
+            <group value="Amasty"/>
+            <group value="Promo"/>
+            <group value="PromoConfiguration"/>
+        </annotations>
+
+        <before>
+            <remove keyForRemoval="createThirdProduct"/>
+            <actionGroup ref="AdminConfigPromoMessagesActionGroup" stepKey="settingMessagePromoConfiguration">
+                <argument name="configurationMessages" value="configPromoMessagesReminderPromos"/>
+            </actionGroup>
+            <actionGroup ref="AdminCreatePromoCartRuleWithPromoItemsActionGroup" stepKey="createPromoCartRule">
+                <argument name="promoCartRule" value="ruleRemindedAboutAvailablePromos"/>
+                <argument name="promoItems" value="$$createSecondProduct.sku$$"/>
+            </actionGroup>
+            <magentoCLI command="cache:flush" arguments="config full_page" stepKey="cleanCacheForMessage"/>
+        </before>
+        <after>
+            <remove keyForRemoval="deleteThirdProduct"/>
+            <actionGroup ref="DeleteCartPriceRuleByName" stepKey="deleteCartPriceRule">
+                <argument name="ruleName" value="{{ruleRemindedAboutAvailablePromos.name}}"/>
+            </actionGroup>
+        </after>
+
+        <remove keyForRemoval="assertNotFreeGiftInCartFirst"/>
+        <remove keyForRemoval="assertNotFreeGiftInCartSecond"/>
+        <remove keyForRemoval="addFreeGiftFirst"/>
+        <remove keyForRemoval="assertAddedFreeGiftToCartFirst"/>
+        <remove keyForRemoval="addFreeGiftSecond"/>
+        <remove keyForRemoval="assertAddedFreeGiftToCartSecond"/>
+        <actionGroup ref="StorefrontAssertRemindedAboutPromosActionGroup" stepKey="assertPopUpOnCart">
+            <argument name="product" value="$$createSecondProduct$$"/>
+        </actionGroup>
+    </test>
+</tests>

@@ -90,6 +90,8 @@ class Data extends AbstractHelper
      */
     private $resourceConnection;
 
+    private $directoryCache = [];
+
     /**
      * Constructor.
      *
@@ -160,6 +162,33 @@ class Data extends AbstractHelper
         }
 
         return $this->_cityOptions;
+    }
+
+    public function getCityById($cityId)
+    {
+        if (!$this->directoryCache) {
+            $this->getDataJson();
+        }
+
+        return $this->directoryCache['VN'][$cityId] ?? false;
+    }
+
+    public function getDistrictById($cityId, $districtId)
+    {
+        if (!$this->directoryCache) {
+            $this->getDataJson();
+        }
+
+        return $this->directoryCache['VN'][$cityId]['districts'][$districtId] ?? false;
+    }
+
+    public function getWardById($cityId, $districtId, $wardId)
+    {
+        if (!$this->directoryCache) {
+            $this->getDataJson();
+        }
+
+        return $this->directoryCache['VN'][$cityId]['districts'][$districtId]['wards'][$wardId] ?? false;
     }
 
     /**
@@ -236,7 +265,10 @@ class Data extends AbstractHelper
                 }
 
                 $this->_configCacheType->save($json, $cacheKey , [self::CACHE_TAG_DATA]);
+            } else {
+                $regions = $this->_jsonHelper->jsonDecode($json);
             }
+            $this->directoryCache = $regions;
 
             $this->_regionJson = $json;
         }

@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+	<table name="magenest_affiliateclickcount_affiliate" resource="default" engine="innodb" comment="magenest_affiliateclickcount_affiliate Table">
+		<column xsi:type="int" name="affiliate_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+		<constraint xsi:type="primary" referenceId="PRIMARY">
+			<column name="affiliate_id"/>
+		</constraint>
+		<column name="customer_id" nullable="true" xsi:type="text" comment="customer_id"/>
+        <column name="affiliate_code" nullable="true" xsi:type="text" comment="customer_id"/>
+		<column name="referal_url" nullable="true" xsi:type="text" comment="referal_url"/>
+		<column name="created_at" nullable="true" xsi:type="datetime" comment="created_at"/>
+		<column name="updated_at" nullable="true" xsi:type="datetime" comment="updated_at"/>
+	</table>
+    <table name="magenest_affiliateclickcount_affiliatecountclick" resource="default" engine="innodb" comment="magenest_affiliateclickcount_affiliatecountclick Table">
+        <column xsi:type="int" name="affiliatecountclick_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="affiliatecountclick_id"/>
+        </constraint>
+        <column name="customer_id" nullable="true" xsi:type="text" comment="customer_id"/>
+        <column name="referal_url" nullable="true" xsi:type="text" comment="referal_url"/>
+        <column name="affiliate_code" nullable="true" xsi:type="text" comment="affiliate_code"/>
+        <column name="created_at" nullable="true" xsi:type="datetime" comment="created_at"/>
+        <column name="updated_at" nullable="true" xsi:type="datetime" comment="updated_at"/>
+    </table>
+</schema>
