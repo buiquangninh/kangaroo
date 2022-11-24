@@ -1,0 +1,30 @@
+{
+    "sales_order": {
+        "column": {
+            "momo_pay_url": true,
+            "momo_trans_id": true,
+            "momo_status": true
+        }
+    },
+    "sales_order_grid": {
+        "column": {
+            "momo_trans_id": true,
+            "momo_status": true
+        }
+    },
+    "momo_query_status": {
+        "column": {
+            "entity_id": true,
+            "order_id": true,
+            "query_count": true,
+            "status": true,
+            "message_log": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "MOMO_QUERY_STATUS_ORDER_ID_SALES_ORDER_INCREMENT_ID": true,
+            "MOMO_QUERY_STATUS_ORDER_ID": true
+        }
+    }
+}
